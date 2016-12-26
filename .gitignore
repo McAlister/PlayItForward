@@ -12,3 +12,8 @@ gradle-app.setting
 
 # Cache of project
 .gradletasknamecache
+
+webapp/.tmp/
+webapp/coverage/
+webapp/dist/
+webapp/node_modules/
