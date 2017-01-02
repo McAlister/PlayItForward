@@ -1,5 +1,6 @@
 .idea
 .DS_Store
+Thumbs.db
 
 .gradle
 /build/
@@ -13,7 +14,10 @@ gradle-app.setting
 # Cache of project
 .gradletasknamecache
 
-webapp/.tmp/
-webapp/coverage/
-webapp/dist/
-webapp/node_modules/
+*.iml
+*.ipr
+*.iws
+.project
+.settings
+.classpath
+~                 
