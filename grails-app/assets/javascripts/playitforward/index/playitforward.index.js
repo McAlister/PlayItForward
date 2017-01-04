@@ -21,6 +21,22 @@ function config($stateProvider, $urlRouterProvider) {
         .state('index', {
             url: "/",
             templateUrl: "/playitforward/index/index.html"
+        })
+        .state('contests', {
+            url: "/contests",
+            templateUrl: "/playitforward/index/contests.html"
+        })
+        .state('contribute', {
+            url: "/contribute",
+            templateUrl: "/playitforward/index/contribute.html"
+            })
+        .state('resources', {
+            url: "/resources",
+            templateUrl: "/playitforward/index/resources.html"
+        })
+        .state('login', {
+            url: "/login",
+            templateUrl: "/playitforward/index/login.html"
         });
 
     $urlRouterProvider.otherwise('/');

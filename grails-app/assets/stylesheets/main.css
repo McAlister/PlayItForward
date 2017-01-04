@@ -491,6 +491,7 @@ a.skip {
 .grails-logo-container {
     background:#79b94c no-repeat 50% 30%;
     color: white;
+    border-bottom: 1px solid #48802c;
 }
 
 img.grails-logo {

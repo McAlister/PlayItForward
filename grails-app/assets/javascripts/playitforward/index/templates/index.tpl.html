@@ -1,26 +1,15 @@
-<div class="grails-logo-container">
-    <image src="/assets/logo.png" class="grails-logo"/>
-</div>
 
 <div id="content" role="main">
-    <section class="row colset-2-its">
-        <h1>Welcome to Grails</h1>
 
-        <p>
-            Congratulations, you have successfully started your first Grails application! At the moment
-            this is the default page, feel free to modify it to either redirect to a controller or display
-            whatever content you may choose. Below is a list of controllers that are currently deployed in
-            this application, click on each to execute its default action:
-        </p>
+    <p>
+        Play It Forward is a non-profit organization seeking to promote and cultivate women playing
+        Magic, The Gathering at a competitive level.  To this end we are posting bounties that women
+        can compete for in high level play and seeking to build the women's magic community as well
+        as track statistics of women's performance at the near-pro level.
+    </p>
 
-        <div id="controllers" role="navigation">
-            <h2>Available Controllers:</h2>
-            <ul ng-cloak>
-                <li ng-repeat="c in indexCtrl.applicationData.controllers | orderBy:'name'" class="controller">
-                    <a ng-if="!indexCtrl.stateExists(c.logicalPropertyName+'.list')" ng-href="{{indexCtrl.contextPath}}/{{c.logicalPropertyName}}">{{c.name}}</a>
-                    <a ng-if="indexCtrl.stateExists(c.logicalPropertyName+'.list')" ui-sref="{{c.logicalPropertyName}}.list">{{c.name}}</a>
-                </li>
-            </ul>
-        </div>
-    </section>
+    <br/>
+
+    <center>This site is under construction.</center>
+
 </div>

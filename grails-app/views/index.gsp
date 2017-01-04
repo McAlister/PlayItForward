@@ -23,6 +23,22 @@
 
 <body ng-app="playitforward" ng-controller="IndexController as indexCtrl">
 
+    <div class="grails-logo-container">
+        <image src="/assets/logo.png" class="grails-logo"/>
+    </div>
+
+    <div id="navigation">
+
+        <ul>
+            <li><a ui-sref="index">Home</a></li>
+            <li><a ui-sref="contests">Bounties</a></li>
+            <li><a ui-sref="contribute">Contribute</a></li>
+            <li><a ui-sref="resources">Resources</a></li>
+            <li><a ui-sref="login">Login</a></li>
+        </ul>
+
+    </div>
+
     <div ui-view></div>
 
     <div class="footer" role="contentinfo">

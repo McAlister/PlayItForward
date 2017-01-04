@@ -13,3 +13,53 @@
 *= require mobile
 *= require_self
 */
+
+#navigation
+{
+    background-color: #ffffff;
+    text-align: right;
+    padding-right: 10px;
+}
+
+#navigation ul
+{
+    list-style-type:none;
+    padding: 0;
+    margin: 0;
+}
+
+#navigation li
+{
+    display: inline;
+    padding: 5px;
+}
+
+#navigation a
+{
+    text-decoration: none;
+    color: #48802c;
+}
+
+#content
+{
+    min-height: 250px;
+    text-align: left;
+    padding: 10px 30px;
+}
+
+.bountyList
+{
+    margin-left: 50px;
+}
+
+.form-signin
+{
+    max-width: 300px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.form-signin input, .form-signin button
+{
+    margin: 10px 0;
+}
