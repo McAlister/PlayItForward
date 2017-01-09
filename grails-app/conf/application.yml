@@ -87,8 +87,9 @@ environments:
             url: jdbc:postgresql://localhost:5432/magicmom
     production:
         dataSource:
-            dbCreate: none
-            url: jdbc:postgresql://localhost:5432/magicmom
+            dbCreate: update
+            url: jdbc:postgresql://magicmom.c00icap1mfll.us-west-2.rds.amazonaws.com:5432/magicmom
+            password: grinder1!
             properties:
                 jmxEnabled: true
                 initialSize: 5
