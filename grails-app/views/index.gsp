@@ -25,8 +25,9 @@
 
     <div id="body-wrapper">
 
-        <div class="grails-logo-container">
-            <image src="/assets/logo.png" class="grails-logo"/>
+        <div id="banner-box" class="grails-logo-container">
+            <div id="liliana"></div>
+            <image src="/assets/banner.png" class="grails-logo"/>
         </div>
 
         <div id="navigation">
@@ -38,16 +39,13 @@
                 <li><a ui-sref="resources">Resources</a></li>
                 <li><a ui-sref="press">Press</a></li>
                 <li><a ui-sref="login">Login</a></li>
+                <li><a href="mailto:play_it_forward@outlook.com">Contact Us</a></li>
             </ul>
 
         </div>
 
-        <div ui-view></div>
+        <div ui-view id="main-view"></div>
 
-    </div>
-
-    <div class="footer" role="contentinfo">
-        <a href="mailto:play_it_forward@outlook.com">Contact Us</a>
     </div>
 
     <asset:javascript src="/playitforward/playitforward.js" />
