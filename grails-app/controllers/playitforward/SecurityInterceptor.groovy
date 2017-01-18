@@ -5,7 +5,8 @@ class SecurityInterceptor
 {
     SecurityInterceptor()
     {
-        matchAll().except(controller:'user', action:'login');
+        // TODO Match the secure pages/services when they exist.
+        //matchAll().except(controller:'user', action:'login');
     }
 
     boolean before()
