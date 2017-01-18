@@ -41,6 +41,10 @@ function config($stateProvider, $urlRouterProvider) {
         .state('login', {
             url: "/login",
             templateUrl: "/playitforward/index/login.html"
+        })
+        .state('mailingList', {
+            url: "/mailingList",
+            templateUrl: "/playitforward/index/mailList.html"
         });
 
     $urlRouterProvider.otherwise('/');

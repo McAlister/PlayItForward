@@ -13,7 +13,7 @@ class SecurityInterceptor
     {
         if (!session.user && actionName != "login")
         {
-            redirect(uri: "login");
+            redirect(uri: "/login");
             return false;
         }
 

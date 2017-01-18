@@ -5,6 +5,7 @@ Thumbs.db
 .gradle
 /build/
 /dist/
+/node_modules/
 
 # Ignore Gradle GUI config
 gradle-app.setting

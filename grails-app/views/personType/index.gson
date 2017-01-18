@@ -1,0 +1,8 @@
+import playitforward.PersonType
+
+model {
+	Iterable<PersonType> personTypeList
+}
+
+json tmpl.personType(personTypeList ?: [])
+

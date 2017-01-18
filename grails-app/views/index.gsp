@@ -19,6 +19,7 @@
     <script type="text/javascript">
         window.contextPath = "${request.contextPath}";
     </script>
+
 </head>
 
 <body ng-app="playitforward" ng-controller="IndexController as indexCtrl">
@@ -49,5 +50,6 @@
     </div>
 
     <asset:javascript src="/playitforward/playitforward.js" />
+
 </body>
 </html>

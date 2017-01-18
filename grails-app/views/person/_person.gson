@@ -1,0 +1,7 @@
+import playitforward.Person
+
+model {
+	Person person
+}
+
+json g.render(person)
