@@ -1,0 +1,10 @@
+.main-content {
+    min-height: 100%;
+    padding: 10px 30px;
+    height: 100%;
+    background-image: url("/assets/bkg.jpg");
+    color: white;
+    height: 100%;
+    overflow-y: auto;
+    position: relative;
+}

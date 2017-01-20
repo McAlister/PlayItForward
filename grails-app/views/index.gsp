@@ -73,7 +73,7 @@
 
         </div>
 
-        <div ui-view id="main-view"></div>
+        <div ui-view class="main-content"></div>
 
     </div>
 
