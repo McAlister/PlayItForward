@@ -28,7 +28,7 @@
 
         <div id="banner-box" class="grails-logo-container">
             <div id="liliana"></div>
-            <image src="/assets/banner.png" class="grails-logo"/>
+            <image src="/assets/banner.png" class="main-logo-image"/>
         </div>
 
         <div id="navigation">
