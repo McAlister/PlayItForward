@@ -26,10 +26,10 @@
 
     <div id="body-wrapper">
 
-        <div id="banner-box" class="grails-logo-container">
-            <div id="liliana"></div>
+        <header class="header">
+            <div class="header-liliana"></div>
             <image src="/assets/banner.png" class="main-logo-image"/>
-        </div>
+        </header>
 
         <div class="navigation">
 

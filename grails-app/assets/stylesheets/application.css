@@ -9,6 +9,7 @@
 *
 *= require /bootstrap/bootstrap
 *= require base
+*= require components/header
 *= require components/navigation
 *= require_self
 */
@@ -34,30 +35,6 @@
     background-color: white;
     border-right: 1px solid #333333;
     border-left: 1px solid #333333;
-}
-
-#banner-box {
-    position: relative;
-}
-
-#banner-box img {
-    z-index: 10;
-    position: relative;
-}
-
-#liliana {
-    z-index: 5;
-    position: absolute;
-    background-image: url("/assets/lilianaFrame.png");
-    background-repeat: no-repeat;
-    width: 1030px;
-    height: 500px;
-    top: 0px;
-    left: -115px;
-}
-
-.main-logo-image {
-    max-width: 100%;
 }
 
 #content {
