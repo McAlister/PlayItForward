@@ -1,0 +1,74 @@
+*, *:after, *::before {
+    -moz-box-sizing: border-box;
+    box-sizing: border-box
+}
+
+html, body {
+    font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    height: 100%;
+    padding: 0;
+    margin: 0;
+    background: #FFF;
+    color: #343437;
+    line-height: 25px;
+    font-weight: normal;
+    font-size: 14px;
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+html, code, kbd, pre, samp {
+    -ms-text-size-adjust: 100%;
+    -webkit-text-size-adjust: 100%;
+}
+
+body {
+    background-color: #2b542c;
+    background-image: url("/assets/background.jpg");
+    background-attachment: fixed;
+    background-position: center;
+    color: #333333;
+    overflow-x: hidden; /* prevents box-shadow causing a horizontal scrollbar in firefox when viewport < 960px wide */
+    -moz-box-shadow: 0 0 0.3em #4D8618;
+    -webkit-box-shadow: 0 0 0.3em #4D8618;
+    box-shadow: 0 0 0.3em #4D8618;
+}
+
+body,
+input, select, textarea {
+    font-family: "Open Sans", "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+}
+
+h1, h2, h3 {
+    font-weight: normal;
+    font-size: 1.25em;
+    margin: 0.8em 0 0.3em 0;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    line-height: 1.1;
+}
+
+p {
+    display: block;
+}
+
+a {
+    color: #ffcb99;
+    text-decoration: underline;
+}
+
+a:hover, a:active {
+    outline: none; /* prevents outline in webkit on active links but retains it for tab focus */
+    text-decoration: none;
+}
+
+a:hover {
+    color: #db4800;
+    text-decoration: none
+}
+
+ul {
+    margin: 0 0 0 50px;
+    padding: 0;
+}
