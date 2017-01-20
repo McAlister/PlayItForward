@@ -10,6 +10,7 @@
 *= require /bootstrap/bootstrap
 *= require grails
 *= require main
+*= require components/navigation
 *= require mobile
 *= require_self
 */
@@ -71,49 +72,6 @@ body
 .main-logo-image
 {
     max-width: 100%;
-}
-
-#navigation
-{
-    background-color: #333333;
-    position: relative;
-    z-index: 10;
-    text-align: right;
-    padding-right: 10px;
-}
-
-@media screen and (max-width: 480px) {
-    #navigation
-    {
-        text-align: center;
-    }
-}
-
-#navigation ul
-{
-    list-style-type:none;
-    padding: 0;
-    margin: 0;
-}
-
-#navigation li
-{
-    display: inline;
-    padding: 5px;
-}
-
-@media screen and (max-width: 480px) {
-    #navigation li
-    {
-        white-space: nowrap;
-    }
-}
-
-#navigation a
-{
-    text-decoration: none;
-    color: #ffcb99;
-    text-shadow: 0px 0px 10px #c92ccf;
 }
 
 a
