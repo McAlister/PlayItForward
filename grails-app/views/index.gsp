@@ -24,7 +24,7 @@
 
 <body ng-app="playitforward" ng-controller="IndexController as indexCtrl">
 
-    <div id="body-wrapper">
+    <div class="body-wrapper">
 
         <header class="header">
             <div class="header-liliana"></div>
