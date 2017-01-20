@@ -10,14 +10,9 @@
 *= require /bootstrap/bootstrap
 *= require base
 *= require components/body-wrapper
+*= require components/centered-form
 *= require components/header
 *= require components/main-content
 *= require components/navigation
-*= require components/sign-in
 *= require_self
 */
-
-.centerText {
-    text-align: center;
-    margin-bottom: 15px;
-}
