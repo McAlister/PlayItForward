@@ -31,8 +31,17 @@
     }
 }
 
+a {
+    text-decoration: none;
+}
+
 .navigation-link {
     text-decoration: none;
     color: #ffcb99;
     text-shadow: 0px 0px 10px #c92ccf;
+}
+
+.navigation-link:hover, .navigation-link:active, .navigation-link:visited {
+    color: #ffcb99;
+    text-decoration: none;
 }
