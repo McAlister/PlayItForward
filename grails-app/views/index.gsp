@@ -24,28 +24,56 @@
 
 <body ng-app="playitforward" ng-controller="IndexController as indexCtrl">
 
-    <div id="body-wrapper">
+    <div class="body-wrapper">
 
-        <div id="banner-box" class="grails-logo-container">
-            <div id="liliana"></div>
+        <header class="header">
+            <div class="header-liliana"></div>
             <image src="/assets/banner.png" class="main-logo-image"/>
-        </div>
+        </header>
 
-        <div id="navigation">
+        <div class="navigation">
 
-            <ul>
-                <li><a ui-sref="index">Home</a></li>
-                <li><a ui-sref="contests">Bounties</a></li>
-                <li><a ui-sref="contribute">Contribute</a></li>
-                <li><a ui-sref="resources">Resources</a></li>
-                <li><a ui-sref="press">Press</a></li>
-                <li><a ui-sref="login">Login</a></li>
-                <li><a href="mailto:play_it_forward@outlook.com">Contact Us</a></li>
+            <ul class="navigation-list">
+                <li class="navigation-list-item">
+                    <a ui-sref="index" class="navigation-link">
+                        Home
+                    </a>
+                </li>
+                <li class="navigation-list-item">
+                    <a ui-sref="contests" class="navigation-link">
+                        Bounties
+                    </a>
+                </li>
+                <li class="navigation-list-item">
+                    <a ui-sref="contribute" class="navigation-link">
+                        Contribute
+                    </a>
+                </li>
+                <li class="navigation-list-item">
+                    <a ui-sref="resources" class="navigation-link">
+                        Resources
+                    </a>
+                </li>
+                <li class="navigation-list-item">
+                    <a ui-sref="press" class="navigation-link">
+                        Press
+                    </a>
+                </li>
+                <li class="navigation-list-item">
+                    <a ui-sref="login" class="navigation-link">
+                        Login
+                    </a>
+                </li>
+                <li class="navigation-list-item">
+                    <a href="mailto:play_it_forward@outlook.com" class="navigation-link">
+                        Contact Us
+                    </a>
+                </li>
             </ul>
 
         </div>
 
-        <div ui-view id="main-view"></div>
+        <div ui-view class="main-content"></div>
 
     </div>
 
