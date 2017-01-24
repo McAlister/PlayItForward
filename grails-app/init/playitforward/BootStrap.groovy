@@ -10,7 +10,8 @@ class BootStrap
         new PersonType(type: "WOMAN", description: "A future woman pro").save();
         new PersonType(type: "EVENT_ORGANIZER", description: "An event organizer").save();
         new PersonType(type: "WIZARD", description: "Affiliated with WoTC").save();
-        new PersonType(type: "OTHER", description: "Other").save();
+        new PersonType(type: "ARTIST", description: "Interested Artist").save();
+        new PersonType(type: "OTHER", description: "Supporter").save();
     }
 
     def destroy = {

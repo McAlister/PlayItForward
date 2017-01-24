@@ -8,3 +8,8 @@
     overflow-y: auto;
     position: relative;
 }
+
+.playmat-image {
+
+    margin: 10px 0 15px 0;
+}

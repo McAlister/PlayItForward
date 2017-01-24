@@ -40,6 +40,11 @@
                     </a>
                 </li>
                 <li class="navigation-list-item">
+                    <a ui-sref="currentGP" class="navigation-link">
+                        GP San Jose
+                    </a>
+                </li>
+                <li class="navigation-list-item">
                     <a ui-sref="contests" class="navigation-link">
                         Bounties
                     </a>
