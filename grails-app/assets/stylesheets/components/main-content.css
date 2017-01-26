@@ -45,3 +45,9 @@ td, th
     border: 1px solid #ccc;
     text-align: left;
 }
+
+.paypal-button
+{
+    text-align: center;
+    margin: 15px auto;
+}
