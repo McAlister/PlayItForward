@@ -3,6 +3,11 @@ package playitforward
 class UrlMappings {
 
     static mappings = {
+
+        get "/PushNotification/gp/$gpName/$roundNum" (
+                controller: 'pushNotification', action: 'index'
+        );
+
         delete "/$controller/$id(.$format)?"(action:"delete");
         get "/$controller(.$format)?"(action:"index");
         get "/$controller/$id(.$format)?"(action:"show");

@@ -11,11 +11,14 @@ class PushNotificationController {
     static responseFormats = ['json', 'xml']
     static allowedMethods = []
 
-    def index(Integer max) {
-        params.max = Math.min(max ?: 10, 100)
+    static mappings = {
+    }
+
+    def index(String gpName, Integer roundNum) {
+        //params.max = Math.min(max ?: 10, 100)
         //respond Person.list(params), model:[personTypeCount: Person.count()]
 
-        Map<String, String> rawSeatings = getSeatings(getUrl('gplou17', 1));
+        Map<String, String> rawSeatings = getSeatings(getUrl(gpName, roundNum));
         Map<String, String> parsedSeatings = new HashMap<>();
 
         Person.list(params).each{ person ->
@@ -42,7 +45,7 @@ class PushNotificationController {
 
         String month = String.format("%02d", monthOfYear);
         //String day = String.format("%02d", dayOfMonth);
-        String day = '07';
+        String day = '28';
 
         String url = urlBase + gp + '/round-' + round + '-pairings-' +
                 year + '-' + month + '-' + day;
@@ -71,6 +74,14 @@ class PushNotificationController {
                 String seat = seatMatcher.group(1);
                 inputLine = input.readLine().trim();
                 String name = inputLine.substring(4);
+                name = name.replaceAll("</td>", "");
+
+                results.put(name, seat);
+
+                input.readLine().trim();
+                input.readLine().trim();
+                inputLine = input.readLine().trim();
+                name = inputLine.substring(4);
                 name = name.replaceAll("</td>", "");
 
                 results.put(name, seat);
