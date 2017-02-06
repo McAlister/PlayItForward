@@ -18,7 +18,7 @@ class PushNotificationControllerSpec extends Specification {
     void "test something"() {
 
         PushNotificationController test = new PushNotificationController();
-        def result = test.index(10);
+        def result = test.index("gpsj17", 9);
 
         expect:"fix me"
             true == false

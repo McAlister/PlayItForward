@@ -1,13 +1,29 @@
 package playitforward
 
+import org.apache.commons.httpclient.NameValuePair
+import org.apache.http.HttpEntity
+import org.apache.http.HttpResponse
+import org.apache.http.client.HttpClient
+import org.apache.http.client.entity.UrlEncodedFormEntity
+import org.apache.http.client.methods.HttpPost
+import org.apache.http.impl.client.HttpClients
+import org.apache.http.message.BasicNameValuePair
+
 import java.util.regex.Matcher
 import java.util.regex.Pattern
 
+import org.apache.commons.codec.binary.Base64;
+
 class PushNotificationController {
+
+    private static final String ACCOUNT_SID = "AC535ebaff99248ccc888e872e71a050d0";
+    private static final String AUTH_TOKEN = "097c40f3dff014564a9b48765235962a";
+    private static final String url = "https://api.twilio.com/2010-04-01/Accounts/" + ACCOUNT_SID + "/Messages.json";
 
     static String urlBase ='http://magic.wizards.com/en/events/coverage/';
     Pattern seatPattern = Pattern.compile("\\s*</tr>\\s*<tr><td>(\\d*-*)</td>");
 
+    @SuppressWarnings("GroovyUnusedDeclaration")
     static responseFormats = ['json', 'xml']
     static allowedMethods = []
 
@@ -15,8 +31,6 @@ class PushNotificationController {
     }
 
     def index(String gpName, Integer roundNum) {
-        //params.max = Math.min(max ?: 10, 100)
-        //respond Person.list(params), model:[personTypeCount: Person.count()]
 
         Map<String, String> rawSeatings = getSeatings(getUrl(gpName, roundNum));
         Map<String, String> parsedSeatings = new HashMap<>();
@@ -25,18 +39,40 @@ class PushNotificationController {
             String name = person.lastName + ", " + person.firstName;
             if (person.sendPushNotifications && rawSeatings.containsKey(name))
             {
-                parsedSeatings.put(name, rawSeatings.get(name));
+                String seating = rawSeatings.get(name);
+                parsedSeatings.put(name, seating);
+                sendTextMessage(person.phone, name, seating, roundNum);
             }
         };
 
         respond parsedSeatings, model:[PushNotificationCount: parsedSeatings.size()];
     }
 
-    def show(Person personType) {
-        respond personType
+    private static void sendTextMessage(String phoneNumber, String name, String seat, Integer round) {
+
+        String authString = ACCOUNT_SID + ":" + AUTH_TOKEN;
+        byte[] authEncBytes = Base64.encodeBase64(authString.getBytes());
+        String authStringEnc = new String(authEncBytes);
+
+        HttpClient httpClient = HttpClients.createDefault();
+        HttpPost httpPost = new HttpPost(url);
+
+        httpPost.setHeader("Authorization", "Basic " + authStringEnc);
+        httpPost.setHeader("charset", "utf-8");
+        httpPost.setHeader("Content-Type", "application/x-www-form-urlencoded");
+
+        String body = name + " pairing for round: " + round + " is at table " + seat;
+        List<NameValuePair> params = new ArrayList<NameValuePair>(3);
+        params.add(new BasicNameValuePair("To", phoneNumber));
+        params.add(new BasicNameValuePair("From", "17207533049"));
+        params.add(new BasicNameValuePair("Body", body));
+        httpPost.setEntity(new UrlEncodedFormEntity(params, "UTF-8"));
+
+        HttpResponse response = httpClient.execute(httpPost);
+        HttpEntity entity = response.getEntity();
     }
 
-    private String getUrl(String gp, int round)
+    private static String getUrl(String gp, int round)
     {
         Calendar cal = Calendar.getInstance();
         int dayOfMonth = cal.get(Calendar.DAY_OF_MONTH);
@@ -44,8 +80,8 @@ class PushNotificationController {
         int year = cal.get(Calendar.YEAR);
 
         String month = String.format("%02d", monthOfYear);
-        //String day = String.format("%02d", dayOfMonth);
-        String day = '28';
+        String day = String.format("%02d", dayOfMonth);
+        //String day = '28';
 
         String url = urlBase + gp + '/round-' + round + '-pairings-' +
                 year + '-' + month + '-' + day;
@@ -93,12 +129,5 @@ class PushNotificationController {
         input.close();
 
         return results;
-    }
-
-    private void pushNotifications(Map<String, String> seatings)
-    {
-        seatings.each { person, seat ->
-            System.out.println("Person/Seat" + person + seat);
-        }
     }
 }

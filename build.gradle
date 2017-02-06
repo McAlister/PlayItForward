@@ -68,6 +68,8 @@ dependencies {
     compile "org.hibernate:hibernate-core:5.1.2.Final"
     compile "org.hibernate:hibernate-ehcache:5.1.2.Final"
     compile "org.mindrot:jbcrypt:0.3m"
+    compile "commons-httpclient:commons-httpclient:3.1"
+    compile 'org.apache.httpcomponents:httpcore:4.4.6'
     compile "org.grails.plugins:views-json"
     compile "org.grails.plugins:views-json-templates"
     compile 'org.grails.plugins:postgresql-extensions:4.6.2'
@@ -75,6 +77,7 @@ dependencies {
     compile "org.hibernate:hibernate-core:5.1.1.Final"
     compile "org.hibernate:hibernate-ehcache:5.1.1.Final"
     console "org.grails:grails-console"
+    compile "org.grails.plugins:twilio:0.1"
     profile "org.grails.profiles:angular"
     runtime "org.postgresql:postgresql:9.4.1211.jre7"
     runtime "com.bertramlabs.plugins:asset-pipeline-grails:2.11.6"
