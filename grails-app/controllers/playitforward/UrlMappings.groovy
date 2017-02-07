@@ -4,7 +4,7 @@ class UrlMappings {
 
     static mappings = {
 
-        get "/PushNotification/gp/$gpName/$roundNum" (
+        post "/PushNotification/gp/$gpName/$roundNum" (
                 controller: 'pushNotification', action: 'index'
         );
 
