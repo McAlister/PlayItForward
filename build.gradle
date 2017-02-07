@@ -109,6 +109,9 @@ clientDependencies {
         'angular-ui-router'('0.2.x', into: 'angular', from: 'release') {
             include 'angular-ui-router.js'
         }
+        'angular-animate'('1.6.x', into: 'angular', from: 'release') {
+            include 'angular-animate.min.js'
+        }
         'bootstrap'('3.3.x', into: 'bootstrap', from: 'dist/css') {
             include 'bootstrap.css'
         }

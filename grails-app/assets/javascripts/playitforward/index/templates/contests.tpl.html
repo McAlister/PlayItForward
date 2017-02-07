@@ -41,133 +41,41 @@
         the highest placing woman or non-binary player will receive a playmat.
     </p>
 
-    <table>
+    <div id="carousel-example-generic" class="carousel slide" data-ride="carousel" data-interval="3000">
+        <!-- Indicators -->
+        <ol class="carousel-indicators">
+            <li data-target="#carousel-example-generic" ng-click="goToSlide(0)" ng-class="slides[0].active ? 'active' : ''"></li>
+            <li data-target="#carousel-example-generic" ng-click="goToSlide(1)" ng-class="slides[1].active ? 'active' : ''"></li>
+            <li data-target="#carousel-example-generic" ng-click="goToSlide(2)" ng-class="slides[2].active ? 'active' : ''"></li>
+            <li data-target="#carousel-example-generic" ng-click="goToSlide(3)" ng-class="slides[3].active ? 'active' : ''"></li>
+            <li data-target="#carousel-example-generic" ng-click="goToSlide(4)" ng-class="slides[4].active ? 'active' : ''"></li>
+            <li data-target="#carousel-example-generic" ng-click="goToSlide(5)" ng-class="slides[5].active ? 'active' : ''"></li>
+            <li data-target="#carousel-example-generic" ng-click="goToSlide(6)" ng-class="slides[6].active ? 'active' : ''"></li>
+            <li data-target="#carousel-example-generic" ng-click="goToSlide(7)" ng-class="slides[7].active ? 'active' : ''"></li>
+            <li data-target="#carousel-example-generic" ng-click="goToSlide(8)" ng-class="slides[8].active ? 'active' : ''"></li>
+        </ol>
 
-        <thead>
+        <!-- Wrapper for slides -->
+        <div class="carousel-inner" ng-repeat="slide in slides track by slide.id" index="slide.id">
 
-        <tr>
-            <th>Month</th>
-            <th>Mat</th>
-            <th>Artist</th>
-        </tr>
+            <div ng-class="slide.active ? 'item active' : 'item'">
 
-        </thead>
+                <img ng-src="{{slide.image}}" alt="...">
 
-        <tbody>
+                <div class="carousel-caption">
+                    <h3>Artist: {{slide.text}}</h3>
+                </div>
 
-        <tr>
-            <td>January</td>
-            <td><IMG class="playmat-thumbnail" src="/assets/SanJose2017.jpg"></td>
-            <td>Max Collins is an artist and animator at Cartoon Network and Studio Yotta.
-                You can check out his work on his <a href="http://maxjcollins.tumblr.com/">tumblr.</a></td>
-        </tr>
+            </div>
 
-        <tr>
-            <td>February</td>
-            <td><IMG class="playmat-thumbnail" src="/assets/yourArt.png"></td>
-            <td>
-                <---- <a href="mailto:play_it_forward@outlook.com">Contact Us </a>
-                and your art could be there.
-            </td>
-        </tr>
+        </div>
 
-        <tr>
-            <td>March</td>
-            <td><IMG class="playmat-thumbnail" src="/assets/yourArt.png"></td>
-            <td>
-                <---- <a href="mailto:play_it_forward@outlook.com">Contact Us </a>
-                and your art could be there.
-            </td>
-        </tr>
+        <!-- Controls -->
+        <a class="left carousel-control" ng-click="backImage()" role="button" data-slide="prev"> </a>
+        <a class="right carousel-control" ng-click="forwardImage()" role="button" data-slide="next"> </a>
+    </div> <!-- Carousel -->
 
-        <tr>
-            <td>April</td>
-            <td></td>
-            <td>
-                There are no individual North American GPs in April.
-            </td>
-        </tr>
-
-        <tr>
-            <td>May</td>
-            <td><IMG class="playmat-thumbnail" src="/assets/yourArt.png"></td>
-            <td>
-                <---- <a href="mailto:play_it_forward@outlook.com">Contact Us </a>
-                and your art could be there.
-            </td>
-        </tr>
-
-        <tr>
-            <td>June</td>
-            <td><IMG class="playmat-thumbnail" src="/assets/yourArt.png"></td>
-            <td>
-                <---- <a href="mailto:play_it_forward@outlook.com">Contact Us </a>
-                and your art could be there.
-            </td>
-        </tr>
-
-        <tr>
-            <td>July</td>
-            <td><IMG class="playmat-thumbnail" src="/assets/SanJose2017.jpg"></td>
-            <td>Max Collins is an artist and animator at Cartoon Network and Studio Yotta.
-                You can check out his work on his <a href="http://maxjcollins.tumblr.com/">tumblr.</a></td>
-        </tr>
-
-        <tr>
-            <td>August</td>
-            <td><IMG class="playmat-thumbnail" src="/assets/yourArt.png"></td>
-            <td>
-                <---- <a href="mailto:play_it_forward@outlook.com">Contact Us </a>
-                and your art could be there.
-            </td>
-        </tr>
-
-        <tr>
-            <td>September</td>
-            <td><IMG class="playmat-thumbnail" src="/assets/yourArt.png"></td>
-            <td>
-                <---- <a href="mailto:play_it_forward@outlook.com">Contact Us </a>
-                and your art could be there.
-            </td>
-        </tr>
-
-        <tr>
-            <td>October</td>
-            <td><IMG class="playmat-thumbnail" src="/assets/yourArt.png"></td>
-            <td>
-                <---- <a href="mailto:play_it_forward@outlook.com">Contact Us </a>
-                and your art could be there.
-            </td>
-        </tr>
-
-        <tr>
-            <td>November</td>
-            <td><a href="https://www.youtube.com/watch?v=xFhd8RfCqVg">
-                <IMG class="playmat-thumbnail" src="/assets/KellsThumb.png">
-                <a>
-            </td>
-            <td>
-               An iconic image of Aisling from
-               <a href="http://www.gkids.com/films/the-secret-of-kells/">The Secret Of Kells</a>
-               used with permission of
-               <a href="http://www.gkids.com">GKIDS</a>
-            </td>
-        </tr>
-
-        <tr>
-            <td>December</td>
-            <td><IMG class="playmat-thumbnail" src="/assets/yourArt.png"></td>
-            <td>
-                <---- <a href="mailto:play_it_forward@outlook.com">Contact Us </a>
-                and your art could be there.
-            </td>
-        </tr>
-
-        </tbody>
-
-    </table>
-
-    * Due to printing/shipping/art acquiring times the mat may be mailed after
-      the fact.
+    <div ng-bind-html="getPromotionString()">
+    </div>
 
 </div>

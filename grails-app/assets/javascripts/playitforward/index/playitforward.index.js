@@ -2,6 +2,7 @@
 //= require /angular/angular
 //= require /angular/ui-bootstrap-tpls
 //= require /angular/angular-ui-router
+//= require /angular/angular-animate
 //= require_self
 //= require_tree services
 //= require_tree controllers
