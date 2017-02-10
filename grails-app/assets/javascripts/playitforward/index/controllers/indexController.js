@@ -82,7 +82,8 @@ function IndexController(applicationDataFactory, contextPath, $state, $scope, $h
         id: currIndex++,
         active: false,
         promote: '<b>Max Collins</b> is an artist and animator at Cartoon Network and Studio Yotta. You can check ' +
-        'out his work on his <a href="http://maxjcollins.tumblr.com/">tumblr</a>.'
+        'out his work on his <a href="http://maxjcollins.tumblr.com/">tumblr</a>.  Max\'s art will be used for mats ' +
+        'in January and July.'
     });
 
     slides.push({
@@ -92,7 +93,8 @@ function IndexController(applicationDataFactory, contextPath, $state, $scope, $h
         active: true,
         promote: '<b>Malwina Kwiatkowska</b> is a freelance 3D Concept Artist from Poland.  Check her out ' +
                  'on <a href="https://www.artstation.com/artist/merkerinn">Art Station</a> or subscribe ' +
-                 'to her <a href="https://www.patreon.com/merkerinn/posts">patreon</a> to support her work.'
+                 'to her <a href="https://www.patreon.com/merkerinn/posts">patreon</a> to support her work. ' +
+                 'Witch will be the playmat for February and October.'
     });
 
     slides.push({
@@ -102,7 +104,9 @@ function IndexController(applicationDataFactory, contextPath, $state, $scope, $h
         active: false,
         promote: "<b>R.K. Post</b> is a long time Magic artist and regular on the GP circuit.  You can probably" +
                  "find him on Artists Row if you want to get your mat signed.  You can purchase his mats " +
-                 "<a href='http://www.rkpost.net/_p/prd1/690387591/product/pul117-snowblind'>here.</a>"
+                 "<a href='http://www.rkpost.net/_p/prd1/690387591/product/pul117-snowblind'>here.</a> " +
+                 "Snowblind will be the mat for March and September (Except for San Antonio which will " +
+                 "get a seasonal mat.)"
     });
 
     slides.push({
@@ -112,7 +116,8 @@ function IndexController(applicationDataFactory, contextPath, $state, $scope, $h
         active: false,
         promote: '<b>Malwina Kwiatkowska</b> is a freelance 3D Concept Artist from Poland.  Check her out ' +
         'on <a href="https://www.artstation.com/artist/merkerinn">Art Station</a> or subscribe ' +
-        'to her <a href="https://www.patreon.com/merkerinn/posts">patreon</a> to support her work.'
+        'to her <a href="https://www.patreon.com/merkerinn/posts">patreon</a> to support her work. ' +
+        'This art will be used for GPs in May'
     });
 
     slides.push({
@@ -122,7 +127,8 @@ function IndexController(applicationDataFactory, contextPath, $state, $scope, $h
         active: false,
         promote: '<b>Malwina Kwiatkowska</b> is a freelance 3D Concept Artist from Poland.  Check her out ' +
         'on <a href="https://www.artstation.com/artist/merkerinn">Art Station</a> or subscribe ' +
-        'to her <a href="https://www.patreon.com/merkerinn/posts">patreon</a> to support her work.'
+        'to her <a href="https://www.patreon.com/merkerinn/posts">patreon</a> to support her work. ' +
+        'Alice will be bashing heads in Vegas and Omaha for the month of June.'
     });
 
     slides.push({
@@ -132,7 +138,8 @@ function IndexController(applicationDataFactory, contextPath, $state, $scope, $h
         active: false,
         promote: '<b>Malwina Kwiatkowska</b> is a freelance 3D Concept Artist from Poland.  Check her out ' +
         'on <a href="https://www.artstation.com/artist/merkerinn">Art Station</a> or subscribe ' +
-        'to her <a href="https://www.patreon.com/merkerinn/posts">patreon</a> to support her work.'
+        'to her <a href="https://www.patreon.com/merkerinn/posts">patreon</a> to support her work. ' +
+        'Angel will be flying for GPs in the month of August.'
     });
 
     slides.push({
@@ -142,7 +149,8 @@ function IndexController(applicationDataFactory, contextPath, $state, $scope, $h
         active: false,
         promote: "<b>R.K. Post</b> is a long time Magic artist and regular on the GP circuit.  You can probably" +
         "find him on Artists Row if you want to get your mat signed.  You can purchase his mats " +
-        "<a href='http://www.rkpost.net/_p/prd1/690392571/product/pul116-the-easter-bunny'>here.</a>"
+        "<a href='http://www.rkpost.net/_p/prd1/690392571/product/pul116-the-easter-bunny'>here.</a> " +
+        "Easter Bunny is our seasonal mat for GP San Antonio."
     });
 
     slides.push({
@@ -151,7 +159,8 @@ function IndexController(applicationDataFactory, contextPath, $state, $scope, $h
         id: currIndex++,
         active: false,
         promote:  'An iconic image of Aisling from <a href="http://www.gkids.com/films/the-secret-of-kells/">The Secret Of Kells</a>' +
-                  ' used with permission of <a href="http://www.gkids.com">GKIDS</a>'
+                  ' used with permission of <a href="http://www.gkids.com">GKIDS</a>. Pangur Ban will ' +
+                  ' <a target="_blank" href="https://www.youtube.com/watch?v=tTiSak8r9P8">go where I cannot</a> in November.'
     });
 
     slides.push({
@@ -161,7 +170,8 @@ function IndexController(applicationDataFactory, contextPath, $state, $scope, $h
         active: false,
         promote: '<b>Malwina Kwiatkowska</b> is a freelance 3D Concept Artist from Poland.  Check her out ' +
         'on <a href="https://www.artstation.com/artist/merkerinn">Art Station</a> or subscribe ' +
-        'to her <a href="https://www.patreon.com/merkerinn/posts">patreon</a> to support her work.'
+        'to her <a href="https://www.patreon.com/merkerinn/posts">patreon</a> to support her work. ' +
+        'Elf is our mat for December.'
     });
 
     currIndex = 1;
