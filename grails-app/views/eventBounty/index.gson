@@ -1,0 +1,8 @@
+import playitforward.EventBounty
+
+model {
+	Iterable<EventBounty> eventBountyList
+}
+
+json tmpl.eventBounty(eventBountyList ?: [])
+

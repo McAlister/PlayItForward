@@ -1,0 +1,7 @@
+import playitforward.EventType
+
+model {
+	EventType eventType
+}
+
+json g.render(eventType)

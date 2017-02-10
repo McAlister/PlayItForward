@@ -1,0 +1,7 @@
+import playitforward.EventOrganizer
+
+model {
+	EventOrganizer eventOrganizer
+}
+
+json g.render(eventOrganizer)

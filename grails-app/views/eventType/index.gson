@@ -1,0 +1,8 @@
+import playitforward.EventType
+
+model {
+	Iterable<EventType> eventTypeList
+}
+
+json tmpl.eventType(eventTypeList ?: [])
+
