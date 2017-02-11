@@ -31,7 +31,9 @@ class BootStrap
         Event sanJose = new Event(organizer: cfb, name: "GP San Jose", type: gp, eventCode: 'gpsj17',
                   startDate: new Date(117, 00, 06), endDate: new Date(117, 00, 07)).save();
 
-        new Event(organizer: pt, name: "GP Pittsburgh", type: gp, startDate: new Date(117, 1, 11), endDate: new Date(117, 1, 12)).save();
+        new Event(organizer: pt, name: "GP Pittsburgh", type: gp, eventCode: 'gppit17',
+                  startDate: new Date(117, 1, 11), endDate: new Date(117, 1, 12)).save();
+
         new Event(organizer: gk, name: "GP Vancouver", type: gp, startDate: new Date(117, 1, 18), endDate: new Date(117, 1, 19)).save();
         new Event(organizer: cfb, name: "GP New Jersey", type: gp, startDate: new Date(117, 2, 11), endDate: new Date(117, 2, 12)).save();
         new Event(organizer: scg, name: "GP Orlando", type: gp, startDate: new Date(117, 2, 25), endDate: new Date(117, 2, 26)).save();
