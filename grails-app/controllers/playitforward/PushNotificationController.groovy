@@ -56,7 +56,7 @@ class PushNotificationController {
 
         Person.list(params).each{ person ->
             String name = person.lastName + ", " + person.firstName;
-            if (person.sendPushNotifications && rawSeatings.containsKey(name))
+            if (person.sendPushNotifications)
             {
                 if (rawSeatings.containsKey(name))
                 {
@@ -73,7 +73,7 @@ class PushNotificationController {
             }
         };
 
-        sendControllerMessage(gpName, parsedSeatings);
+        sendControllerMessage(gpName, roundNum, parsedSeatings);
         respond parsedSeatings, model:[PushNotificationCount: parsedSeatings.size()];
     }
 
