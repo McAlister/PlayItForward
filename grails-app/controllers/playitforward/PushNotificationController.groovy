@@ -45,11 +45,39 @@ class PushNotificationController {
             }
         };
 
+        sendControllerMessage(gpName, roundNum, parsedSeatings);
+        respond parsedSeatings, model:[PushNotificationCount: parsedSeatings.size()];
+    }
+
+    def pushPastTimeGames(String gpName, Integer roundNum) {
+
+        Map<String, String> rawSeatings = getPastTimeSeatings("http://pastimes.mtgel.com/pairings/13");
+        Map<String, String> parsedSeatings = new HashMap<>();
+
+        Person.list(params).each{ person ->
+            String name = person.lastName + ", " + person.firstName;
+            if (person.sendPushNotifications && rawSeatings.containsKey(name))
+            {
+                if (rawSeatings.containsKey(name))
+                {
+                    String seating = rawSeatings.get(name);
+                    parsedSeatings.put(name, seating);
+                }
+                else
+                {
+                    String seating = "Bye";
+                    parsedSeatings.put(name, seating);
+                }
+
+                sendTextMessage(person.phone, name, parsedSeatings.get(name), roundNum);
+            }
+        };
+
         sendControllerMessage(gpName, parsedSeatings);
         respond parsedSeatings, model:[PushNotificationCount: parsedSeatings.size()];
     }
 
-    private static void sendControllerMessage(String gpName, Map<String, String> pairings) {
+    private static void sendControllerMessage(String gpName, Integer roundNum, Map<String, String> pairings) {
 
         String authString = ACCOUNT_SID + ":" + AUTH_TOKEN;
         byte[] authEncBytes = Base64.encodeBase64(authString.getBytes());
@@ -62,7 +90,7 @@ class PushNotificationController {
         httpPost.setHeader("charset", "utf-8");
         httpPost.setHeader("Content-Type", "application/x-www-form-urlencoded");
 
-        String body = "Sent pairings for " + gpName + ".";
+        String body = "Sent pairings for " + gpName + " round " + roundNum + ".";
         for (String name : pairings.keySet())
         {
             body += " " + name + " - " + pairings.get(name).replace("-", "bye") + ".";
@@ -154,6 +182,50 @@ class PushNotificationController {
                 input.readLine().trim();
                 inputLine = input.readLine().trim();
                 name = inputLine.substring(4);
+                name = name.replaceAll("</td>", "");
+
+                results.put(name, seat);
+            }
+
+            inputLine = input.readLine ();
+        }
+
+        input.close();
+
+        return results;
+    }
+
+    private Map<String,String> getPastTimeSeatings(String url)
+    {
+        Map<String, String> results = new HashMap<>();
+        URL pairingsURL = new URL(url);
+        URLConnection ec = pairingsURL.openConnection();
+
+        def input = new BufferedReader(new InputStreamReader(
+                ec.getInputStream(), "UTF-8"));
+
+        String inputLine = input.readLine();
+        String seatLine;
+        String nameLine;
+        while((inputLine != null))
+        {
+            // Each person has a row with them in column 2.
+            //   <tr>
+            //           <td>249</td>
+            //           <td>Pho, Teresa</td>
+            //           <td>3</td>
+            //           <td>McIntyre, James</td>
+            //   </tr>
+
+            if (inputLine.trim().equals("<tr>"))
+            {
+                seatLine = input.readLine().trim();
+                nameLine = input.readLine().trim();
+
+                String seat = seatLine.substring(4);
+                seat = seat.replaceAll("</td>", "");
+
+                String name = nameLine.substring(4);
                 name = name.replaceAll("</td>", "");
 
                 results.put(name, seat);

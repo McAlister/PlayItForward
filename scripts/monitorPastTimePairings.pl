@@ -20,7 +20,7 @@
 	my $round = $ARGV[1];
     my $url = "http://pastimes.mtgel.com/pairings/13";
     my $file = "pasttimes-$abbr-round-$round-pairings";
-    my $curl = "http://localhost:8080/PushNotification/gp/$abbr/$round";
+    my $curl = "http://localhost:8080/PushNotification/pasttimes/gp/$abbr/$round";
 	
     my $postedRound = &getRoundFromFile($url, $file);
 	while ( $postedRound ne $round)
@@ -82,8 +82,8 @@
     chomp (my $doCurl = <STDIN>);
     if ($doCurl eq 'y')
     {
-        print "Curling .."
-        #`curl $curl`;
+        print "Curling ...\n";
+        `curl -X POST $curl`;
     }    
 
 	# sleep (3600); 
