@@ -61,6 +61,11 @@ class PushNotificationController {
         httpPost.setHeader("charset", "utf-8");
         httpPost.setHeader("Content-Type", "application/x-www-form-urlencoded");
 
+        if (seat.trim().equals("-"))
+        {
+            seat = "bye";
+        }
+
         String body = name + " pairing for round: " + round + " is at table " + seat;
         List<NameValuePair> params = new ArrayList<NameValuePair>(3);
         params.add(new BasicNameValuePair("To", phoneNumber));
@@ -81,7 +86,8 @@ class PushNotificationController {
 
         String month = String.format("%02d", monthOfYear);
         String day = String.format("%02d", dayOfMonth);
-        //String day = '28';
+        //month = '01';
+        //day = '28';
 
         String url = urlBase + gp + '/round-' + round + '-pairings-' +
                 year + '-' + month + '-' + day;
