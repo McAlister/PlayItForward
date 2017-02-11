@@ -8,7 +8,6 @@
 ################################################################################
 
 	use strict;
-	use LWP::Simple;
 
 	if (@ARGV != 3)
 	{
@@ -19,74 +18,73 @@
     my $abbr = $ARGV[0];
 	my $round = $ARGV[1];
     my $url = "http://pastimes.mtgel.com/pairings/13";
-    my $file = "pasttimes-$abbr-round-$round-pairings";
-    my $curl = "http://localhost:8080/PushNotification/pasttimes/gp/$abbr/$round";
+
+    while ($round < 10 )
+    {	
+        my $file = "pasttimes-$abbr-round-$round-pairings";
+        my $curl = "http://www.playitforward-magic.org/PushNotification/pasttimes/gp/$abbr/$round";
+        
+        my $postedRound = &getRoundFromFile($url, $file);
+	    while ( $postedRound ne $round)
+	    {
+  		    print "Round is not up.  At $postedRound/$round\n";
+            unlink($file);
+
+		    sleep(30);
+            $postedRound = &getRoundFromFile($url, $file);
+	    }
+
+        # ############################################## #
+        # Read matchfile to get names we are looking for #
+        # ############################################## #
+
+    	my %matches;
+    	my $matchFile = $ARGV[2];
 	
-    my $postedRound = &getRoundFromFile($url, $file);
-	while ( $postedRound ne $round)
-	{
-  		print "Round is not up.  At $postedRound/$round\n";
-        unlink($file);
+    	open( INPUT, "<$matchFile" ) or die "\nCannot open $matchFile.\n\n";
+    	while ( <INPUT> )
+    	{
+    		chomp();
+    		$matches{$_} = 1;
+    	}
 
-		sleep(30);
-        $postedRound = &getRoundFromFile($url, $file);
-	}
+    	close( INPUT );
 
-    # ############################################## #
-    # Read matchfile to get names we are looking for #
-    # ############################################## #
+        # ####################################### #
+        # Parse pairings file looking for matches #
+        # ####################################### #
+        #   <tr>
+        #                   <td>249</td>
+        #                   <td>Pho, Teresa</td>
+        #                   <td>3</td>
+        #                   <td>McIntyre, James</td>
+        #           </tr>
+    
+    	open( INPUT, "<$file" ) or die "\nCannot open $file.\n\n";
+    	while ( my $line = <INPUT> )
+    	{
+    		if ( $line =~ /^\s*<tr>\s*$/ )
+    		{
+                my $seatLine = <INPUT>;
+                my $nameLine = <INPUT>;
 
-	my %matches;
-	my $matchFile = $ARGV[2];
-	
-	open( INPUT, "<$matchFile" ) or die "\nCannot open $matchFile.\n\n";
-	while ( <INPUT> )
-	{
-		chomp();
-		$matches{$_} = 1;
-	}
+                my $seat = &getValue($seatLine);
+                my $name = &getValue($nameLine);
 
-	close( INPUT );
+			    if ( $matches{$name} )
+			    {
+				    print "$seat\t$name\n";
+			    }
+		    }
+	    }
 
-    # ####################################### #
-    # Parse pairings file looking for matches #
-    # ####################################### #
-    #   <tr>
-    #                   <td>249</td>
-    #                   <td>Pho, Teresa</td>
-    #                   <td>3</td>
-    #                   <td>McIntyre, James</td>
-    #           </tr>
+	    close( INPUT );
 
-	open( INPUT, "<$file" ) or die "\nCannot open $file.\n\n";
-	while ( my $line = <INPUT> )
-	{
-		if ( $line =~ /^\s*<tr>\s*$/ )
-		{
-            my $seatLine = <INPUT>;
-            my $nameLine = <INPUT>;
-
-            my $seat = &getValue($seatLine);
-            my $name = &getValue($nameLine);
-
-			if ( $matches{$name} )
-			{
-				print "$seat\t$name\n";
-			}
-		}
-	}
-
-	close( INPUT );
-
-    print "\nShall I curl? $curl\n";
-    chomp (my $doCurl = <STDIN>);
-    if ($doCurl eq 'y')
-    {
-        print "Curling ...\n";
         `curl -X POST $curl`;
-    }    
 
-	# sleep (3600); 
+        $round++;
+	    sleep (3600); 
+    }
 
 	exit 0;
 
