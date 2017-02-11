@@ -45,7 +45,37 @@ class PushNotificationController {
             }
         };
 
+        sendControllerMessage(gpName, parsedSeatings);
         respond parsedSeatings, model:[PushNotificationCount: parsedSeatings.size()];
+    }
+
+    private static void sendControllerMessage(String gpName, Map<String, String> pairings) {
+
+        String authString = ACCOUNT_SID + ":" + AUTH_TOKEN;
+        byte[] authEncBytes = Base64.encodeBase64(authString.getBytes());
+        String authStringEnc = new String(authEncBytes);
+
+        HttpClient httpClient = HttpClients.createDefault();
+        HttpPost httpPost = new HttpPost(url);
+
+        httpPost.setHeader("Authorization", "Basic " + authStringEnc);
+        httpPost.setHeader("charset", "utf-8");
+        httpPost.setHeader("Content-Type", "application/x-www-form-urlencoded");
+
+        String body = "Sent pairings for " + gpName + ".";
+        for (String name : pairings.keySet())
+        {
+            body += " " + name + " - " + pairings.get(name).replace("-", "bye") + ".";
+        }
+
+        List<NameValuePair> params = new ArrayList<NameValuePair>(3);
+        params.add(new BasicNameValuePair("To", '13039567188'));
+        params.add(new BasicNameValuePair("From", "17207533049"));
+        params.add(new BasicNameValuePair("Body", body));
+        httpPost.setEntity(new UrlEncodedFormEntity(params, "UTF-8"));
+
+        HttpResponse response = httpClient.execute(httpPost);
+        HttpEntity entity = response.getEntity();
     }
 
     private static void sendTextMessage(String phoneNumber, String name, String seat, Integer round) {
