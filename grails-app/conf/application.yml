@@ -78,14 +78,26 @@ dataSource:
 
 environments:
     development:
+        twilio:
+            sid: 'ACa8987067df275043dad1760a79d08532'
+            token: '35d0572469ce5f30a15f238f007c034f'
+            phone: '15005550006'
         dataSource:
             dbCreate: update
             url: jdbc:postgresql://localhost:5432/magicmom
     test:
+        twilio:
+            sid: 'ACa8987067df275043dad1760a79d08532'
+            token: '35d0572469ce5f30a15f238f007c034f'
+            phone: '15005550006'
         dataSource:
             dbCreate: update
             url: jdbc:postgresql://localhost:5432/magicmom
     production:
+        twilio:
+            sid: 'AC535ebaff99248ccc888e872e71a050d0'
+            token: '097c40f3dff014564a9b48765235962a'
+            phone: '17207533049'
         dataSource:
             dbCreate: update
             url: jdbc:postgresql://magicmom.c00icap1mfll.us-west-2.rds.amazonaws.com:5432/magicmom

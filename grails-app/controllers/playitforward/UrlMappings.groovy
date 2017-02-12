@@ -1,5 +1,6 @@
 package playitforward
 
+@SuppressWarnings("GroovyUnusedDeclaration")
 class UrlMappings {
 
     static mappings = {
@@ -10,6 +11,10 @@ class UrlMappings {
 
         post "/PushNotification/pasttimes/gp/$gpName/$roundNum" (
                 controller: 'pushNotification', action: 'pushPastTimeGames'
+        );
+
+        get "/PushNotification/ping/$name" (
+                controller: 'pushNotification', action: 'ping'
         );
 
         delete "/$controller/$id(.$format)?"(action:"delete");

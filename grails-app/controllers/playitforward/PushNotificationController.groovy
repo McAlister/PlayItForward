@@ -1,14 +1,13 @@
 package playitforward
 
-import org.apache.commons.httpclient.NameValuePair
-import org.apache.http.HttpEntity
-import org.apache.http.HttpResponse
+import org.apache.commons.logging.LogFactory
 import org.apache.http.client.HttpClient
 import org.apache.http.client.entity.UrlEncodedFormEntity
 import org.apache.http.client.methods.HttpPost
 import org.apache.http.impl.client.HttpClients
 import org.apache.http.message.BasicNameValuePair
 
+import javax.annotation.PostConstruct
 import java.util.regex.Matcher
 import java.util.regex.Pattern
 
@@ -16,28 +15,63 @@ import org.apache.commons.codec.binary.Base64;
 
 class PushNotificationController {
 
-    private static final String ACCOUNT_SID = "AC535ebaff99248ccc888e872e71a050d0";
-    private static final String AUTH_TOKEN = "097c40f3dff014564a9b48765235962a";
-    private static final String url = "https://api.twilio.com/2010-04-01/Accounts/" + ACCOUNT_SID + "/Messages.json";
+    private static final logger = LogFactory.getLog(this);
 
-    static String urlBase ='http://magic.wizards.com/en/events/coverage/';
+    private String ACCOUNT_SID = null;
+    private String AUTH_TOKEN = null;
+    private String url = null;
+    private String phoneSource = null;
+
     Pattern seatPattern = Pattern.compile("\\s*</tr>\\s*<tr><td>(\\d*-*)</td>");
 
     @SuppressWarnings("GroovyUnusedDeclaration")
     static responseFormats = ['json', 'xml']
     static allowedMethods = []
 
+    @SuppressWarnings("GroovyUnusedDeclaration")
     static mappings = {
+    }
+
+    @PostConstruct
+    public synchronized void init() {
+
+        if (ACCOUNT_SID == null) {
+
+            ACCOUNT_SID = grailsApplication.config.getProperty('twilio.sid');
+            AUTH_TOKEN = grailsApplication.config.getProperty('twilio.token');
+            url = "https://api.twilio.com/2010-04-01/Accounts/" + ACCOUNT_SID + "/Messages.json";
+            phoneSource = grailsApplication.config.getProperty('twilio.phone');
+        }
+    }
+
+    def ping(String name) {
+
+        Map<String, String> results = new HashMap<>();
+        results.put("name", name);
+        results.put("sid", ACCOUNT_SID.substring(0, 5) + "...");
+        results.put("token", AUTH_TOKEN.substring(0, 5) + "...");
+        results.put("phone", phoneSource);
+        results.put("url", getWizardsUrl(name, 9));
+
+        Event event = Event.findByEventCode(name);
+        results.put("start", event.getStartDate().toString());
+        results.put("end", event.getEndDate().toString());
+        results.put("title", event.getName());
+
+        respond results, model: [PushNotificationCount: results.size()];
     }
 
     def index(String gpName, Integer roundNum) {
 
-        Map<String, String> rawSeatings = getSeatings(getUrl(gpName, roundNum));
+        logger.info("Called Wizard's Pairings for " + gpName + " round " + roundNum + ".");
+
+        Map<String, String> rawSeatings = getSeatings(getWizardsUrl(gpName, roundNum));
         Map<String, String> parsedSeatings = new HashMap<>();
 
-        Person.list(params).each{ person ->
+        Person.findAllBySendPushNotifications(true).each { person ->
+
             String name = person.lastName + ", " + person.firstName;
-            if (person.sendPushNotifications && rawSeatings.containsKey(name))
+            if (rawSeatings.containsKey(name))
             {
                 String seating = rawSeatings.get(name);
                 parsedSeatings.put(name, seating);
@@ -51,24 +85,17 @@ class PushNotificationController {
 
     def pushPastTimeGames(String gpName, Integer roundNum) {
 
+        logger.info("Called Pasttime's Pairings for " + gpName + " round " + roundNum + ".");
+
         Map<String, String> rawSeatings = getPastTimeSeatings("http://pastimes.mtgel.com/pairings/13");
         Map<String, String> parsedSeatings = new HashMap<>();
 
-        Person.list(params).each{ person ->
-            String name = person.lastName + ", " + person.firstName;
-            if (person.sendPushNotifications)
-            {
-                if (rawSeatings.containsKey(name))
-                {
-                    String seating = rawSeatings.get(name);
-                    parsedSeatings.put(name, seating);
-                }
-                else
-                {
-                    String seating = "Bye";
-                    parsedSeatings.put(name, seating);
-                }
+        Person.findAllBySendPushNotifications(true).each { person ->
 
+            String name = person.lastName + ", " + person.firstName;
+            if (rawSeatings.containsKey(name))
+            {
+                parsedSeatings.put(name, rawSeatings.get(name));
                 sendTextMessage(person.phone, name, parsedSeatings.get(name), roundNum);
             }
         };
@@ -77,7 +104,7 @@ class PushNotificationController {
         respond parsedSeatings, model:[PushNotificationCount: parsedSeatings.size()];
     }
 
-    private static void sendControllerMessage(String gpName, Integer roundNum, Map<String, String> pairings) {
+    private void sendControllerMessage(String gpName, Integer roundNum, Map<String, String> pairings) {
 
         String authString = ACCOUNT_SID + ":" + AUTH_TOKEN;
         byte[] authEncBytes = Base64.encodeBase64(authString.getBytes());
@@ -96,17 +123,18 @@ class PushNotificationController {
             body += " " + name + " - " + pairings.get(name).replace("-", "bye") + ".";
         }
 
-        List<NameValuePair> params = new ArrayList<NameValuePair>(3);
+        List<BasicNameValuePair> params = new ArrayList<BasicNameValuePair>(3);
         params.add(new BasicNameValuePair("To", '13039567188'));
-        params.add(new BasicNameValuePair("From", "17207533049"));
+        params.add(new BasicNameValuePair("From", phoneSource));
         params.add(new BasicNameValuePair("Body", body));
         httpPost.setEntity(new UrlEncodedFormEntity(params, "UTF-8"));
 
-        HttpResponse response = httpClient.execute(httpPost);
-        HttpEntity entity = response.getEntity();
+        logger.info(httpClient.execute(httpPost).getStatusLine());
     }
 
-    private static void sendTextMessage(String phoneNumber, String name, String seat, Integer round) {
+    private void sendTextMessage(String phoneNumber, String name, String seat, Integer round) {
+
+        logger.info("Sending text to " + name + " for round " + round + " seat " + seat);
 
         String authString = ACCOUNT_SID + ":" + AUTH_TOKEN;
         byte[] authEncBytes = Base64.encodeBase64(authString.getBytes());
@@ -121,40 +149,48 @@ class PushNotificationController {
 
         if (seat.trim().equals("-"))
         {
-            seat = "bye";
+            seat = "Bye";
         }
 
         String body = name + " pairing for round: " + round + " is at table " + seat;
-        List<NameValuePair> params = new ArrayList<NameValuePair>(3);
+        List<BasicNameValuePair> params = new ArrayList<BasicNameValuePair>(3);
         params.add(new BasicNameValuePair("To", phoneNumber));
-        params.add(new BasicNameValuePair("From", "17207533049"));
+        params.add(new BasicNameValuePair("From", phoneSource));
         params.add(new BasicNameValuePair("Body", body));
         httpPost.setEntity(new UrlEncodedFormEntity(params, "UTF-8"));
 
-        HttpResponse response = httpClient.execute(httpPost);
-        HttpEntity entity = response.getEntity();
+        logger.info(httpClient.execute(httpPost).getStatusLine());
     }
 
-    private static String getUrl(String gp, int round)
-    {
+    private static String getWizardsUrl(String gp, Integer round) {
+
+        Event event = Event.findByEventCode(gp);
         Calendar cal = Calendar.getInstance();
+
+        if (round < 10)
+        {
+            cal.setTime(event.getStartDate());
+        }
+        else
+        {
+            cal.setTime(event.getEndDate());
+        }
+
         int dayOfMonth = cal.get(Calendar.DAY_OF_MONTH);
         int monthOfYear = cal.get(Calendar.MONTH) + 1;
         int year = cal.get(Calendar.YEAR);
 
         String month = String.format("%02d", monthOfYear);
         String day = String.format("%02d", dayOfMonth);
-        //month = '01';
-        //day = '28';
 
-        String url = urlBase + gp + '/round-' + round + '-pairings-' +
-                year + '-' + month + '-' + day;
+        String url ='http://magic.wizards.com/en/events/coverage/' + gp +
+            '/round-' + round + '-pairings-' + year + '-' + month + '-' + day;
 
         return url;
     }
 
-    private Map<String, String> getSeatings(String url)
-    {
+    private Map<String, String> getSeatings(String url) {
+
         Map<String, String> results = new HashMap<>();
         URL pairingsURL = new URL(url);
         URLConnection ec = pairingsURL.openConnection();
@@ -195,8 +231,8 @@ class PushNotificationController {
         return results;
     }
 
-    private Map<String,String> getPastTimeSeatings(String url)
-    {
+    private static Map<String,String> getPastTimeSeatings(String url) {
+
         Map<String, String> results = new HashMap<>();
         URL pairingsURL = new URL(url);
         URLConnection ec = pairingsURL.openConnection();
