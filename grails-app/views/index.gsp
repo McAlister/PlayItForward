@@ -15,6 +15,7 @@
         }
     </style>
 
+    <link href="https://fonts.googleapis.com/css?family=Oswald" rel="stylesheet">
     <asset:stylesheet src="application.css"/>
 
     <asset:link rel="icon" href="favicon.ico" type="image/x-ico" />
@@ -29,55 +30,58 @@
 
     <div class="body-wrapper">
 
-        <header class="header">
-            <div class="header-liliana"></div>
-            <image src="/assets/banner.png" class="main-logo-image"/>
-        </header>
+        <div class="sidebar">
 
-        <div class="navigation">
+            <header class="header">
+                <image src="/assets/banner.png" class="main-logo-image"/>
+            </header>
 
-            <ul class="navigation-list">
-                <li class="navigation-list-item">
-                    <a ui-sref="index" class="navigation-link">
-                        Home
-                    </a>
-                </li>
-                <li class="navigation-list-item">
-                    <a ui-sref="currentGP" class="navigation-link">
-                        GP Vancouver
-                    </a>
-                </li>
-                <li class="navigation-list-item">
-                    <a ui-sref="contests" class="navigation-link">
-                        Bounties
-                    </a>
-                </li>
-                <li class="navigation-list-item">
-                    <a ui-sref="contribute" class="navigation-link">
-                        Contribute
-                    </a>
-                </li>
-                <li class="navigation-list-item">
-                    <a ui-sref="resources" class="navigation-link">
-                        Resources
-                    </a>
-                </li>
-                <li class="navigation-list-item">
-                    <a ui-sref="press" class="navigation-link">
-                        Press
-                    </a>
-                </li>
-                <li class="navigation-list-item">
-                    <a ui-sref="login" class="navigation-link">
-                        Login
-                    </a>
-                </li>
-                <li class="navigation-list-item">
-                    <a href="mailto:play_it_forward@outlook.com" class="navigation-link">
-                        Contact Us
-                    </a>
-                </li>
-            </ul>
+            <div class="navigation">
+
+                <ul class="navigation-list">
+                    <li class="navigation-list-item">
+                        <a ui-sref="index" class="navigation-link">
+                            Home
+                        </a>
+                    </li>
+                    <li class="navigation-list-item">
+                        <a ui-sref="currentGP" class="navigation-link">
+                            GP Vancouver
+                        </a>
+                    </li>
+                    <li class="navigation-list-item">
+                        <a ui-sref="contests" class="navigation-link">
+                            Bounties
+                        </a>
+                    </li>
+                    <li class="navigation-list-item">
+                        <a ui-sref="contribute" class="navigation-link">
+                            Contribute
+                        </a>
+                    </li>
+                    <li class="navigation-list-item">
+                        <a ui-sref="resources" class="navigation-link">
+                            Resources
+                        </a>
+                    </li>
+                    <li class="navigation-list-item">
+                        <a ui-sref="press" class="navigation-link">
+                            Press
+                        </a>
+                    </li>
+                    <li class="navigation-list-item">
+                        <a ui-sref="login" class="navigation-link">
+                            Login
+                        </a>
+                    </li>
+                    <li class="navigation-list-item">
+                        <a href="mailto:play_it_forward@outlook.com" class="navigation-link">
+                            Contact Us
+                        </a>
+                    </li>
+                </ul>
+
+            </div>
 
         </div>
 

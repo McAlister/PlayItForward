@@ -4,15 +4,18 @@
 }
 
 html, body {
+    background-attachment: fixed;
+    background-color: #161639;
+    background-image: url(/assets/jenny-blue.png);
+    background-size: cover;
     font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
     height: 100%;
     padding: 0;
     margin: 0;
-    background: #FFF;
-    color: #343437;
-    line-height: 25px;
+    color: #ffffff;
+    line-height: 2em;
     font-weight: normal;
-    font-size: 14px;
+    font-size: 16px;
     overflow: auto;
     -webkit-overflow-scrolling: touch;
 }
@@ -23,15 +26,9 @@ html, code, kbd, pre, samp {
 }
 
 body {
-    background-color: #2b542c;
-    background-image: url("/assets/background.jpg");
     background-attachment: fixed;
     background-position: center;
-    color: #333333;
-    overflow-x: hidden; /* prevents box-shadow causing a horizontal scrollbar in firefox when viewport < 960px wide */
-    -moz-box-shadow: 0 0 0.3em #4D8618;
-    -webkit-box-shadow: 0 0 0.3em #4D8618;
-    box-shadow: 0 0 0.3em #4D8618;
+    overflow-x: hidden;
 }
 
 body,
@@ -54,7 +51,6 @@ p {
 }
 
 a {
-    color: #ffcb99;
     text-decoration: underline;
 }
 
@@ -64,7 +60,6 @@ a:hover, a:active {
 }
 
 a:hover {
-    color: #db4800;
     text-decoration: none
 }
 
@@ -79,4 +74,14 @@ img {
 
 .center {
     text-align: center;
+}
+
+.header {
+    font-family: Oswald, sans-serif;
+    font-size: 2.1em;
+    text-transform: uppercase;
+}
+
+a.btn {
+    text-decoration: none;
 }
