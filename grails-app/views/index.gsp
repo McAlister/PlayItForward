@@ -44,7 +44,7 @@
                 </li>
                 <li class="navigation-list-item">
                     <a ui-sref="currentGP" class="navigation-link">
-                        GP Pittsburgh
+                        GP Vancouver
                     </a>
                 </li>
                 <li class="navigation-list-item">
