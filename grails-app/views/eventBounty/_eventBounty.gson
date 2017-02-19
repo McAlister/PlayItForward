@@ -4,4 +4,10 @@ model {
 	EventBounty eventBounty
 }
 
-json g.render(eventBounty)
+json {
+    id eventBounty.id
+    donor eventBounty.donor
+    prize eventBounty.prize
+    event eventBounty.event.name
+    eventId eventBounty.event.id
+}

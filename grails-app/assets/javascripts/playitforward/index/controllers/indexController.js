@@ -64,6 +64,28 @@ function IndexController(applicationDataFactory, contextPath, $state, $scope, $h
 
     };
 
+    $scope.bountyArray = {
+        bounties: [],
+        errorMessage: '',
+        sortType: 'event',
+        sortReverse: false,
+        searchString: ''
+    };
+
+    $scope.populateBounties = function() {
+
+        $http({
+            method: 'GET',
+            url: '/EventBounty'
+        }).then(function successCallback(response) {
+            $scope.bountyArray.bounties = response.data;
+        }, function errorCallback(response) {
+            $scope.bountyArray.errorMessage = 'ERROR: ' + response.data.message;
+        });
+    };
+
+    $scope.populateBounties();
+
     /*
         Bounty Carousel Stuff
      */
