@@ -104,6 +104,27 @@ class PushNotificationController {
         respond parsedSeatings, model:[PushNotificationCount: parsedSeatings.size()];
     }
 
+    def pushGameKeeper(String gpName, Integer roundNum) {
+
+        logger.info("Called GameKeeper's Pairings for " + gpName + " round " + roundNum + ".");
+
+        Map<String, String> rawSeatings = getPastTimeSeatings("http://pairings.gamekeeper.ca/pairings/14");
+        Map<String, String> parsedSeatings = new HashMap<>();
+
+        Person.findAllBySendPushNotifications(true).each { person ->
+
+            String name = person.lastName + ", " + person.firstName;
+            if (rawSeatings.containsKey(name))
+            {
+                parsedSeatings.put(name, rawSeatings.get(name));
+                sendTextMessage(person.phone, name, parsedSeatings.get(name), roundNum);
+            }
+        };
+
+        sendControllerMessage(gpName, roundNum, parsedSeatings);
+        respond parsedSeatings, model:[PushNotificationCount: parsedSeatings.size()];
+    }
+
     private void sendControllerMessage(String gpName, Integer roundNum, Map<String, String> pairings) {
 
         String authString = ACCOUNT_SID + ":" + AUTH_TOKEN;

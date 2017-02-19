@@ -13,6 +13,10 @@ class UrlMappings {
                 controller: 'pushNotification', action: 'pushPastTimeGames'
         );
 
+        post "/PushNotification/gamekeeper/gp/$gpName/$roundNum" (
+                controller: 'pushNotification', action: 'pushGameKeeper'
+        );
+
         get "/PushNotification/ping/$name" (
                 controller: 'pushNotification', action: 'ping'
         );
