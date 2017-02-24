@@ -28,8 +28,11 @@ class BootStrap
         EventOrganizer cg = new EventOrganizer(name: "Cascade Games", url: "http://www.cascadegames.com/").save();
         EventOrganizer ftf = new EventOrganizer(name: "Face to Face Games", url: "http://www.facetofacegames.com/").save();
 
+        new Event(organizer: scg, name: "GP Louisville", type: gp, eventCode: 'gplou17',
+                startDate: new Date(117, 00, 07), endDate: new Date(117, 00, 8)).save();
+
         Event sanJose = new Event(organizer: cfb, name: "GP San Jose", type: gp, eventCode: 'gpsj17',
-                  startDate: new Date(117, 00, 06), endDate: new Date(117, 00, 07)).save();
+                  startDate: new Date(117, 00, 28), endDate: new Date(117, 00, 29)).save();
 
         new Event(organizer: pt, name: "GP Pittsburgh", type: gp, eventCode: 'gppit17',
                   startDate: new Date(117, 1, 11), endDate: new Date(117, 1, 12)).save();

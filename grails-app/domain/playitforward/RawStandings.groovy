@@ -8,6 +8,7 @@ class RawStandings {
     int rank;
     int points;
     double opponentMatchWin;
+    boolean isWoman;
 
     static constraints = {
         event nullable: false;
@@ -16,12 +17,17 @@ class RawStandings {
         rank nullable: false;
         points nullable: false;
         opponentMatchWin nullable: false;
+        isWoman nullable: false;
     }
 
     static mapping = {
 
         table 'raw_standings';
-        event index: 'raw_standings_event_idx', fetch: 'join', lazy: false
+        event index: 'raw_standings_event_idx', fetch: 'join', lazy: false;
+        round index: 'raw_standings_event_idx';
+        rank index: 'raw_standings_event_idx';
+        isWoman index: 'raw_standings_event_idx';
+        event unique: ['round', 'name', 'rank'];
     }
 
     public boolean canMakeDayTwo()
