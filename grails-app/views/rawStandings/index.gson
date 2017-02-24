@@ -1,0 +1,8 @@
+import playitforward.RawStandings
+
+model {
+	Iterable<RawStandings> rawStandingsList
+}
+
+json tmpl.rawStandings(rawStandingsList ?: [])
+

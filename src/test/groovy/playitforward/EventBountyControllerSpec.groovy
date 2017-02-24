@@ -13,6 +13,7 @@ import java.sql.Date
 class EventBountyControllerSpec extends Specification {
 
     def populateValidParams(params) {
+
         assert params != null
 
         params["donor"] = "Cassidy Melczak";
@@ -50,8 +51,8 @@ class EventBountyControllerSpec extends Specification {
         when:"The index action is executed"
             controller.index(10);
 
-        ObjectMapper mapper = new ObjectMapper();
-        List<EventBounty> bounties = Arrays.asList(mapper.readValue(response.text, EventBounty[].class)) as List<EventBounty>;
+            ObjectMapper mapper = new ObjectMapper();
+            List<EventBounty> bounties = Arrays.asList(mapper.readValue(response.text, EventBounty[].class)) as List<EventBounty>;
 
         then:"The response is correct"
             bounties.size() == 2;
