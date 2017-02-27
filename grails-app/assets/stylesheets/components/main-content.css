@@ -1,11 +1,8 @@
 .main-content {
     padding: 10px 30px;
-    background-color: #5c855b;
-    background-image: url("/assets/bkg.jpg");
-    background-repeat: no-repeat;
-    color: white;
     min-height: 100%;
     position: relative;
+    width: 550px;
 }
 
 .has-error {
@@ -14,48 +11,42 @@
 }
 
 .playmat-image {
-
     margin: 10px 0 15px 0;
 }
 
 .playmat-thumbnail {
-
     width: 160px;
     height: 100px;
     min-width: 160px;
     min-height: 100px;
 }
 
-table
-{
+table {
     width: 100%;
     border-collapse: collapse;
 }
 
-tr:nth-of-type(odd)
-{
+tr:nth-of-type(odd) {
+  
 }
 
 .table-striped > tbody > tr:nth-of-type(odd) {
     color: black;
 }
 
-th
-{
+th {
     background: #333;
     color: white;
     font-weight: bold;
 }
 
-td, th
-{
+td, th {
     padding: 6px;
     border: 1px solid #ccc;
     text-align: left;
 }
 
-.paypal-button
-{
+.paypal-button {
     text-align: center;
     margin: 15px auto;
 }
@@ -65,4 +56,3 @@ td, th
     margin-left: auto;
     margin-right: auto;
 }
-

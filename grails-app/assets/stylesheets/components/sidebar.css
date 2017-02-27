@@ -1,0 +1,4 @@
+.sidebar {
+    flex: 0 0 200px;
+    min-height: 100%;
+}

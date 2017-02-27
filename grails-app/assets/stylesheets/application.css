@@ -14,5 +14,6 @@
 *= require components/header
 *= require components/main-content
 *= require components/navigation
+*= require components/sidebar
 *= require_self
 */
