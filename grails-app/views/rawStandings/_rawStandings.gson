@@ -1,0 +1,7 @@
+import playitforward.RawStandings
+
+model {
+	RawStandings rawStandings
+}
+
+json g.render(rawStandings)

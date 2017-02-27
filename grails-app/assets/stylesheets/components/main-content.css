@@ -5,6 +5,11 @@
     width: 550px;
 }
 
+.has-error {
+    color: #ffcc00;
+    font-weight: bold;
+}
+
 .playmat-image {
     margin: 10px 0 15px 0;
 }
@@ -22,7 +27,11 @@ table {
 }
 
 tr:nth-of-type(odd) {
+  
+}
 
+.table-striped > tbody > tr:nth-of-type(odd) {
+    color: black;
 }
 
 th {

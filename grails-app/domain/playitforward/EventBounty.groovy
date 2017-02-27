@@ -15,6 +15,6 @@ class EventBounty {
     static mapping = {
 
         table 'event_bounty';
-        event index: 'event_idx';
+        event index: 'event_idx', fetch: 'join', lazy: false;
     }
 }

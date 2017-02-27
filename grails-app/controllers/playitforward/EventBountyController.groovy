@@ -10,8 +10,7 @@ class EventBountyController {
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
     def index(Integer max) {
-        params.max = Math.min(max ?: 10, 100)
-        respond EventBounty.list(params), model:[eventBountyCount: EventBounty.count()]
+        respond EventBounty.list(), model:[eventBountyCount: EventBounty.count()]
     }
 
     def show(EventBounty eventBounty) {

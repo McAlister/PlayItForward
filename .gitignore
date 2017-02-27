@@ -1,6 +1,7 @@
 .idea
 .DS_Store
 Thumbs.db
+women.txt
 
 .gradle
 /build/
