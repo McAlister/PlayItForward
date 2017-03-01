@@ -40,13 +40,8 @@
 
                 <ul class="navigation-list">
                     <li class="navigation-list-item">
-                        <a ui-sref="index" class="navigation-link">
-                            Home
-                        </a>
-                    </li>
-                    <li class="navigation-list-item">
                         <a ui-sref="currentGP" class="navigation-link">
-                            GP Vancouver
+                            Current GP
                         </a>
                     </li>
                     <li class="navigation-list-item">
@@ -77,6 +72,11 @@
                     <li class="navigation-list-item">
                         <a href="mailto:play_it_forward@outlook.com" class="navigation-link">
                             Contact Us
+                        </a>
+                    </li>
+                    <li class="navigation-list-item">
+                        <a ui-sref="index" class="navigation-link">
+                            About Us
                         </a>
                     </li>
                 </ul>
