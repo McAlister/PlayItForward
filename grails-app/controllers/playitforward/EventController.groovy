@@ -10,8 +10,7 @@ class EventController {
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
     def index(Integer max) {
-        params.max = Math.min(max ?: 10, 100)
-        respond Event.list(params), model:[eventCount: Event.count()]
+        respond Event.listOrderByStartDate(), model:[eventCount: Event.count()]
     }
 
     def show(Event event) {

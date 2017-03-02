@@ -5,6 +5,7 @@ angular
     .controller("IndexController", IndexController);
 
 function IndexController(applicationDataFactory, contextPath, $state, $scope, $http, $interval, $sce) {
+    
     var vm = this;
 
     vm.contextPath = contextPath;

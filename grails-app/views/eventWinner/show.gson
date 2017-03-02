@@ -1,0 +1,7 @@
+import playitforward.EventWinner
+
+model {
+	EventWinner eventWinner
+}
+
+json tmpl.eventWinner(eventWinner)

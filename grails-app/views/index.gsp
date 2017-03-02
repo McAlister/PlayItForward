@@ -41,7 +41,7 @@
                 <ul class="navigation-list">
                     <li class="navigation-list-item">
                         <a ui-sref="currentGP" class="navigation-link">
-                            Current GP
+                            GP Coverage
                         </a>
                     </li>
                     <li class="navigation-list-item">

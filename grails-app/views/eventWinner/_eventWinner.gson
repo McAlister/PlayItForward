@@ -1,0 +1,7 @@
+import playitforward.EventWinner
+
+model {
+	EventWinner eventWinner
+}
+
+json g.render(eventWinner)

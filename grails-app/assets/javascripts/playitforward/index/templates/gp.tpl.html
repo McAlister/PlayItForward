@@ -1,39 +1,122 @@
 
 <div role="main">
 
-    <h2 class="form-signin-heading">GP Vancouver:</h2>
+    <div id="gp-dropdown">
+        <select name="eventSelect" id="eventSelect" ng-model="GPs.currentEvent"
+                ng-options="option.name for option in GPs.allEvents track by option.id">
 
-    <p>
+        </select>
+    </div>
 
-    </p>
+    <!--<h2 class="form-signin-heading">{{GPs.currentEvent.name}}:</h2>-->
 
-    <p>
-        The top female/nonbinary player will receive a gorgeous playmat featuring artwork by
-        <a href="https://www.artstation.com/artist/merkerinn/profile">Malwina Kwiatkowska</a>
-        (merkerinn on facebook). She's a gifted digital artist from Poland who specializes in concept art, 3D
-        modeling, and fan art. She also streams her work on <a href="https://www.twitch.tv/merkerinn">Twitch</a>,
-        which is pretty dang cool! As always the mats themselves are
-        provided by our heroes at <a href="http://gamermats.com/">GamerMats</a>.  Check them out if you want a
-        playmat that is all your own.
-    </p>
+    <div id="bounty-tabs">
+        <ul>
+            <li ng-class="tabClass('summary')" ng-click="activate('summary')">Overview</li>
+            <li ng-class="tabClass('playmat')" ng-click="activate('playmat')" >Playmat</li>
+            <li ng-class="tabClass('bounties')" ng-click="activate('bounties')">Bounties</li>
+            <!--<li ng-class="tabClass('race')" ng-click="activate('race')">Standings</li>-->
+        </ul>
+    </div>
 
-    <img class="playmat-image" src="/assets/currentMat.jpg" />
+    <div id="gp-summary" ng-show="isActiveTab('summary')">
 
-    <p>
-        Is there more?  Of course there is more.  We have a Limited Edition Zur the Enchanter Judge Foil
-        from Max Kahn. One pack of Revised from Phillip Yam.  A mentorship prize from none other than
-        Jacob Wilson. And to top it all off Courtney Rudiger is offering to cover your entry fee to the next GP
-        you play in.
-    </p>
+        <div ng-show="isFutureGP()" >
 
-    <p>
-        Play it forward director Simone Aiken will be at the event to bug you to sign up for our
-        <a ui-sref="mailingList">mailing list</a> and answer any questions you may have.
-    </p>
+            {{GPs.currentEvent.name}} will begin on {{gpStartDateString()}}.
 
-    <p>
-        <center>Lets get ready to (very politely) rumble!</center>
-    </p>
+            <br/>
+
+            May the odds be ever in your favor.
+
+        </div>
+
+        <div ng-if="!isFutureGP()" >
+
+            <ul id="winner-stats">
+                <li><b>Name:</b> {{GPs.eventWinners[GPs.currentEvent.id].name}}</li>
+                <li><b>Rank:</b> {{GPs.eventWinners[GPs.currentEvent.id].ranking}}</li>
+                <li><b>Record:</b> {{GPs.eventWinners[GPs.currentEvent.id].record}}</li>
+            </ul>
+
+            <img class="winner-image" ng-src="{{getWinnerImageName()}}" />
+
+            <p>
+                {{GPs.eventWinners[GPs.currentEvent.id].blurb}}
+            </p>
+
+        </div>
+
+    </div>
+
+    <div id="gp-playmat" ng-show="isActiveTab('playmat')">
+
+        Behold!  The prize mat for {{GPs.currentEvent.name}}.
+
+        <img class="playmat-image" ng-src="{{getImageName()}}" />
+
+        As always the mats themselves are provided by our heroes at <a href="http://gamermats.com/">GamerMats</a>.
+        Check them out if you want a playmat that is all your own.
+
+    </div>
+
+    <div id="gp-bounties" ng-show="isActiveTab('bounties')">
+
+        <div ng-hide="bountiesExist()" >
+
+            <a href="mailto:play_it_forward@outlook.com" class="navigation-link">
+                Contact Us
+            </a> about donating additional bounties.
+
+        </div>
+
+        <p ng-show="bountiesExist()">
+            In addition to the Play It Forward playmat, members of the community have
+            donated the following prizes to the leading lady in day two:
+        </p>
+
+        <div class='has-error' ng-show="bountyArray.errorMessage">
+            Error: Unable to load Bounties.
+        </div>
+
+        <table class="table table-bordered table-striped" ng-show="bountiesExist()">
+
+            <thead>
+            <tr>
+                <th>
+                    <a href ng-click="bountyArray.sortType = 'donor'; bountyArray.sortReverse = !bountyArray.sortReverse">
+                        Donor
+                        <span ng-show="sortType == 'donor' && !bountyArray.sortReverse" class="fa fa-caret-down"></span>
+                        <span ng-show="sortType == 'donor' && bountyArray.sortReverse" class="fa fa-caret-up"></span>
+                    </a>
+                </th>
+                <th>
+                    <a href ng-click="bountyArray.sortType = 'prize'; bountyArray.sortReverse = !bountyArray.sortReverse">
+                        Prize
+                        <span ng-show="sortType == 'prize' && !sortReverse" class="fa fa-caret-down"></span>
+                        <span ng-show="sortType == 'prize' && sortReverse" class="fa fa-caret-up"></span>
+                    </a>
+                </th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <tr ng-repeat="bounty in bountyArray.bounties | orderBy:bountyArray.sortType:bountyArray.sortReverse | filter:GPs.currentEvent.name">
+                <td>{{ bounty.donor }}</td>
+                <td>{{ bounty.prize }}</td>
+            </tr>
+            </tbody>
+
+        </table>
+
+    </div>
+
+    <div id="gp-race" ng-show="isActiveTab('race')">
+
+        <br/>
+        <p>Coming Soon - Interactive Standings tools</p>
+
+    </div>
 
 </div>
 

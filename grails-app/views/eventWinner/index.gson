@@ -1,0 +1,8 @@
+import playitforward.EventWinner
+
+model {
+	Iterable<EventWinner> eventWinnerList
+}
+
+json tmpl.eventWinner(eventWinnerList ?: [])
+

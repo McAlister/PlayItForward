@@ -51,8 +51,57 @@ td, th {
     margin: 15px auto;
 }
 
-.item img
-{
+.item img {
     margin-left: auto;
     margin-right: auto;
+}
+
+#gp-dropdown {
+    float: right;
+}
+
+#gp-dropdown select {
+    color: #000;
+}
+
+#bounty-tabs {
+    width: 100%;
+    border-bottom: 1px solid #ffffff;
+    overflow: hidden;
+    position: relative;
+    padding-top: 10px;
+    margin-bottom: 10px;
+}
+
+#bounty-tabs ul {
+    clear:left;
+    float: left;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    position: relative;
+}
+
+#bounty-tabs ul li {
+    display: block;
+    float: left;
+    margin: 5px 5px -3px 0;
+    padding: 0 10px 0px 10px;
+    border-radius: 5px;
+    border: 1px solid #ffffff;
+    border-bottom: 1px solid #000000;
+}
+
+#bounty-tabs ul li.active {
+    color: #000000;
+    background-color: #ffffff;
+}
+
+.winner-image {
+    padding: 10px;
+}
+
+#winner-stats {
+    margin-left: 10px;
+    list-style: none;
 }
