@@ -131,9 +131,9 @@ HorseRace = {};
         stick.style.left = pos.left;
         horse.style.left = pos.left-Math.floor(horseWidth/2);
         if (pos.left < horserace.clientWidth/2) {
-            tooltip.style.left = pos.left + horseWidth/2 + 30;
+            tooltip.style.left = pos.left + horseWidth/2 + 10;
         } else {
-            tooltip.style.left = pos.left - horseWidth/2 - 30 - tooltip.clientWidth;
+            tooltip.style.left = pos.left - horseWidth/2 - 10 - tooltip.clientWidth;
         }
         updateTooltip(horse, horseInfo);
     }
