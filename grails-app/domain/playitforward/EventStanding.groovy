@@ -23,4 +23,17 @@ class EventStanding {
         round index: 'event_standing_event_idx';
         event unique: ['round', 'player'];
     }
+
+    public boolean canMakeDayTwo()
+    {
+        if (round > 9) {
+            return (points >= 18);
+        }
+
+        int wins = points / 3;
+        int draws = points % 3;
+        int losses = round - wins - draws;
+
+        return (draws + losses < 4);
+    }
 }

@@ -43,6 +43,29 @@ class EventStandingController {
             b.points <=> a.points;
         }
 
+        if(roundNum > 9) {
+
+            // Day 2. Remove people who did not make it
+            Iterator<EventStanding> iter = standingList.iterator();
+            while (iter.hasNext()) {
+                EventStanding standing = iter.next();
+                if(standing.points < 18) {
+                    iter.remove();
+                }
+            }
+        }
+        else {
+
+            // Day 1.  Remove people who cannot make day 2.
+            Iterator<EventStanding> iter = standingList.iterator();
+            while (iter.hasNext()) {
+                EventStanding standing = iter.next();
+                if(!standing.canMakeDayTwo()) {
+                    iter.remove();
+                }
+            }
+        }
+
         while (standingList.size() > 20) {
             standingList.pop();
         }
