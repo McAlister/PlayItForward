@@ -1,0 +1,7 @@
+import playitforward.Sysconfig
+
+model {
+	Sysconfig sysconfig
+}
+
+json g.render(sysconfig)
