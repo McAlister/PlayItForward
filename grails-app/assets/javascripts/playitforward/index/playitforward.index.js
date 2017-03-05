@@ -35,8 +35,8 @@ function config($stateProvider, $urlRouterProvider) {
             url: '/resources',
             templateUrl: '/playitforward/index/resources.html'
         })
-        .state('press', {
-            url: '/press',
+        .state('contact', {
+            url: '/contact',
             templateUrl: '/playitforward/index/press.html'
         })
         .state('login', {

@@ -60,17 +60,12 @@
                         </a>
                     </li>
                     <li class="navigation-list-item">
-                        <a ui-sref="press" class="navigation-link">
-                            Press
-                        </a>
-                    </li>
-                    <li class="navigation-list-item">
                         <a ui-sref="login" class="navigation-link">
                             Login
                         </a>
                     </li>
                     <li class="navigation-list-item">
-                        <a href="mailto:play_it_forward@outlook.com" class="navigation-link">
+                        <a ui-sref="contact" class="navigation-link">
                             Contact Us
                         </a>
                     </li>
