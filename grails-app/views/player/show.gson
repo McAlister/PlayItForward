@@ -1,0 +1,7 @@
+import playitforward.Player
+
+model {
+	Player player
+}
+
+json tmpl.player(player)

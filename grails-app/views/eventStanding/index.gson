@@ -1,0 +1,8 @@
+import playitforward.EventStanding
+
+model {
+	Iterable<EventStanding> eventStandingList
+}
+
+json tmpl.eventStanding(eventStandingList ?: [])
+

@@ -1,0 +1,7 @@
+import playitforward.EventStanding
+
+model {
+	EventStanding eventStanding
+}
+
+json tmpl.eventStanding(eventStanding)

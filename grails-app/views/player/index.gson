@@ -1,0 +1,8 @@
+import playitforward.Player
+
+model {
+	Iterable<Player> playerList
+}
+
+json tmpl.player(playerList ?: [])
+

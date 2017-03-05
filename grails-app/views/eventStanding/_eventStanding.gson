@@ -1,0 +1,17 @@
+import playitforward.EventStanding
+
+model {
+	EventStanding eventStanding
+}
+
+json {
+
+    id eventStanding.id;
+    eventId eventStanding.event.id;
+    eventName eventStanding.event.name;
+    round eventStanding.round;
+    score eventStanding.points;
+    key eventStanding.player.id;
+    name eventStanding.player.alias;
+    img eventStanding.player.imgUrl;
+}

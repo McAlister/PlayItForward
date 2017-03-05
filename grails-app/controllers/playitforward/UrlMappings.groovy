@@ -21,6 +21,10 @@ class UrlMappings {
                 controller: 'pushNotification', action: 'ping'
         );
 
+        get "/EventStanding/event/$eventId/round/$roundNum" (
+                controller: 'eventStanding', action: 'index'
+        );
+
         delete "/$controller/$id(.$format)?"(action:"delete");
         get "/$controller(.$format)?"(action:"index");
         get "/$controller/$id(.$format)?"(action:"show");
