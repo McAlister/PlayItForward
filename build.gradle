@@ -33,6 +33,7 @@ repositories {
     jcenter()
     maven { url "https://repo.grails.org/grails/core" }
     maven { url "https://repo.grails.org/grails/repo" }
+    maven { url "https://repo.grails.org/grails/plugins" }
 }
 
 dependencyManagement {
