@@ -34,9 +34,9 @@ HorseRace = {};
             children = Array.prototype.slice.call(wave.children);
             wave.style.top = pos.top;
             wave.style.backgroundPosition = 0-20*i;
-            stick = children.find(function(el) {return el.className === 'stick'});
+            stick = wave.getElementsByClassName('stick')[0];
             stick.style.left = stick.style.left || Math.floor(horseWidth/2);
-            horse = children.find(function(el) {return el.className === 'horse'});
+            horse = wave.getElementsByClassName('horse')[0];
             horse.style.width = horse.style.height = horseWidth;
             horse.style.left = horse.style.left || 0;
 
@@ -112,7 +112,8 @@ HorseRace = {};
         updateTooltip(horse, horseInfo);
     }
     function removeWave (key, round) {
-        document.getElementById('wave_' + key).remove();
+        var wave = document.getElementById('wave_' + key);
+        wave.parentNode.removeChild(wave);
         calculatePositions(round);
     }
 
@@ -162,9 +163,12 @@ HorseRace = {};
         waveKeys = Array.prototype.map.call(document.getElementsByClassName('wave'),
                 function (w) { return w.id.replace('wave_', ''); });
         waveKeys.forEach(function (key) {
-            if (scorelist.findIndex(function(h) { return h.key == key; }) === -1) {
-                removeWave(key, round);
+            var i;
+            for (i = 0; i < scorelist.length; i++) {
+                if (scorelist[i].key == key)
+                    return;
             }
+            removeWave(key, round);
         });
         scorelist.forEach(function (el) {
             if (!document.getElementById('wave_' + el.key)) {
