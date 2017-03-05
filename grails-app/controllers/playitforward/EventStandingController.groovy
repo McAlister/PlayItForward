@@ -10,9 +10,13 @@ class EventStandingController {
     static responseFormats = ['json', 'xml'];
     static allowedMethods = [];
 
-    def index(Integer eventId, Integer roundNum) {
+    static defaultNames = [ "Arlinn", "Avacyn", "Chandra", "Elspeth", "Kaya",
+                                     "Kemba", "Kiora", "Liliana", "Mirri", "Nahiri",
+                                     "Narset", "Nissa", "Olivia", "Oona", "Pia", "Saheeli",
+                                     "SliverQueen", "Tamiyo", "Vraska", "Wort"
+    ];
 
-        System.console().println("EventID: " + eventId + " round: " + roundNum);
+    def index(Integer eventId, Integer roundNum) {
 
         List<EventStanding> standingList = EventStanding.findAll(sort: 'player', order: 'asc') {
             event.id == eventId && round == roundNum
@@ -30,9 +34,7 @@ class EventStandingController {
                     "And r.round = " + roundNum;
 
             def query = session.createSQLQuery(sql);
-            def updatedRows = query.executeUpdate()
-
-            System.console().println("Inserted " + updatedRows + " rows");
+            query.executeUpdate();
 
             standingList = EventStanding.findAll(sort: 'player', order: 'asc') {
                 event.id == eventId && round == roundNum
@@ -76,8 +78,9 @@ class EventStandingController {
 
         for(EventStanding eventStanding : standingList) {
            if (eventStanding.player.alias == null) {
-               eventStanding.player.alias = "Nissa";
-               eventStanding.player.imgUrl = "Nissa.png";
+               int index = eventStanding.player.id % 20;
+               eventStanding.player.alias = defaultNames[index];
+               eventStanding.player.imgUrl = defaultNames[index] + ".png";
            }
         }
 
