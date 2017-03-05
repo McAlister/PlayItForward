@@ -77,6 +77,7 @@ HorseRace = {};
         stick.style.position = 'absolute';
         stick.style.top = '20px';
         stick.style.width = 3;
+        stick.style.height = 500;
         stick.src = "stick.png";
         wave.appendChild(stick);
 
