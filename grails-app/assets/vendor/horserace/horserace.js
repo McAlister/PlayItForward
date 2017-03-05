@@ -20,8 +20,8 @@ HorseRace = {};
     }
 
     function updateTooltip (horse, horseInfo) {
-        var tooltip = horse.parentNode.getElementsByClassName('tooltip')[0];
-        tooltip.innerHTML = "Name: " + horseInfo.name + "<br>Score: " + horseInfo.score;
+        var tdata = horse.parentNode.getElementsByClassName('tdata')[0];
+        tdata.innerHTML = "Name: " + horseInfo.name + "<br>Score: " + horseInfo.score;
     }
 
     function calculatePositions(round) {
@@ -98,12 +98,13 @@ HorseRace = {};
         }
         wave.appendChild(horse);
 
-        tooltip = document.createElement('span');
+        tooltip = document.createElement('div');
         tooltip.className = 'tooltip';
         tooltip.style.position = 'absolute';
         tooltip.style.top = 0;
         tooltip.style.left = 100;
         tooltip.style.zIndex = 1;
+        tooltip.innerHTML = '<div class="profile"><img src="'+horse.src+'"></div><span class="tdata"></span>';
         wave.appendChild(tooltip);
 
         horserace.appendChild(wave);
@@ -128,7 +129,7 @@ HorseRace = {};
             horseWidth = getHorseWidth();
         stick.style.left = pos.left;
         horse.style.left = pos.left-Math.floor(horseWidth/2);
-        tooltip.style.left = pos.left + (pos.left < horserace.clientWidth/2 ? +horseWidth/2+30 : -horseWidth/2-180);
+        tooltip.style.left = pos.left + (pos.left < horserace.clientWidth/2 ? +horseWidth/2+30 : -horseWidth/2-280);
         updateTooltip(horse, horseInfo);
     }
 
