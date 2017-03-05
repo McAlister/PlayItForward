@@ -1,0 +1,21 @@
+<html>
+<head>
+<title>Horse Race</title>
+<link href="horserace.css" rel="stylesheet">
+<style>
+body {
+    background-color: #034;
+    margin: 0;
+}
+</style>
+</head>
+<body>
+<div id="horserace" style="height: 100%; width: 100%;"></div>
+<script src="horserace.js"></script>
+<script>
+var race = window.location.search.match(/[?&]race=([0-9]*)/)[1];
+HorseRace.replay(race);
+</script>
+</div>
+</body>
+</html>

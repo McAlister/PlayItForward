@@ -168,4 +168,11 @@ function GPController(contextPath, $scope, $http, $filter) {
         
         return false;
     };
+
+    $scope.getHorseraceSrc = function() {
+        if ($scope.GPs.currentEvent)
+            return '/assets/horserace/index.html?race=' + $scope.GPs.currentEvent.id;
+        else
+            return '/assets/horserace/notfound.html';
+    }
 }

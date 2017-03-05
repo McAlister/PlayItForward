@@ -7,6 +7,7 @@ women.txt
 /build/
 /dist/
 /node_modules/
+/out/
 
 # Ignore Gradle GUI config
 gradle-app.setting
