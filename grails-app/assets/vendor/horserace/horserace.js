@@ -21,7 +21,7 @@ HorseRace = {};
 
     function updateTooltip (horse, horseInfo) {
         var tdata = horse.parentNode.getElementsByClassName('tdata')[0];
-        tdata.innerHTML = "Name: " + horseInfo.name + "<br>Score: " + horseInfo.score;
+        tdata.innerHTML = horseInfo.name + "<br>Points: " + horseInfo.score;
     }
 
     function calculatePositions(round) {
@@ -129,7 +129,11 @@ HorseRace = {};
             horseWidth = getHorseWidth();
         stick.style.left = pos.left;
         horse.style.left = pos.left-Math.floor(horseWidth/2);
-        tooltip.style.left = pos.left + (pos.left < horserace.clientWidth/2 ? +horseWidth/2+30 : -horseWidth/2-280);
+        if (pos.left < horserace.clientWidth/2) {
+            tooltip.style.left = pos.left + horseWidth/2 + 30;
+        } else {
+            tooltip.style.left = pos.left - horseWidth/2 - 30 - tooltip.clientWidth;
+        }
         updateTooltip(horse, horseInfo);
     }
 

@@ -51,12 +51,12 @@
     margin-top: -1.5em;
     cursor: default;
     box-shadow: 0 0 3px rgba(0,0,0,.5);
-    display: none;
+    visibility: hidden;
     user-select: text;
 }
 #horserace .wave.clicked .tooltip {
     transition: all 0.3s ease-in-out;
-    display: inline;
+    visibility: visible;
 }
 #horserace .tooltip .profile {
     float: left;
