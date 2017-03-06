@@ -64,6 +64,7 @@
 #horserace .tooltip .profile img {
     height: 100px;
     width: 100px;
+    display: block;
 }
 #horserace .tooltip .tdata {
     display: inline-block;
