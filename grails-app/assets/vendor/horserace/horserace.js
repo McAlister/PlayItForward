@@ -2,6 +2,7 @@ HorseRace = {};
 
 (function app () {
     var scoreRange = 1000,
+        maxRounds = 15,
         maxPoints = 45,
         OFFSET = 1,
         horserace = document.getElementById('horserace');
@@ -211,7 +212,7 @@ HorseRace = {};
         var myTimer,
             round = 1,
             speed = window.location.search.match(/[?&]fast/) ? 300 : 1000;
-        rounds = rounds || 15;
+        rounds = rounds || maxRounds;
 
         getRound(event, round);
         myTimer = window.setInterval(function roundTimer() {
@@ -238,6 +239,7 @@ HorseRace = {};
             if (key === 37 || key === 39) { // left arrow, right arrow
                 stop();
                 round = (key === 37 ? myRound-1 : myRound+1);
+                round = round < 1 ? 1 : round > maxRounds ? maxRounds : round;
                 getRound(event, round);
                 document.getElementById('horseround').innerHTML = 'Loading round ' + round + ' ...';
             }
