@@ -32,19 +32,19 @@ HorseRace = {};
             pos = getPosition(i, 0, round);
             wave = waves[i];
             children = Array.prototype.slice.call(wave.children);
-            wave.style.top = pos.top;
-            wave.style.backgroundPosition = 0-20*i;
+            wave.style.top = pos.top + 'px';
+            wave.style.backgroundPosition = 0-20*i + 'px';
             stick = wave.getElementsByClassName('stick')[0];
-            stick.style.left = stick.style.left || Math.floor(horseWidth/2);
+            stick.style.left = (stick.style.left || Math.floor(horseWidth/2)) + 'px';
             horse = wave.getElementsByClassName('horse')[0];
-            horse.style.width = horse.style.height = horseWidth;
-            horse.style.left = horse.style.left || 0;
+            horse.style.width = horse.style.height = horseWidth + 'px';
+            horse.style.left = (horse.style.left || 0) + 'px';
 
             marks = children.filter(function(el){return el.className === 'scoremark'});
             for (j = 0; j < marks.length; j++) {
                 markpos = getPosition(i, parseInt(marks[j].textContent, 10), round);
-                marks[j].style.top = Math.floor(horseWidth/2);
-                marks[j].style.left = markpos.left;
+                marks[j].style.top = Math.floor(horseWidth/2) + 'px';
+                marks[j].style.left = markpos.left + 'px';
             }
         }
     }
@@ -57,7 +57,7 @@ HorseRace = {};
         wave.style.width = '400%';
         wave.style.height = '300px';
         wave.style.position = "absolute";
-        wave.style.left = 0;
+        wave.style.left = '0px';
         wave.style.backgroundImage = 'url("sine.png")';
         wave.style.backgroundSize = '100px 300px';
         wave.style.backgroundRepeat = 'repeat-x';
@@ -76,15 +76,15 @@ HorseRace = {};
         stick.className = 'stick';
         stick.style.position = 'absolute';
         stick.style.top = '20px';
-        stick.style.width = 3;
-        stick.style.height = 500;
+        stick.style.width = '3px';
+        stick.style.height = '500px';
         stick.src = "stick.png";
         wave.appendChild(stick);
 
         horse = document.createElement('img');
         horse.className = 'horse';
         horse.style.position = 'absolute';
-        horse.style.top = 0;
+        horse.style.top = '0px';
         if (horseInfo.img && !horseInfo.img.match('/')) {
             horseInfo.img = '/assets/race/' + horseInfo.img;
         }
@@ -102,8 +102,8 @@ HorseRace = {};
         tooltip = document.createElement('div');
         tooltip.className = 'tooltip';
         tooltip.style.position = 'absolute';
-        tooltip.style.top = 0;
-        tooltip.style.left = 100;
+        tooltip.style.top = '0px';
+        tooltip.style.left = '100px';
         tooltip.style.zIndex = 1;
         tooltip.innerHTML = '<div class="profile"><img src="'+horse.src+'"></div><span class="tdata"></span>';
         wave.appendChild(tooltip);
@@ -129,12 +129,12 @@ HorseRace = {};
             stick = horse.parentNode.getElementsByClassName('stick')[0],
             tooltip = horse.parentNode.getElementsByClassName('tooltip')[0],
             horseWidth = getHorseWidth();
-        stick.style.left = pos.left;
-        horse.style.left = pos.left-Math.floor(horseWidth/2);
+        stick.style.left = pos.left + 'px';
+        horse.style.left = (pos.left-Math.floor(horseWidth/2)) + 'px';
         if (pos.left < horserace.clientWidth/2) {
-            tooltip.style.left = pos.left + horseWidth/2 + 10;
+            tooltip.style.left = (pos.left + horseWidth/2 + 10) + 'px';
         } else {
-            tooltip.style.left = pos.left - horseWidth/2 - 10 - tooltip.clientWidth;
+            tooltip.style.left = (pos.left - horseWidth/2 - 10 - tooltip.clientWidth) + 'px';
         }
         updateTooltip(horse, horseInfo);
     }
