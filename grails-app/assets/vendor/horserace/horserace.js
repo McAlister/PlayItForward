@@ -87,7 +87,7 @@ HorseRace = {};
         horse.style.position = 'absolute';
         horse.style.top = '0px';
         if (horseInfo.img && !horseInfo.img.match('/')) {
-            horseInfo.img = '/assets/race/' + horseInfo.img;
+            horseInfo.img = '/assets/race/oval/' + horseInfo.img;
         }
         horse.src = horseInfo.img || "placeholder.png"
         horse.onclick = function() {
@@ -106,7 +106,8 @@ HorseRace = {};
         tooltip.style.top = '0px';
         tooltip.style.left = '100px';
         tooltip.style.zIndex = 1;
-        tooltip.innerHTML = '<div class="profile"><img src="'+horse.src+'"></div><span class="tdata"></span>';
+        tooltip.innerHTML = '<div class="profile"><img src="'+horse.src.replace('/oval/', '/')+'"></div>' +
+            '<span class="tdata"></span>';
         wave.appendChild(tooltip);
 
         horserace.appendChild(wave);
