@@ -123,7 +123,7 @@ HorseRace = {};
         return document.getElementsByClassName('wave').length;
     }
     function getHorseWidth() {
-        return 1.2*Math.floor(horserace.clientHeight/(getWaveCount()+OFFSET));
+        return Math.max(1.2*Math.floor(horserace.clientHeight/(getWaveCount()+OFFSET)), 50);
     }
 
     function updateHorseScore (horse, horseInfo, round) {
