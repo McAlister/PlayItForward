@@ -9,8 +9,8 @@ class BootStrap
 
         TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
 
-        new User(fullName: "Simone Aiken", email:"play_it_forward@outlook.com",
-                hash:"\$2a\$06\$bXZgXYru5o1rDhQXcBpBLeh8yhMzEKUimbFhqEQl8jYZbF/P.ruRm").save();
+//        new User(fullName: "Simone Aiken", email:"play_it_forward@outlook.com",
+//                hash:"\$2a\$06\$bXZgXYru5o1rDhQXcBpBLeh8yhMzEKUimbFhqEQl8jYZbF/P.ruRm").save();
 
         Sysconfig dbVersion = Sysconfig.findByKey("DB Version");
         if ( dbVersion == null) {
