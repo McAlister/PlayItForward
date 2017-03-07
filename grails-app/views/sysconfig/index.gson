@@ -1,0 +1,8 @@
+import playitforward.Sysconfig
+
+model {
+	Iterable<Sysconfig> sysconfigList
+}
+
+json tmpl.sysconfig(sysconfigList ?: [])
+
