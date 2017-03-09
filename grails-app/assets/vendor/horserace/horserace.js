@@ -86,10 +86,10 @@ HorseRace = {};
         horse.className = 'horse';
         horse.style.position = 'absolute';
         horse.style.top = '0px';
-        if (horseInfo.img && !horseInfo.img.match('/')) {
+        if (horseInfo.img && !horseInfo.img.match(/\//)) {
             horseInfo.img = '/assets/race/oval/' + horseInfo.img;
         }
-        horse.src = horseInfo.img || "placeholder.png"
+        horse.src = horseInfo.img || "placeholder.png";
         horse.onclick = function() {
             var waves;
             if (this.parentNode.classList.contains('clicked'))
@@ -97,7 +97,7 @@ HorseRace = {};
             waves = Array.prototype.slice.call(document.getElementsByClassName('wave'));
             waves.forEach(function(el){el.classList.remove('clicked');});
             this.parentNode.classList.add('clicked');
-        }
+        };
         wave.appendChild(horse);
 
         tooltip = document.createElement('div');
@@ -192,7 +192,7 @@ HorseRace = {};
                 var json = JSON.parse(this.responseText);
                 success(json);
             }
-        }
+        };
         xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
         xhr.send();
         return xhr;
