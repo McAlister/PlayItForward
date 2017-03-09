@@ -21,7 +21,7 @@ describe("playitforward.index module", function() {
             function headerValidation(headers) {
                 return headers["X-Requested-With"] == "XMLHttpRequest";
             }
-            $httpBackend.expectGET("/GrailsApp/application", headerValidation).respond(200);
+            $httpBackend.expectGET("/GrailsApp/api/application", headerValidation).respond(200);
 
             var promise = applicationDataFactory.get();
 

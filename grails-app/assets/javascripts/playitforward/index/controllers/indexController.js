@@ -31,12 +31,12 @@ function IndexController(applicationDataFactory, contextPath, $state, $scope, $h
         chosenType: null
     };
 
-    $http.get('/PersonType').then(
+    $http.get('/api/PersonType').then(
 
         function successCallback(response) {
             $scope.mailData.types = response.data;
         }, function errorCallback(response) {
-            alert ('Error: Could not contact database.');
+            alert ('Error: Could not contact database: ' + response.data.message);
     });
 
     $scope.signUpForMailList = function() {
@@ -54,8 +54,8 @@ function IndexController(applicationDataFactory, contextPath, $state, $scope, $h
             }
         };
 
-        $http.post('/Person', data, config).then(
-            function(response){
+        $http.post('/api/Person', data, config).then(
+            function(){
                 alert ('You were added successfully.');
             },
             function(response){
@@ -77,7 +77,7 @@ function IndexController(applicationDataFactory, contextPath, $state, $scope, $h
 
         $http({
             method: 'GET',
-            url: '/EventBounty'
+            url: '/api/EventBounty'
         }).then(function successCallback(response) {
             $scope.bountyArray.bounties = response.data;
         }, function errorCallback(response) {
@@ -248,4 +248,41 @@ function IndexController(applicationDataFactory, contextPath, $state, $scope, $h
     };
 
     $interval($scope.autoIncrement, 3000);
+    
+    // /////////////// //
+    // Login Functions //
+    // /////////////// //
+    
+    $scope.authenticated = false;
+    $scope.loginError = '';
+    $scope.credentials = {};
+    $scope.accessToken = '';
+    $scope.login = function() {
+        
+        $http.post('/api/login', {
+            username: $scope.credentials.username,
+            password: $scope.credentials.password
+        }).success(function(data) {
+            
+            if (data.access_token) {
+
+                $scope.authenticated = true;
+                $scope.accessToken = data.access_token;
+                $scope.loginError = '';
+            } 
+            else {
+                
+                $scope.authenticated = false;
+                $scope.loginError = 'Bad User Name Or Password.';
+                $scope.accessToken = '';
+            }
+            
+        }).error(function() {
+
+            $scope.authenticated = false;
+            $scope.loginError = 'Bad Username or Password.';
+            $scope.accessToken = '';
+        });
+    }
+    
 }

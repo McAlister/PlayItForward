@@ -7,6 +7,8 @@ import org.apache.http.client.methods.HttpPost
 import org.apache.http.impl.client.HttpClients
 import org.apache.http.message.BasicNameValuePair
 
+import grails.plugin.springsecurity.annotation.Secured
+
 import javax.annotation.PostConstruct
 import java.util.regex.Matcher
 import java.util.regex.Pattern
@@ -61,6 +63,7 @@ class PushNotificationController {
         respond results, model: [PushNotificationCount: results.size()];
     }
 
+    @Secured('ROLE_ADMIN')
     def index(String gpName, Integer roundNum) {
 
         logger.info("Called Wizard's Pairings for " + gpName + " round " + roundNum + ".");
@@ -83,6 +86,7 @@ class PushNotificationController {
         respond parsedSeatings, model:[PushNotificationCount: parsedSeatings.size()];
     }
 
+    @Secured('ROLE_ADMIN')
     def pushPastTimeGames(String gpName, Integer roundNum) {
 
         logger.info("Called Pasttime's Pairings for " + gpName + " round " + roundNum + ".");
@@ -104,6 +108,7 @@ class PushNotificationController {
         respond parsedSeatings, model:[PushNotificationCount: parsedSeatings.size()];
     }
 
+    @Secured('ROLE_ADMIN')
     def pushGameKeeper(String gpName, Integer roundNum) {
 
         logger.info("Called GameKeeper's Pairings for " + gpName + " round " + roundNum + ".");

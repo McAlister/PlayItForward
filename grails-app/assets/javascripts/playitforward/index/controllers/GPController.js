@@ -17,7 +17,7 @@ function GPController(contextPath, $scope, $http, $filter) {
         eventWinners: {}
     };
 
-    $http.get('/Event').then(
+    $http.get('/api/Event').then(
         
         function successCallback(response) {
       
@@ -103,7 +103,7 @@ function GPController(contextPath, $scope, $http, $filter) {
         return "";
     };
 
-    $http.get('/EventWinner').then(
+    $http.get('/api/EventWinner').then(
 
         function successCallback(response) {
 
@@ -146,7 +146,7 @@ function GPController(contextPath, $scope, $http, $filter) {
 
         $http({
             method: 'GET',
-            url: '/EventBounty'
+            url: '/api/EventBounty'
         }).then(function successCallback(response) {
             $scope.bountyArray.bounties = response.data;
         }, function errorCallback(response) {
