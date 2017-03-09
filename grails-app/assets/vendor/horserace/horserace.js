@@ -202,7 +202,7 @@ HorseRace = {};
         if (HorseRace.inflight)
             HorseRace.inflight.abort();
         HorseRace.inflightRound = round;
-        HorseRace.inflight = ajax('/EventStanding/event/'+event+'/round/'+round, function(json) {
+        HorseRace.inflight = ajax('/api/EventStanding/event/'+event+'/round/'+round, function(json) {
             processScores(json, round);
             HorseRace.inflightRound = undefined;
             HorseRace.inflight = undefined;

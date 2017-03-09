@@ -59,9 +59,14 @@
                             Resources
                         </a>
                     </li>
-                    <li class="navigation-list-item">
+                    <li class="navigation-list-item" ng-hide="authenticated">
                         <a ui-sref="login" class="navigation-link">
                             Login
+                        </a>
+                    </li>
+                    <li class="navigation-list-item" ng-show="authenticated">
+                        <a ui-sref="logoff" class="navigation-link">
+                            Logoff
                         </a>
                     </li>
                     <li class="navigation-list-item">

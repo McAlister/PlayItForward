@@ -1,36 +1,42 @@
 
 <div role="main">
 
-    <form class="centered-form">
+    <h1>Login: </h1>
 
-        <h2 class="form-signin-heading">Event Organizer Login:</h2>
+    <div class="alert alert-danger" ng-show="loginError">
+
+        There was a problem logging in. Please try again.
+
+        <br />
+
+        {{loginError}}
+
+    </div>
+
+    <div class="alert alert-success" ng-show="accessToken">
+
+        You logged in successfully.
+
+    </div>
+
+    <form class="centered-form" role="form" ng-submit="login()">
 
         <div class="form-group">
-            <label for="inputEmail" class="sr-only">Email address</label>
-            <input type="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
+
+            <input type="text" class="form-control" id="username"
+                   placeholder="Email Address" name="username" ng-model="credentials.username"/>
+
         </div>
 
         <div class="form-group">
-            <label for="inputPassword" class="sr-only">Password</label>
-            <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
+
+            <input type="password" class="form-control" id="password"
+                   placeholder="Password" name="password" ng-model="credentials.password"/>
+
         </div>
 
-        <div class="form-group">
-            <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
-        </div>
+        <button type="submit" class="btn btn-primary right">Submit</button>
 
     </form>
-
-    <!--
-    <div id="controllers" role="navigation">
-        <h2>Available Controllers:</h2>
-        <ul ng-cloak>
-            <li ng-repeat="c in indexCtrl.applicationData.controllers | orderBy:'name'" class="controller">
-                <a ng-if="!indexCtrl.stateExists(c.logicalPropertyName+'.list')" ng-href="{{indexCtrl.contextPath}}/{{c.logicalPropertyName}}">{{c.name}}</a>
-                <a ng-if="indexCtrl.stateExists(c.logicalPropertyName+'.list')" ui-sref="{{c.logicalPropertyName}}.list">{{c.name}}</a>
-            </li>
-        </ul>
-    </div>
-    -->
 
 </div>
