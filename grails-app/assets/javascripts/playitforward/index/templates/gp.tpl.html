@@ -115,6 +115,18 @@
     <div id="gp-race" ng-show="isActiveTab('race')">
 
         <div ng-if="isFutureGP()">{{activate('summary')}}</div>
+
+        <p>
+
+            This animation represents the standings of the women and
+            non-binary players in the chosen GP from round to round.
+            In respect for women who wish to remain anonymous we are using
+            random names and avatars by default.  To update your name and/or
+            avatar <a href="mailto:play_it_forward@outlook.com">contact us</a>.
+            You can use your real name/picture or any pseudonym/avatar you desire.
+
+        </p>
+
         <iframe ng-if="!isFutureGP()" src="{{getHorseraceSrc()}}" frameborder="0" width="100%" height="600px"></iframe>
 
     </div>
