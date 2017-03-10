@@ -10,19 +10,22 @@
 	use strict;
     use DBI;
 
-	if (@ARGV != 2)
+	if (@ARGV != 3)
 	{
-		print "\n\tUsage: <gptag> <round>\n\n";
+		print "\n\tUsage: <gptag> <round> <pass>\n\n";
 		exit 1;
 	}
 
-    my $dbh = DBI->connect("DBI:Pg:dbname=magicmom;host=localhost", "magic", "grinder");
+    my $pass = $ARGV[2];
+    my $dbh = DBI->connect("DBI:Pg:dbname=magicmom;host=localhost", "magic", $pass);
+    #my $dbh = DBI->connect("DBI:Pg:dbname=magicmom;host=magicmom.c00icap1mfll.us-west-2.rds.amazonaws.com", "magic", $pass);
 	my $abbr = $ARGV[0];
 	my $round = $ARGV[1];
 
 	my $day1 = "07";
 	my $day2 = "08";
 	my $month = "01";
+    my $prefix = "";
 	if ($abbr eq "gppit17") {
 
 	    $month = "02";
@@ -36,12 +39,13 @@
 	}
 	elsif ($abbr eq "gpvan17") {
 
+        $prefix = "0";
 	    $month = "02";
 	    $day1 = "18";
 	    $day2 = "19";
 	}
 
-	my $url = "http://magic.wizards.com/en/events/coverage/$abbr/round-" . $round . "-standings-2017-$month-$day1";
+	my $url = "http://magic.wizards.com/en/events/coverage/$abbr/round-$prefix" . $round . "-standings-2017-$month-$day1";
 	my $file = "round-" . $round . "-standings-2017-$month-$day1";
 	if ( $round > 9 )
 	{
