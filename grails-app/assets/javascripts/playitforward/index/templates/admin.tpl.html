@@ -1,0 +1,38 @@
+
+<div role="main">
+
+    <div class="bounty-tabs">
+        <ul>
+            <li ng-class="tabClass('mail')" ng-click="activate('mail')">Mail List</li>
+            <li ng-class="tabClass('prizes')" ng-click="activate('prizes')" >Prizes</li>
+            <li ng-class="tabClass('winners')" ng-click="activate('winners')">Winners</li>
+            <li ng-class="tabClass('players')" ng-click="activate('players')">Players</li>
+        </ul>
+    </div>
+
+
+    <div id="admin-mail" ng-show="isActiveTab('mail')">
+
+        mail
+
+    </div>
+
+    <div id="admin-prizes" ng-show="isActiveTab('prizes')">
+
+        prize
+
+    </div>
+
+    <div id="admin-winners" ng-show="isActiveTab('winners')">
+
+        Win
+
+    </div>
+
+    <div id="admin-players" ng-show="isActiveTab('players')">
+
+        play
+
+    </div>
+
+</div>

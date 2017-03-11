@@ -113,6 +113,9 @@ clientDependencies {
         'angular-animate'('1.6.x', into: 'angular', from: 'release') {
             include 'angular-animate.min.js'
         }
+        'angular-cookies'('1.5.x', into: 'angular') {
+            include 'angular-cookies.js'
+        }
         'bootstrap'('3.3.x', into: 'bootstrap', from: 'dist/css') {
             include 'bootstrap.css'
         }

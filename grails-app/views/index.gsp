@@ -81,6 +81,11 @@
                             About Us
                         </a>
                     </li>
+                    <li class="navigation-list-item" ng-if="role == 'ROLE_ADMIN'">
+                        <a ui-sref="admin" class="navigation-link">
+                            Administration
+                        </a>
+                    </li>
                 </ul>
 
             </div>

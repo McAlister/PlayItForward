@@ -1,5 +1,6 @@
 //= wrapped
 //= require /angular/angular
+//= require /angular/angular-cookies
 //= require /angular/ui-bootstrap-tpls
 //= require /angular/angular-ui-router
 //= require /angular/angular-animate
@@ -13,7 +14,8 @@ angular.module('playitforward.index', [
     'playitforward.core',
     'ui.bootstrap.dropdown',
     'ui.bootstrap.collapse',
-    'ui.router'
+    'ui.router',
+    'ngCookies'
 ])
 .config(config);
 
@@ -55,7 +57,12 @@ function config($stateProvider, $urlRouterProvider) {
         .state('mailingList', {
             url: '/mailingList',
             templateUrl: '/playitforward/index/mailList.html'
-        });
+        })
+        .state('admin', {
+            url: '/admin',
+            controller: 'AdminController',
+            templateUrl: '/playitforward/index/admin.html'
+    });
 
     $urlRouterProvider.otherwise('/');
 }

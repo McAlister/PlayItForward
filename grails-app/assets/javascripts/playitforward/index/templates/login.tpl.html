@@ -1,7 +1,8 @@
 
 <div role="main">
 
-    <h1>Login: </h1>
+    <h1 ng-hide="authenticated">Login: </h1>
+    <h1 ng-show="authenticated">Log Off: </h1>
 
     <div class="alert alert-danger" ng-show="loginError">
 
@@ -13,13 +14,7 @@
 
     </div>
 
-    <div class="alert alert-success" ng-show="accessToken">
-
-        You logged in successfully.
-
-    </div>
-
-    <form class="centered-form" role="form" ng-submit="login()">
+    <form ng-hide="authenticated" class="centered-form" role="form" ng-submit="login()">
 
         <div class="form-group">
 
@@ -35,7 +30,13 @@
 
         </div>
 
-        <button type="submit" class="btn btn-primary right">Submit</button>
+        <button type="submit" class="btn btn-primary center-block">Log In</button>
+
+    </form>
+
+    <form ng-show="authenticated" class="centered-form" role="form" ng-submit="logOff()">
+
+        <button type="submit" class="btn btn-primary center-block">Log Off</button>
 
     </form>
 
