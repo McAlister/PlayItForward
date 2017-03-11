@@ -87,7 +87,7 @@ HorseRace = {};
         horse.style.position = 'absolute';
         horse.style.top = '0px';
         if (horseInfo.img && !horseInfo.img.match(/\//)) {
-            horseInfo.img = '/assets/race/oval/' + horseInfo.img;
+            horseInfo.img = 'https://s3-us-west-2.amazonaws.com/playitforward-magic/images/race/oval/' + horseInfo.img;
         }
         horse.src = horseInfo.img || "placeholder.png";
         horse.onclick = function() {
