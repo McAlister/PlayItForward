@@ -127,7 +127,7 @@ HorseRace = {};
     }
 
     function updateHorseScore (horse, horseInfo, round) {
-        var pos = getPosition(0, horseInfo.score, round),
+        var pos = getPosition(0, (round === 0 ? 0 : horseInfo.score), round),
             stick = horse.parentNode.getElementsByClassName('stick')[0],
             tooltip = horse.parentNode.getElementsByClassName('tooltip')[0],
             horseWidth = getHorseWidth();
@@ -202,12 +202,16 @@ HorseRace = {};
         if (HorseRace.inflight)
             HorseRace.inflight.abort();
         HorseRace.inflightRound = round;
-        HorseRace.inflight = ajax('/api/EventStanding/event/'+event+'/round/'+round, function(json) {
+        HorseRace.inflight = ajax('/api/EventStanding/event/'+event+'/round/'+(round||1), function(json) {
             processScores(json, round);
             HorseRace.inflightRound = undefined;
             HorseRace.inflight = undefined;
         });
     }
+
+    HorseRace.showRoundZero = function(event) {
+        getRound(event, 0);
+    };
 
     HorseRace.replay = function (event, rounds) {
         var myTimer,
@@ -241,7 +245,7 @@ HorseRace = {};
                 stop();
                 round = (key === 37 ? myRound-1 : myRound+1);
                 round = round < 1 ? 1 : round > maxRounds ? maxRounds : round;
-                getRound(event, round);
+                getRound(event, round, true);
                 document.getElementById('horseround').innerHTML = 'Loading round ' + round + ' ...';
             }
         });
