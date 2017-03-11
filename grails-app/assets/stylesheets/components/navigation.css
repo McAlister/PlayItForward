@@ -10,12 +10,11 @@
 
 @media screen and (max-width: 480px) {
     .navigation {
-        text-align: center;
+        padding: 0;
     }
 
-    .navigation li {
-        display: inline;
-        float: left;
+    .navigation-list-item {
+        display: inline-block;
         padding: 0 20px 0 0;
     }
 }

@@ -10,10 +10,19 @@
 *= require /bootstrap/bootstrap
 *= require base
 *= require components/body-wrapper
+*= require components/bounty-tabs
 *= require components/centered-form
+*= require components/gp-dropdown
 *= require components/header
-*= require components/main-content
+*= require components/page
 *= require components/navigation
+*= require components/shoutout
 *= require components/sidebar
+*= require components/table
 *= require_self
 */
+
+.has-error {
+    color: #ffcc00;
+    font-weight: bold;
+}

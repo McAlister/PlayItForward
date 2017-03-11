@@ -1,0 +1,7 @@
+.gp-dropdown {
+    float: right;
+}
+
+.gp-dropdown select {
+    color: #000;
+}

@@ -32,9 +32,11 @@
 
         <div class="sidebar">
 
-            <header class="header">
-                <image src="/assets/banner.png" class="main-logo-image"/>
-            </header>
+            <a ui-sref="index">
+                <header class="header">
+                    <image src="/assets/banner.png" class="main-logo-image"/>
+                </header>
+            </a>
 
             <div class="navigation">
 
@@ -85,7 +87,7 @@
 
         </div>
 
-        <div ui-view class="main-content"></div>
+        <div ui-view class="page"></div>
 
     </div>
 

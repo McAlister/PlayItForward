@@ -1,14 +1,11 @@
 .sidebar {
+    background: rgba(0, 0, 0, .4);
     flex: 0 0 200px;
 }
 
 @media screen and (max-width: 480px) {
-
-    .body-wrapper {
-        flex-direction: column;
-    }
-
-    .main-content {
-        width: 100%;
+    .sidebar {
+        flex: 0;
+        padding: 0 30px 10px 30px;
     }
 }

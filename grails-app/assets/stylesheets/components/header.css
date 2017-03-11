@@ -1,4 +1,17 @@
 .header {
     position: relative;
-    margin: 10px 0 10px 10px;
+    margin: 10px 10px 10px 10px;
+}
+
+@media screen and (max-width: 480px) {
+    .header {
+        margin: 10px 0;
+        text-align: center;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .main-logo-image {
+        max-width: 50%;
+    }
 }
