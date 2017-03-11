@@ -122,13 +122,15 @@ function GPController(contextPath, $scope, $http, $filter) {
     $scope.getWinnerImageName = function() {
 
         if ($scope.GPs.currentEvent != null) {
-            
-            var name = $scope.GPs.currentEvent.name;
-            name = name.replace(/\s/g, "-").substring(3);
-            return "/assets/winners/" + name + ".jpg";
+
+            var winner = $scope.GPs.eventWinners[$scope.GPs.currentEvent.id];
+            if (winner != null && winner.imageName != null) {
+
+                return "/assets/winners/" + winner.imageName;
+            }
         }
-        
-        return '';
+
+        return "/assets/winners/Unknown.jpg";
     };
 
     // ////////// //

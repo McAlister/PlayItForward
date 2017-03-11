@@ -17,8 +17,8 @@
 	}
 
     my $pass = $ARGV[2];
-    my $dbh = DBI->connect("DBI:Pg:dbname=magicmom;host=localhost", "magic", $pass);
-    #my $dbh = DBI->connect("DBI:Pg:dbname=magicmom;host=magicmom.c00icap1mfll.us-west-2.rds.amazonaws.com", "magic", $pass);
+    #my $dbh = DBI->connect("DBI:Pg:dbname=magicmom;host=localhost", "magic", $pass);
+    my $dbh = DBI->connect("DBI:Pg:dbname=magicmom;host=magicmom.c00icap1mfll.us-west-2.rds.amazonaws.com", "magic", $pass);
 	my $abbr = $ARGV[0];
 	my $round = $ARGV[1];
 
@@ -44,6 +44,12 @@
 	    $day1 = "18";
 	    $day2 = "19";
 	}
+    elsif ($abbr eq "gpnj17") {
+
+	    $month = "03";
+	    $day1 = "11";
+	    $day2 = "12";
+    }
 
 	my $url = "http://magic.wizards.com/en/events/coverage/$abbr/round-$prefix" . $round . "-standings-2017-$month-$day1";
 	my $file = "round-" . $round . "-standings-2017-$month-$day1";

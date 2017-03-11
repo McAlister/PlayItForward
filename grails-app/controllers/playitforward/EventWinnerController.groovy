@@ -1,5 +1,7 @@
 package playitforward
 
+import grails.plugin.springsecurity.annotation.Secured
+
 import static org.springframework.http.HttpStatus.*
 import grails.transaction.Transactional
 
@@ -13,7 +15,47 @@ class EventWinnerController {
         respond EventWinner.list(), model:[eventWinnerCount: EventWinner.count()]
     }
 
-    def show(EventWinner eventWinner) {
-        respond eventWinner
+    @Secured('ROLE_ADMIN')
+    @Transactional
+    def save(EventWinner winner) {
+
+        if (winner == null) {
+
+            transactionStatus.setRollbackOnly()
+            render status: NOT_FOUND
+            return
+        }
+
+        if (winner.hasErrors()) {
+
+            transactionStatus.setRollbackOnly()
+            respond winner.errors, view:'create'
+            return
+        }
+
+        winner.save flush:true;
+        respond winner, [status: CREATED, view:"show"];
+    }
+
+    @Secured('ROLE_ADMIN')
+    @Transactional
+    def update(EventWinner winner) {
+
+        if (winner == null) {
+
+            transactionStatus.setRollbackOnly()
+            render status: NOT_FOUND
+            return
+        }
+
+        if (winner.hasErrors()) {
+
+            transactionStatus.setRollbackOnly()
+            respond winner.errors, view:'edit'
+            return
+        }
+
+        winner.save flush:true;
+        respond winner, [status: OK, view:"show"];
     }
 }

@@ -137,15 +137,63 @@
 
     </div>
 
-    <div id="admin-prizes" ng-show="isActiveTab('prizes')">
+    <div id="admin-winners" ng-show="isActiveTab('prizes')">
 
-        prize
+        Win
 
     </div>
 
-    <div id="admin-winners" ng-show="isActiveTab('winners')">
+    <div id="admin-prizes" ng-show="isActiveTab('winners')">
 
-        Win
+        <div class="alert alert-danger" ng-show="winnerData.winnerError">
+
+            There was a problem retrieving the ail list.
+
+            <br />
+
+            {{personData.personError}}
+
+        </div>
+
+        <div ng-show="winnerData.winnerError==''">
+
+            <h1>Add/Edit:</h1>
+
+            <div class="gp-dropdown">
+                <select name="winnerSelect" id="winnerSelect" ng-model="winnerData.currentEvent"
+                        ng-options="event.name for event in winnerData.eventList track by event.id"
+                        ng-change="selectWinnerEvent()">
+                </select>
+            </div>
+
+            <form ng-submit="upsertWinner()" class="form">
+
+                <div class="form-group">
+                    <label for="inputWinnerName" class="control-label">Name:</label>
+                    <input type="text" id="inputWinnerName" class="form-control" placeholder="Name" ng-model="winnerData.currentWinner.name" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="inputRank" class="control-label">Rank:</label>
+                    <input type="text" id="inputRank" class="form-control" placeholder="Rank" ng-model="winnerData.currentWinner.ranking" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="inputRecord" class="control-label">Record:</label>
+                    <input type="text" id="inputRecord" class="form-control" placeholder="Record" ng-model="winnerData.currentWinner.record" required >
+                </div>
+
+                <div class="form-group">
+                    <label for="inputBlurb" class="control-label">Blurb:</label>
+                    <textarea cols="40" rows="5" type="text" id="inputBlurb" class="form-control" ng-model="winnerData.currentWinner.blurb" required>
+                    </textarea>
+                </div>
+
+                <button class="btn btn-primary center-block" type="submit">Add/Edit</button>
+
+            </form>
+
+        </div>
 
     </div>
 

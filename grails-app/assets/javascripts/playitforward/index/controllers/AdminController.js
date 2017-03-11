@@ -4,7 +4,7 @@ angular
     .module("playitforward.index")
     .controller("AdminController", AdminController);
 
-function AdminController(contextPath, userPersistenceService, $scope, $http, $filter) {
+function AdminController(contextPath, userPersistenceService, $scope, $http) {
 
     var vm = this;
     vm.contextPath = contextPath;
@@ -143,5 +143,116 @@ function AdminController(contextPath, userPersistenceService, $scope, $http, $fi
         }
 
     };
+
+    // //////////////// //
+    // Event Winner Tab //
+    // //////////////// //
+
+    $scope.winnerData = {
+
+        currentWinner: null,
+        currentEvent: null,
+        winnerError: '',
+        winnerHash: {},
+        eventList: []
+    };
+
+    $scope.getEvents = function() {
+
+        $http.get('/api/Event').then(
+
+            function successCallback(response) {
+
+                $scope.winnerData.eventList = response.data;
+                $scope.winnerData.currentEvent = $scope.winnerData.eventList[0];
+                $scope.winnerData.currentWinner = 
+                    $scope.winnerData.winnerHash[$scope.winnerData.currentEvent.id];
+
+            }, function errorCallback(response) {
+
+                $scope.winnerData.winnerError = 'Error: Could not contact database: ' + response.data.message;
+
+            });
+    };
+
+    $scope.getWinners = function() {
+
+        $http.get('/api/EventWinner').then(
+            
+            function successCallback(response) {
+
+                for (var i = 0 ;i < response.data.length ; ++i) {
+
+                    var winner = response.data[i];
+                    $scope.winnerData.winnerHash[winner.event.id] = winner;
+                }
+                
+                $scope.getEvents();
+
+            }, function errorCallback(response) {
+
+                $scope.winnerData.winnerError = 'Error: Could not contact database: ' + response.data.message;
+
+            });
+    };
     
+    $scope.getWinners();
+    
+    $scope.selectWinnerEvent = function() {
+
+        $scope.winnerData.currentWinner =
+            $scope.winnerData.winnerHash[$scope.winnerData.currentEvent.id];
+    };
+
+    $scope.upsertWinner = function() {
+
+        var winner = $scope.winnerData.currentWinner;
+        
+        var data = {
+            
+            name: winner.name,
+            ranking: winner.ranking,
+            record: winner.record,
+            blurb: winner.blurb,
+            event: {
+                id: $scope.winnerData.currentEvent.id
+            }
+        };
+
+        var config = {
+            headers : {
+                'Content-Type': 'application/json;charset=utf-8;'
+            }
+        };
+
+        if(winner.id != null) {
+
+            data['id'] = winner.id;
+            data['imageName'] = winner.imageName;
+
+            $http.put('/api/EventWinner/' + data['id'], data, config).then(
+                function(){
+                    $scope.getPeople();
+                    alert ('They were updated successfully.');
+                },
+                function(response){
+                    alert ('Error: Failed to update winner: ' + response.data.message);
+                }
+            );
+        }
+        else {
+
+            data['imageName'] = 'Unknown.jpg';
+            
+            $http.post('/api/EventWinner', data, config).then(
+                function(){
+                    $scope.getPeople();
+                    alert ('They were added successfully.');
+                },
+                function(response){
+                    alert ('Error: Failed to add winner: ' + response.data.message);
+                }
+            );
+        }
+    };
 }
