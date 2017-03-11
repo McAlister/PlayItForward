@@ -95,8 +95,8 @@
     display: -ms-flex;
     display: -webkit-flex;
     display: flex;
-    justify-content: center; /* align horizontal */
-    align-items: center; /* align vertical */
+    justify-content: center;
+    align-items: center;
 }
 #racemask button {
     width: 100px;
@@ -104,7 +104,6 @@
     background: black;
     border: none;
     border-radius: 100%;
-    margin: auto;
     cursor: pointer;
 }
 #racemask button:focus {
@@ -121,4 +120,17 @@
     border-style: solid;
     border-width: 20px 0 20px 40px;
     border-color: transparent transparent transparent grey;
+}
+
+/* media controls */
+#horserace .controls {
+    position: absolute;
+    top: 0.5em;
+    right: 1em;
+}
+#horserace .controls span {
+    cursor: pointer;
+    color: white;
+    font-size: 1.5em;
+    user-select: none;
 }
