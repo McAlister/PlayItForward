@@ -255,6 +255,12 @@ function IndexController(userPersistenceService, contextPath, $state, $scope, $h
     $scope.credentials = {};
     $scope.accessToken = $scope.sessionData.accessToken;
     $scope.role = $scope.sessionData.role;
+    
+    if ($scope.accessToken) {
+
+        $http.defaults.headers.common['Authorization'] = "Bearer " + $scope.accessToken;
+    }
+    
     $scope.login = function() {
         
         $http.post('/api/login', {
@@ -270,12 +276,16 @@ function IndexController(userPersistenceService, contextPath, $state, $scope, $h
                 $scope.role = data.roles[0];
                 userPersistenceService.setCookieData($scope.accessToken, $scope.role);
                 
+                $http.defaults.headers.common['Authorization'] = "Bearer " + $scope.accessToken;
+                
             } 
             else {
                 
                 $scope.authenticated = false;
                 $scope.loginError = 'Bad User Name Or Password.';
                 $scope.accessToken = '';
+                
+                $http.defaults.headers.common['Authorization'] = '';
             }
             
         }).error(function() {
@@ -283,6 +293,8 @@ function IndexController(userPersistenceService, contextPath, $state, $scope, $h
             $scope.authenticated = false;
             $scope.loginError = 'Bad Username or Password.';
             $scope.accessToken = '';
+            
+            $http.defaults.headers.common['Authorization'] = '';
         });
     };
 
@@ -294,6 +306,8 @@ function IndexController(userPersistenceService, contextPath, $state, $scope, $h
         $scope.authenticated = $scope.sessionData.authenticated;
         $scope.accessToken = $scope.sessionData.accessToken;
         $scope.role = $scope.sessionData.role;
-        
+
+        $http.defaults.headers.common['Authorization'] = '';
+
     };
 }

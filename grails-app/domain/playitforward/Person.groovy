@@ -10,16 +10,20 @@ class Person {
     Boolean sendPushNotifications = false;
 
     static constraints = {
+
         email email: true, blank: false, unique: true;
         phone nullable: true;
         sendPushNotifications nullable: true;
     }
 
     static mapping = {
-        firstName column: "first_name";
-        lastName column: "last_name";
+
+        firstName column: "first_name", index: 'person_name_idx';
+        lastName column: "last_name", index: 'person_name_idx';
         personType column: "person_type";
         sendPushNotifications column: "send_push_notifications";
+
+        personType index: 'person_type_idx', fetch: 'join', lazy: false;
     }
 
     static belongsTo = PersonType;

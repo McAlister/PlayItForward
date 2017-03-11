@@ -13,7 +13,127 @@
 
     <div id="admin-mail" ng-show="isActiveTab('mail')">
 
-        mail
+        <div class="alert alert-danger" ng-show="personData.personError">
+
+            There was a problem retrieving the ail list.
+
+            <br />
+
+            {{personData.personError}}
+
+        </div>
+
+        <div ng-show="personData.personError==''">
+
+            <h1>Add/Edit:</h1>
+
+            <div class="gp-dropdown">
+                <select name="personSelect" id="personSelect" ng-model="mailData.currentPerson"
+                        ng-options="person.fullName for person in personData.personList track by person.id">
+                </select>
+            </div>
+
+            <form ng-submit="upsertPerson()" class="form">
+
+                <div class="form-group">
+                    <label for="inputFirstName" class="control-label">First Name:</label>
+                    <input type="text" id="inputFirstName" class="form-control" placeholder="First Name" ng-model="mailData.currentPerson.firstName" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="inputLastName" class="control-label">Last Name:</label>
+                    <input type="text" id="inputLastName" class="form-control" placeholder="Last Name" ng-model="mailData.currentPerson.lastName" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="inputEmail" class="control-label">Email Address:</label>
+                    <input type="email" id="inputEmail" class="form-control" placeholder="Email address" ng-model="mailData.currentPerson.email" required autofocus>
+                </div>
+
+                <div class="form-group">
+
+                    <label for="personTypeSelect" class="control-label">I Am A:</label>
+                    <select name="personSelect" class="form-control" id="personTypeSelect" ng-model="mailData.currentPerson.personType"
+                            ng-options="type.description for type in mailData.types track by type.id" >
+                    </select>
+
+                </div>
+
+                <div class="form-group">
+                    <label for="inputPhone" class="control-label">Phone Number:</label>
+                    <input type='text'id="inputPhone" class="form-control" placeholder="Phone Number" ng-model="mailData.currentPerson.phone" autofocus>
+                </div>
+
+                <div class="form-group">
+                    <label for="inputPush" class="control-label">Enable Push Notifications:
+                        <input type="checkbox" id="inputPush" ng-model="mailData.currentPerson.sendPushNotifications" autofocus>
+                    </label>
+                </div>
+
+                <button class="btn btn-primary center-block" type="submit">Add/Edit</button>
+
+            </form>
+
+
+            <h1>Search:</h1>
+
+            <form>
+                <div class="form-group">
+                    <div class="input-group">
+                        <div class="input-group-addon"><i class="fa fa-search"></i></div>
+                        <input type="text" class="form-control" placeholder="Search Mail List" ng-model="personData.searchString">
+                    </div>
+                </div>
+            </form>
+
+            <table id="admin-mail-table" class="table table-bordered table-striped small">
+
+                <thead>
+                <tr>
+                    <th>
+                        <a href ng-click="personData.sortType = 'name'; personData.sortReverse = !personData.sortReverse">
+                            Name
+                        </a>
+                    </th>
+                    <th>
+                        <a href ng-click="personData.sortType = 'type'; personData.sortReverse = !personData.sortReverse">
+                            Type
+                        </a>
+                    </th>
+                    <th>
+                        <a href ng-click="personData.sortType = 'email'; personData.sortReverse = !personData.sortReverse">
+                            Email
+                        </a>
+                    </th>
+                    <th>
+                        <a href ng-click="personData.sortType = 'phone'; personData.sortReverse = !personData.sortReverse">
+                            Phone Number
+                        </a>
+                    </th>
+                    <th>
+                        <a href ng-click="personData.sortType = 'push'; personData.sortReverse = !personData.sortReverse">
+                            Push Notifications
+                        </a>
+                    </th>
+                </tr>
+                </thead>
+
+                <tbody>
+                <tr ng-show="person.id"
+                    ng-repeat="person in personData.personList | orderBy:personData.sortType:personData.sortReverse | filter:personData.searchString">
+
+                    <td>{{ person.firstName }} {{person.lastName}}</td>
+                    <td>{{ person.personType.description }}</td>
+                    <td>{{ person.email }}</td>
+                    <td>{{ person.phone }}</td>
+                    <td>{{ person.sendPushNotifications }}</td>
+                </tr>
+                </tbody>
+
+            </table>
+
+        </div>
+
 
     </div>
 

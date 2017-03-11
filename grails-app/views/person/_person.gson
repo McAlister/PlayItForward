@@ -4,4 +4,18 @@ model {
 	Person person
 }
 
-json g.render(person)
+json {
+
+    id person.id
+    email person.email
+    firstName person.firstName
+    lastName person.lastName
+    fullName person.firstName + " " + person.lastName
+    personType {
+        id person.personType.id
+        description person.personType.description
+    }
+    phone person.phone
+    sendPushNotifications person.sendPushNotifications
+}
+
