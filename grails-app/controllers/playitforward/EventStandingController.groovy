@@ -24,12 +24,7 @@ class EventStandingController {
         List<Object[]> rows = query.list();
 
         Map<String, Integer> args = new HashMap<>();
-
-        System.console().println("Args: " + rows.toString());
-
         args.put("latestRound", Integer.parseInt(rows.get(0).toString()));
-
-        System.console().println("Args: " + args.toString());
         respond args, view:'latestRound';
     }
 
