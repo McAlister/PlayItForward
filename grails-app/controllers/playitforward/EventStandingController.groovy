@@ -16,6 +16,23 @@ class EventStandingController {
                                      "SliverQueen", "Tamiyo", "Vraska", "Wort"
     ];
 
+    def latestRound(Integer eventId) {
+
+        final session = sessionFactory.currentSession;
+        final String sql = "Select max(round) from raw_standings where event_id = " + eventId;
+        def query = session.createSQLQuery(sql);
+        List<Object[]> rows = query.list();
+
+        Map<String, Integer> args = new HashMap<>();
+
+        System.console().println("Args: " + rows.toString());
+
+        args.put("latestRound", Integer.parseInt(rows.get(0).toString()));
+
+        System.console().println("Args: " + args.toString());
+        respond args, view:'latestRound';
+    }
+
     def index(Integer eventId, Integer roundNum) {
 
         List<EventStanding> standingList = EventStanding.findAll(sort: 'player', order: 'asc') {

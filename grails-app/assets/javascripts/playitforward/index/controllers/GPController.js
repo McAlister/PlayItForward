@@ -12,6 +12,7 @@ function GPController(contextPath, $scope, $http, $filter) {
 
     $scope.error = '';
     $scope.GPs = {
+        lastRound: 0,
         currentEvent: null,
         allEvents: [],
         eventWinners: {}
@@ -33,6 +34,18 @@ function GPController(contextPath, $scope, $http, $filter) {
                     break;
                 }
             }
+
+            $http.get('/api/EventStanding/event/' + $scope.GPs.currentEvent.id).then(
+
+                function successCallback(response) {
+
+                    $scope.GPs.currentEvent.lastRound = response.data.lastRound;
+
+                }, function errorCallback() {
+
+                    $scope.GPs.currentEvent.lastRound = 0;
+                }
+            );
             
         }, function errorCallback(response) {
             
@@ -172,9 +185,15 @@ function GPController(contextPath, $scope, $http, $filter) {
     };
 
     $scope.getHorseraceSrc = function() {
-        if ($scope.GPs.currentEvent)
-            return '/assets/horserace/index.html?race=' + $scope.GPs.currentEvent.id;
-        else
+
+        if ($scope.GPs.currentEvent) {
+
+            var lastRound = $scope.GPs.currentEvent.lastRound;
+            return '/assets/horserace/index.html?race=' + $scope.GPs.currentEvent.id + "&lastRound=" + lastRound;
+        }
+        else {
+            
             return '/assets/horserace/notfound.html';
+        }
     }
 }

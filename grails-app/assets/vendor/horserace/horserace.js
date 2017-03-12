@@ -2,7 +2,6 @@ HorseRace = {};
 
 (function app () {
     var scoreRange = 1000,
-        maxRounds = 15,
         maxPoints = 45,
         OFFSET = 1,
         horserace = document.getElementById('horserace');
@@ -213,7 +212,10 @@ HorseRace = {};
         getRound(event, 0);
     };
 
-    HorseRace.replay = function (event, rounds) {
+    HorseRace.replay = function (event, lastRound, rounds) {
+
+        var maxRounds = lastRound || 15;
+        
         var myTimer,
             round = 0,
             speed = window.location.search.match(/[?&]fast/) ? 300 : 1000,

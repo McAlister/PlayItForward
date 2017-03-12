@@ -25,6 +25,10 @@ class UrlMappings {
                 controller: 'eventStanding', action: 'index'
         );
 
+        get "/api/EventStanding/event/$eventId" (
+                controller: 'eventStanding', action: 'latestRound'
+        );
+
         delete "/api/$controller/$id(.$format)?"(action:"delete");
         get "/api/$controller(.$format)?"(action:"index");
         get "/api/$controller/$id(.$format)?"(action:"show");

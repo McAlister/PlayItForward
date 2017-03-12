@@ -1,0 +1,9 @@
+
+model {
+	Integer latestRound;
+}
+
+json {
+
+    lastRound latestRound;
+}
