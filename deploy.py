@@ -21,13 +21,14 @@ defaults = {
     'application': ['PlayItForward'],
     'version': [datetime.datetime.today().strftime('%Y%m%d%H%M%S')],
     'environment': ['PIF' + nowstr],
-    'cname': ['playitforwardred.hbrthk4xwr.us-west-2.elasticbeanstalk.com']
+    'cname': ['playitforwardred.hbrthk4xwr.us-west-2.elasticbeanstalk.com'],
+    'warfile': glob.glob('dist/*.war'),
 }
 
 def parse_args():
     d = defaults
     parser = argparse.ArgumentParser(description='Deploy WAR file to production.')
-    parser.add_argument('-w', '--warfile', nargs=1, help='Path to .war file', required=True)
+    parser.add_argument('-w', '--warfile', nargs=1, help='Path to .war file', default=d['warfile'])
     parser.add_argument('-a', '--application', nargs=1, help='Application name', default=d['application'])
     parser.add_argument('-v', '--version', nargs=1, help='Application version', default=d['version'])
     parser.add_argument('-c', '--cname', nargs=1, help='Application cname', default=d['cname'])
@@ -36,10 +37,13 @@ def parse_args():
     opts = parser.parse_args()
 
     if len(opts.environment[0]) > 15:
-        sys.exit('Environment name is too long.  15 chars max.')
+        sys.exit('Environment name is too long, 15 characters max')
 
     if opts.swap and not opts.swap[0].endswith('.elasticbeanstalk.com'):
         opts.swap[0] = opts.swap[0] + '.elasticbeanstalk.com'
+
+    if not opts.warfile:
+        sys.exit('No .war found in dist/, use --warfile to override')
 
     Opts = namedtuple('Opts', 'warfile application version cname environment swap client')
     return Opts(warfile=opts.warfile[0], application=opts.application[0],
