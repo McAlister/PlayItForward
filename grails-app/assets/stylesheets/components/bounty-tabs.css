@@ -30,3 +30,7 @@
     color: #000000;
     background-color: #ffffff;
 }
+
+p.blurb {
+    white-space: pre-wrap;
+}

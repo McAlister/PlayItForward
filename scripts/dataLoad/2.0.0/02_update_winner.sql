@@ -7,6 +7,7 @@ update event_winner set image_name = 'Pittsburgh.jpg' where name = 'Veronica Pag
 
 update event_winner set image_name = 'Vancouver.jpg' where name = 'Chantelle Campbell';
 
+update event_winner set image_name = 'New-Jersey-Standard.jpg' where name = 'Jadine Klomparens';
 
 
 

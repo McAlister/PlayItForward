@@ -139,7 +139,7 @@ function GPController(contextPath, $scope, $http, $filter) {
             var winner = $scope.GPs.eventWinners[$scope.GPs.currentEvent.id];
             if (winner != null && winner.imageName != null) {
 
-                return "/assets/winners/" + winner.imageName;
+                return "https://s3-us-west-2.amazonaws.com/playitforward-magic/images/winners/" + winner.imageName;
             }
         }
 
