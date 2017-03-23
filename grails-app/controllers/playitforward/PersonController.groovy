@@ -5,7 +5,7 @@ import grails.plugin.springsecurity.annotation.Secured
 import static org.springframework.http.HttpStatus.*
 import grails.transaction.Transactional
 
-@Transactional(readOnly = true)
+@Transactional()
 class PersonController {
 
     static responseFormats = ['json', 'xml']
@@ -16,6 +16,11 @@ class PersonController {
         respond Person.list(), model:[personCount: Person.count()]
     }
 
+    def show(Person person) {
+        respond person;
+    }
+
+    @Secured('ROLE_ANYONE')
     @Transactional
     def save(Person person) {
 

@@ -256,11 +256,6 @@ function IndexController(userPersistenceService, contextPath, $state, $scope, $h
     $scope.accessToken = $scope.sessionData.accessToken;
     $scope.role = $scope.sessionData.role;
     
-    if ($scope.accessToken) {
-
-        $http.defaults.headers.common['Authorization'] = "Bearer " + $scope.accessToken;
-    }
-    
     $scope.login = function() {
         
         $http.post('/api/login', {
@@ -270,7 +265,7 @@ function IndexController(userPersistenceService, contextPath, $state, $scope, $h
             
             if (data.access_token) {
 
-                $scope.authenticated = true;
+                $scope.authenticated = data.roles[0] != 'ROLE_ANYONE';
                 $scope.accessToken = data.access_token;
                 $scope.loginError = '';
                 $scope.role = data.roles[0];
@@ -285,7 +280,7 @@ function IndexController(userPersistenceService, contextPath, $state, $scope, $h
                 $scope.loginError = 'Bad User Name Or Password.';
                 $scope.accessToken = '';
                 
-                $http.defaults.headers.common['Authorization'] = '';
+                delete $http.defaults.headers.common['Authorization'];
             }
             
         }).error(function() {
@@ -294,7 +289,7 @@ function IndexController(userPersistenceService, contextPath, $state, $scope, $h
             $scope.loginError = 'Bad Username or Password.';
             $scope.accessToken = '';
             
-            $http.defaults.headers.common['Authorization'] = '';
+            delete $http.defaults.headers.common['Authorization'];
         });
     };
 
@@ -307,7 +302,16 @@ function IndexController(userPersistenceService, contextPath, $state, $scope, $h
         $scope.accessToken = $scope.sessionData.accessToken;
         $scope.role = $scope.sessionData.role;
 
-        $http.defaults.headers.common['Authorization'] = '';
-
+        delete $http.defaults.headers.common['Authorization'];
     };
+
+    if ($scope.authenticated) {
+
+        $http.defaults.headers.common['Authorization'] = "Bearer " + $scope.accessToken;
+    }
+    else {
+        $scope.credentials.username = 'nobody';
+        $scope.credentials.password = 'nobody';
+        $scope.login();
+    }
 }

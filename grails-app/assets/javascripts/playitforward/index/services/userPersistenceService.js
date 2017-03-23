@@ -17,7 +17,7 @@ function userPersistenceService($cookies) {
         
         setCookieData: function(token, roleName) {
             
-            data.authenticated = true;
+            data.authenticated = roleName != 'ROLE_ANYONE';
             $cookies.put("authenticated", data.authenticated);
 
             data.accessToken = token;
@@ -30,7 +30,7 @@ function userPersistenceService($cookies) {
         
         getCookieData: function() {
 
-            data.authenticated = $cookies.get("authenticated");
+            data.authenticated = $cookies.get("authenticated") == "true";
             data.accessToken = $cookies.get("accessToken");
             data.role = $cookies.get("role");
             
