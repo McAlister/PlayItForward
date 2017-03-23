@@ -164,6 +164,7 @@ if __name__ == '__main__':
         terminate_environment(old_env_id)
     else:
         print 'Skipping cname swap. This step must be accomplished manually.'
+        print 'New environment has cname http://%s' % lookup_environment(opts, new_env_id)['CNAME']
 
     delete_war_from_s3(opts, filename)
     delete_template(opts, template_name)
