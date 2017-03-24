@@ -30,28 +30,23 @@ class EventStandingController {
 
     def index(Integer eventId, Integer roundNum) {
 
+        final session = sessionFactory.currentSession;
+        final String sql = "Insert Into event_standing (id, version, event_id, player_id, points, round )\n" +
+                "Select nextval('hibernate_sequence'), 0, r.event_id, p.id, r.points, r.round\n" +
+                "From Player p inner join raw_standings r On p.name = r.name\n" +
+                "Where r.event_id = " + eventId + "\n" +
+                "And r.round = " + roundNum + "\n" +
+                "And not exists (Select * from event_standing " +
+                "                Where event_id = r.event_id " +
+                "                   And round = r.round " +
+                "                   And player_id = p.id)";
+
+        def query = session.createSQLQuery(sql);
+        query.executeUpdate();
+
         List<EventStanding> standingList = EventStanding.findAll(sort: 'player', order: 'asc') {
             event.id == eventId && round == roundNum
         };
-
-        if (standingList.size() == 0) {
-
-            // populate event standings for this round;
-
-            final session = sessionFactory.currentSession;
-            final String sql = "Insert Into event_standing (id, version, event_id, player_id, points, round )\n" +
-                    "Select nextval('hibernate_sequence'), 0, r.event_id, p.id, r.points, r.round\n" +
-                    "From Player p inner join raw_standings r On p.name = r.name\n" +
-                    "Where r.event_id = " + eventId + "\n" +
-                    "And r.round = " + roundNum;
-
-            def query = session.createSQLQuery(sql);
-            query.executeUpdate();
-
-            standingList = EventStanding.findAll(sort: 'player', order: 'asc') {
-                event.id == eventId && round == roundNum
-            };
-        }
 
         standingList.sort { a, b ->
             b.points <=> a.points;
