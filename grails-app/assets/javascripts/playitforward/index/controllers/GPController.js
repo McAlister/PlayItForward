@@ -62,7 +62,16 @@ function GPController(contextPath, $scope, $http, $location) {
     $scope.loadEvent();
 
     $scope.$on('$locationChangeSuccess', function() {
-        $scope.loadEvent();
+        // if event or tab changed, update
+        var searchId = Number($location.search().event);
+        var loadedEvent = $scope.GPs.currentEvent;
+        var searchTab = $location.search().tab;
+        if (searchId && loadedEvent && searchId !== loadedEvent.id) {
+            $scope.loadEvent();
+        }
+        if (searchTab && $scope.activeTab !== searchTab) {
+            $scope.activate(searchTab);
+        }
     });
 
     $scope.getImageName = function() {
@@ -82,7 +91,7 @@ function GPController(contextPath, $scope, $http, $location) {
     // Active Tab Code //
     // /////////////// //
 
-    $scope.activeTab = 'playmat';
+    $scope.activeTab = $location.search().tab || 'playmat';
 
     $scope.isActiveTab = function(tabName) {
 
@@ -100,6 +109,7 @@ function GPController(contextPath, $scope, $http, $location) {
     
     $scope.activate = function(tabName) {
         $scope.activeTab = tabName;
+        $location.search("tab", tabName);
     };
 
 
@@ -212,7 +222,7 @@ function GPController(contextPath, $scope, $http, $location) {
     $scope.selectEvent = function() {
         var id = $scope.GPs.currentEvent && $scope.GPs.currentEvent.id;
         if (id && $location.search().id !== id) {
-            $location.search({event: id});
+            $location.search("event", id);
         }
     };
 }

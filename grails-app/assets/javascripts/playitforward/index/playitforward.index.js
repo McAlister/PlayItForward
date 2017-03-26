@@ -52,7 +52,8 @@ function config($stateProvider, $urlRouterProvider) {
         .state('currentGP', {
             url: '/currentGP',
             controller: 'GPController',
-            templateUrl: '/playitforward/index/gp.html'
+            templateUrl: '/playitforward/index/gp.html',
+            reloadOnSearch: false
         })
         .state('mailingList', {
             url: '/mailingList',
