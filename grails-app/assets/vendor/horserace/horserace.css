@@ -19,18 +19,29 @@
 #horserace .stick {
     transition: all 0.3s ease-in-out;
     margin-left: -2px;
+    position: absolute;
+    top: 20px;
+    width: 3px;
+    height: 500px;
 }
 #horserace .horse {
     transition: all 0.3s ease-in-out;
     cursor: pointer;
+    position: absolute;
 }
 #horserace .wave {
     transition: top 0.3s ease-in-out;
+    width: 400%;
+    height: 300px;
+    position: absolute;
+    background: url(sine.png) repeat-x;
+    background-size: 100px 300px;
 }
 #horserace .wave.clicked .horse {
     animation: gallop 3.8s infinite;
 }
 #horserace .scoremark {
+    position: absolute;
     border-radius: 3em;
     background-color: #333;
     transition: left 0.3s ease-in-out;
@@ -48,6 +59,8 @@
     visibility: visible;
 }
 #horserace .wave .tooltip {
+    position: absolute;
+    z-index: 1;
     background-color: #222;
     border: 2px solid #aaa;
     font-family: sans-serif;

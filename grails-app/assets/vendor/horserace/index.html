@@ -23,6 +23,16 @@ body {
         <span class="next"  onclick="HorseRace.next()">⏩️</span>
     </div>
 </div>
+<div style="display: none">
+    <div id="waveTemplate" class="wave">
+        <img class="stick" src="stick.png">
+        <img class="horse">
+        <div class="tooltip">
+            <div class="profile"><img src=""></div>
+            <span class="tdata"></span>
+        </div>
+    </div>
+</div>
 <script src="horserace.js"></script>
 <script>
 var race = window.location.search.match(/[?&]race=([0-9]*)/)[1];

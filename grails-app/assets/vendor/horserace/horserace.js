@@ -27,7 +27,7 @@ HorseRace = {};
     function calculatePositions(round) {
         var i, j, wave, waves, children, pos, stick, horse, marks, markpos,
             horseWidth = getHorseWidth();
-        waves = document.getElementsByClassName('wave');
+        waves = horserace.getElementsByClassName('wave');
         for (i = 0; i < waves.length; i++) {
             pos = getPosition(i, 0, round);
             wave = waves[i];
@@ -49,65 +49,33 @@ HorseRace = {};
         }
     }
     function addWave (horseInfo) {
-        var wave, scoremark, mark, stick, horse, tooltip;
+        var wave, scoremark, mark, horse, profileImg;
 
-        wave = document.createElement('div');
-        wave.className = 'wave';
+        wave = document.getElementById("waveTemplate").cloneNode(true);
         wave.id = 'wave_' + horseInfo.key;
-        wave.style.width = '400%';
-        wave.style.height = '300px';
-        wave.style.position = "absolute";
-        wave.style.left = '0px';
-        wave.style.backgroundImage = 'url("sine.png")';
-        wave.style.backgroundSize = '100px 300px';
-        wave.style.backgroundRepeat = 'repeat-x';
-        wave.ontouchstart = function() {this.className = 'wave touching'};
-        wave.ontouchend = function() {this.className = 'wave'};
-
         for (scoremark = 0; scoremark <= maxPoints; scoremark += 3) {
             mark = document.createElement('span');
             mark.className = 'scoremark';
-            mark.style.position = "absolute";
             mark.innerHTML = scoremark;
             wave.appendChild(mark);
         }
 
-        stick = document.createElement('img');
-        stick.className = 'stick';
-        stick.style.position = 'absolute';
-        stick.style.top = '20px';
-        stick.style.width = '3px';
-        stick.style.height = '500px';
-        stick.src = "stick.png";
-        wave.appendChild(stick);
-
-        horse = document.createElement('img');
-        horse.className = 'horse';
-        horse.style.position = 'absolute';
-        horse.style.top = '0px';
+        horse = wave.getElementsByClassName("horse")[0];
         if (horseInfo.img && !horseInfo.img.match(/\//)) {
             horseInfo.img = 'https://s3-us-west-2.amazonaws.com/playitforward-magic/images/race/oval/' + horseInfo.img;
         }
         horse.src = horseInfo.img || "placeholder.png";
         horse.onclick = function() {
-            var waves;
             if (this.parentNode.classList.contains('clicked'))
                 return this.parentNode.classList.remove('clicked');
-            waves = Array.prototype.slice.call(document.getElementsByClassName('wave'));
+            var waves = Array.prototype.slice.call(horserace.getElementsByClassName('wave'));
             waves.forEach(function(el){el.classList.remove('clicked');});
             this.parentNode.classList.add('clicked');
         };
         wave.appendChild(horse);
 
-        tooltip = document.createElement('div');
-        tooltip.className = 'tooltip';
-        tooltip.style.position = 'absolute';
-        tooltip.style.top = '0px';
-        tooltip.style.left = '100px';
-        tooltip.style.zIndex = 1;
-        tooltip.innerHTML = '<div class="profile"><img src="'+horse.src.replace('/oval/', '/')+'"></div>' +
-            '<span class="tdata"></span>';
-        wave.appendChild(tooltip);
+        profileImg = wave.getElementsByClassName("profile")[0].getElementsByTagName("img")[0];
+        profileImg.src = horse.src.replace('/oval/', '/');
 
         horserace.appendChild(wave);
         updateTooltip(horse, horseInfo);
@@ -119,7 +87,7 @@ HorseRace = {};
     }
 
     function getWaveCount() {
-        return document.getElementsByClassName('wave').length;
+        return horserace.getElementsByClassName('wave').length;
     }
     function getHorseWidth() {
         return Math.max(1.2*Math.floor(horserace.clientHeight/(getWaveCount()+OFFSET)), 50);
@@ -161,12 +129,12 @@ HorseRace = {};
             roundDisplay.innerHTML = 'Day 1 Round ' + round;
         }
 
-        waveKeys = Array.prototype.map.call(document.getElementsByClassName('wave'),
-                function (w) { return w.id.replace('wave_', ''); });
-        waveKeys.forEach(function (key) {
+        waveKeys = Array.prototype.map.call(horserace.getElementsByClassName('wave'),
+                function (w) { return Number(w.id.replace('wave_', '')); });
+        waveKeys.forEach(function removeIfNotListed (key) {
             var i;
             for (i = 0; i < scorelist.length; i++) {
-                if (scorelist[i].key == key)
+                if (scorelist[i].key === key)
                     return;
             }
             removeWave(key, round);
@@ -187,7 +155,7 @@ HorseRace = {};
         var xhr = new XMLHttpRequest();
         xhr.open('GET', url);
         xhr.onreadystatechange = function() {
-            if (xhr.readyState>3 && xhr.status==200) {
+            if (xhr.readyState>3 && xhr.status===200) {
                 var json = JSON.parse(this.responseText);
                 success(json);
             }
