@@ -4,7 +4,7 @@ angular
     .module("playitforward.index")
     .controller("GPController", GPController);
 
-function GPController(contextPath, $scope, $http, $filter) {
+function GPController(contextPath, $scope, $http, $location) {
 
     var vm = this;
 
@@ -18,40 +18,52 @@ function GPController(contextPath, $scope, $http, $filter) {
         eventWinners: {}
     };
 
-    $http.get('/api/Event').then(
-        
-        function successCallback(response) {
-      
-            $scope.GPs.allEvents = response.data;
+    $scope.loadEvent = function() {
+        $http.get('/api/Event').then(
 
-            var now = new Date();
-            for (var i = 1 ; i < response.data.length ; ++i) {
+            function successCallback(response) {
 
-                var event = response.data[i];
-                if (event.startDate > now ) {
+                $scope.GPs.allEvents = response.data;
 
-                    $scope.GPs.currentEvent = response.data[i-1];
-                    break;
+                var now = new Date();
+                var selected = Number($location.search().event);
+                if (selected) {
+                    $scope.GPs.currentEvent = response.data.find(function(el) { return el.id === selected });
+                } else {
+                    for (var i = 1; i < response.data.length; ++i) {
+
+                        var event = response.data[i];
+                        if (event.startDate > now) {
+
+                            $scope.GPs.currentEvent = response.data[i - 1];
+                            break;
+                        }
+                    }
                 }
+
+                $http.get('/api/EventStanding/event/' + $scope.GPs.currentEvent.id).then(
+
+                    function successCallback(response) {
+
+                        $scope.GPs.currentEvent.lastRound = response.data.lastRound;
+
+                    }, function errorCallback() {
+
+                        $scope.GPs.currentEvent.lastRound = 0;
+                    }
+                );
+
+            }, function errorCallback(response) {
+
+                $scope.error = response.data;
             }
+        );
+    };
+    $scope.loadEvent();
 
-            $http.get('/api/EventStanding/event/' + $scope.GPs.currentEvent.id).then(
-
-                function successCallback(response) {
-
-                    $scope.GPs.currentEvent.lastRound = response.data.lastRound;
-
-                }, function errorCallback() {
-
-                    $scope.GPs.currentEvent.lastRound = 0;
-                }
-            );
-            
-        }, function errorCallback(response) {
-            
-            $scope.error = response.data;
-        }
-    );
+    $scope.$on('$locationChangeSuccess', function() {
+        $scope.loadEvent();
+    });
 
     $scope.getImageName = function() {
 
@@ -195,5 +207,12 @@ function GPController(contextPath, $scope, $http, $filter) {
             
             return '/assets/horserace/notfound.html';
         }
-    }
+    };
+
+    $scope.selectEvent = function() {
+        var id = $scope.GPs.currentEvent && $scope.GPs.currentEvent.id;
+        if (id && $location.search().id !== id) {
+            $location.search({event: id});
+        }
+    };
 }
