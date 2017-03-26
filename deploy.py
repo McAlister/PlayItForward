@@ -39,8 +39,8 @@ def parse_args():
     if len(opts.environment[0]) > 15:
         sys.exit('Environment name is too long, 15 characters max')
 
-    if opts.swap and not opts.swap[0].endswith('.elasticbeanstalk.com'):
-        opts.swap[0] = opts.swap[0] + '.elasticbeanstalk.com'
+    if opts.cname and not opts.cname[0].endswith('.elasticbeanstalk.com'):
+        opts.cname[0] = opts.cname[0] + '.elasticbeanstalk.com'
 
     if not opts.warfile:
         sys.exit('No .war found in dist/, use --warfile to override')
