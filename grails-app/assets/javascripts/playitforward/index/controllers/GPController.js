@@ -41,18 +41,6 @@ function GPController(contextPath, $scope, $http, $location) {
                     }
                 }
 
-                $http.get('/api/EventStanding/event/' + $scope.GPs.currentEvent.id).then(
-
-                    function successCallback(response) {
-
-                        $scope.GPs.currentEvent.lastRound = response.data.lastRound;
-
-                    }, function errorCallback() {
-
-                        $scope.GPs.currentEvent.lastRound = 0;
-                    }
-                );
-
             }, function errorCallback(response) {
 
                 $scope.error = response.data;
@@ -210,8 +198,7 @@ function GPController(contextPath, $scope, $http, $location) {
 
         if ($scope.GPs.currentEvent) {
 
-            var lastRound = $scope.GPs.currentEvent.lastRound;
-            return '/assets/horserace/index.html?race=' + $scope.GPs.currentEvent.id + "&lastRound=" + lastRound;
+            return '/assets/horserace/index.html?race=' + $scope.GPs.currentEvent.id;
         }
         else {
             
