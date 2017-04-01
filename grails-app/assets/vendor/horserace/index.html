@@ -36,11 +36,10 @@ body {
 <script src="horserace.js"></script>
 <script>
 var race = window.location.search.match(/[?&]race=([0-9]*)/)[1];
-var lastRound = window.location.search.match(/[?&]lastRound=([0-9]*)/)[1];
 
 window.startRace = function() {
     document.getElementById('racemask').style.display = 'none';
-    HorseRace.replay(race, lastRound);
+    HorseRace.start(race);
 };
 HorseRace.showRoundZero(race);
 </script>

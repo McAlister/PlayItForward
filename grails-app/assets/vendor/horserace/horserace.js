@@ -165,6 +165,11 @@ HorseRace = {};
         return xhr;
     }
 
+    function getLastRound(event, callback) {
+        ajax('/api/EventStanding/event/'+event, function (json) {
+            callback(json.lastRound);
+        });
+    }
     function getRound(event, round) {
         if (HorseRace.inflight)
             HorseRace.inflight.abort();
@@ -180,10 +185,7 @@ HorseRace = {};
         getRound(event, 0);
     };
 
-    HorseRace.replay = function (event, lastRound, rounds) {
-
-        var maxRounds = lastRound || 15;
-        
+    function replay(event, maxRounds) {
         var myTimer,
             round = 0,
             speed = window.location.search.match(/[?&]fast/) ? 300 : 1000,
@@ -193,7 +195,19 @@ HorseRace = {};
                 c.getElementsByClassName('pause')[0].style.display = play ? 'inline' : 'none';
             },
             state = 'play';
-        rounds = rounds || maxRounds;
+
+        // check every 30 seconds for a new round and play if appropriate
+        window.setInterval(function updateLastRound() {
+            getLastRound(event, function(newLastRound) {
+                var origMaxRounds = maxRounds+0;
+                if (newLastRound > maxRounds) {
+                    maxRounds = newLastRound;
+                    if (round === origMaxRounds && state === 'paused') {
+                        HorseRace.play();
+                    }
+                }
+            });
+        }, 30000);
 
         HorseRace.pause = function () {
             state = 'paused';
@@ -205,13 +219,13 @@ HorseRace = {};
         HorseRace.play = function () {
             state = 'playing';
             togglePlayPause(true);
-            round = round >= rounds ? round : round+1;
+            round = round >= maxRounds ? round : round+1;
             getRound(event, round);
             myTimer = window.setInterval(function roundTimer() {
-                if (round >= rounds) {
+                if (round >= maxRounds) {
                     HorseRace.pause();
                 }
-                round = round >= rounds ? round : round+1;
+                round = round >= maxRounds ? round : round+1;
                 getRound(event, round);
             }, speed);
         };
@@ -244,4 +258,8 @@ HorseRace = {};
             }
         });
     }
+
+    HorseRace.start = function(event) {
+        getLastRound(event, function(l) { replay(event, l); });
+    };
 }());
