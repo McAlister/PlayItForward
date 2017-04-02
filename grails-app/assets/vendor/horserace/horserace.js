@@ -122,11 +122,6 @@ HorseRace = {};
         });
         scoreRange = Math.min(maxScore-(maxScore%18)+18, maxPoints);
 
-        if (!roundDisplay) {
-            roundDisplay = document.createElement('span');
-            roundDisplay.id = 'horseround';
-            horserace.appendChild(roundDisplay);
-        }
         if (round > 9) {
             roundDisplay.innerHTML = 'Day 2 Round ' + round;
         } else {
