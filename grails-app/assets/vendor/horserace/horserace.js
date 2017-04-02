@@ -48,7 +48,7 @@ HorseRace = {};
             }
         }
     }
-    function addWave (horseInfo) {
+    function addWave (horseInfo, insertAfter) {
         var wave, scoremark, mark, horse, profileImg;
 
         wave = document.getElementById("waveTemplate").cloneNode(true);
@@ -77,8 +77,12 @@ HorseRace = {};
         profileImg = wave.getElementsByClassName("profile")[0].getElementsByTagName("img")[0];
         profileImg.src = horse.src.replace('/oval/', '/');
 
-        horserace.appendChild(wave);
+        if (insertAfter)
+            horserace.insertBefore(wave, insertAfter.nextSibling);
+        else
+            horserace.insertBefore(wave, horserace.firstChild);
         updateTooltip(horse, horseInfo);
+        return wave;
     }
     function removeWave (key, round) {
         var wave = document.getElementById('wave_' + key);
@@ -110,7 +114,7 @@ HorseRace = {};
 
     function processScores(scorelist, round) {
         var maxScore = 0,
-            waveKeys,
+            waveKeys, lastWave,
             roundDisplay = document.getElementById('horseround');
 
         scorelist.forEach(function (el) {
@@ -129,6 +133,7 @@ HorseRace = {};
             roundDisplay.innerHTML = 'Day 1 Round ' + round;
         }
 
+        // add/remove waves as necessary, preserving order
         waveKeys = Array.prototype.map.call(horserace.getElementsByClassName('wave'),
                 function (w) { return Number(w.id.replace('wave_', '')); });
         waveKeys.forEach(function removeIfNotListed (key) {
@@ -140,8 +145,11 @@ HorseRace = {};
             removeWave(key, round);
         });
         scorelist.forEach(function (el) {
-            if (!document.getElementById('wave_' + el.key)) {
-                addWave(el);
+            var w = document.getElementById('wave_' + el.key);
+            if (!w) {
+                lastWave = addWave(el, lastWave);
+            } else {
+                lastWave = w;
             }
         });
         scorelist.forEach(function (el) {
