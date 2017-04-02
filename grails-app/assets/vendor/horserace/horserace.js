@@ -9,7 +9,7 @@ HorseRace = {};
     function getPosition(waveNum, score, round) {
         var raceHeight = horserace.clientHeight,
             raceWidth = horserace.clientWidth,
-            marginWidth = getHorseWidth(),
+            marginWidth = 50,
             scoreZone = raceWidth - marginWidth - 20,
             waveHeight = Math.floor(raceHeight/(getWaveCount()+OFFSET));
         return {
