@@ -12,23 +12,23 @@ body {
 </style>
 </head>
 <body>
-<div id="horserace" style="height: 100vh; width: 100%;">
+<div id="horserace" style="height: 100vh; width: 100%;" onclick="HorseRace.clearSelection()">
     <div id="racemask" onclick="window.startRace();">
         <button name="play"></button>
     </div>
     <div class="controls">
-        <span class="back"  onclick="HorseRace.back()">⏪</span>
-        <span class="play"  onclick="HorseRace.play()">▶️</span>
-        <span class="pause" onclick="HorseRace.pause()" style="display:none">⏸️</span>
-        <span class="next"  onclick="HorseRace.next()">⏩️</span>
+        <span class="back"  onclick="HorseRace.back();  arguments[0].stopPropagation()">⏪</span>
+        <span class="play"  onclick="HorseRace.play();  arguments[0].stopPropagation()">▶️</span>
+        <span class="pause" onclick="HorseRace.pause(); arguments[0].stopPropagation()" style="display:none">⏸️</span>
+        <span class="next"  onclick="HorseRace.next();  arguments[0].stopPropagation()">⏩️</span>
     </div>
     <span id="horseround"></span>
 </div>
 <div style="display: none">
     <div id="waveTemplate" class="wave">
         <img class="stick" src="stick.png">
-        <img class="horse">
-        <div class="tooltip">
+        <img class="horse" src="">
+        <div class="tooltip" onclick="arguments[0].stopPropagation()">
             <div class="profile"><img src=""></div>
             <span class="tdata"></span>
         </div>

@@ -59,10 +59,6 @@ HorseRace = {};
             mark.innerHTML = scoremark;
             wave.appendChild(mark);
         }
-        wave.onclick = function() {
-            var waves = Array.prototype.slice.call(horserace.getElementsByClassName('wave'));
-            waves.forEach(function(el){el.classList.remove('clicked');});
-        };
 
         horse = wave.getElementsByClassName("horse")[0];
         if (horseInfo.img && !horseInfo.img.match(/\//)) {
@@ -72,14 +68,11 @@ HorseRace = {};
         horse.onclick = function(e) {
             if (this.parentNode.classList.contains('clicked'))
                 return this.parentNode.classList.remove('clicked');
-            var waves = Array.prototype.slice.call(horserace.getElementsByClassName('wave'));
-            waves.forEach(function(el){el.classList.remove('clicked');});
+            HorseRace.clearSelection();
             this.parentNode.classList.add('clicked');
             e.stopPropagation();
         };
         wave.appendChild(horse);
-
-        wave.getElementsByClassName("tooltip")[0].onclick = function(e) { e.stopPropagation(); };
 
         profileImg = wave.getElementsByClassName("profile")[0].getElementsByTagName("img")[0];
         profileImg.src = horse.src.replace('/oval/', '/');
@@ -271,5 +264,10 @@ HorseRace = {};
 
     HorseRace.start = function(event) {
         getLastRound(event, function(l) { replay(event, l); });
+    };
+
+    HorseRace.clearSelection = function() {
+        var waves = Array.prototype.slice.call(horserace.getElementsByClassName('wave'));
+        waves.forEach(function(el){el.classList.remove('clicked');});
     };
 }());
