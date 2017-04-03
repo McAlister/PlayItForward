@@ -1,0 +1,9 @@
+import playitforward.User
+
+model {
+	User user
+}
+
+json {
+	username user.username;
+}
