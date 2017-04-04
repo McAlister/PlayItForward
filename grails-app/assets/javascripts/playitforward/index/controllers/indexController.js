@@ -265,7 +265,7 @@ function IndexController(userPersistenceService, contextPath, $state, $scope, $h
             
             if (data.access_token) {
 
-                $scope.authenticated = data.roles[0] !== 'ROLE_ANONYMOUS' && data.roles[0] !== 'ROLE_ANYONE';
+                $scope.authenticated = true;
                 $scope.accessToken = data.access_token;
                 $scope.loginError = '';
                 $scope.role = data.roles[0];
@@ -308,10 +308,5 @@ function IndexController(userPersistenceService, contextPath, $state, $scope, $h
     if ($scope.authenticated) {
 
         $http.defaults.headers.common['Authorization'] = "Bearer " + $scope.accessToken;
-    }
-    else {
-        $scope.credentials.username = 'nobody';
-        $scope.credentials.password = 'nobody';
-        $scope.login();
     }
 }
