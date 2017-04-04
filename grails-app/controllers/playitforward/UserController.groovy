@@ -6,6 +6,7 @@ import grails.transaction.Transactional
 class UserController {
 	static responseFormats = ['json', 'xml']
     static allowedMethods = []
+    def emailService
 
     def index() {
     }
@@ -13,8 +14,8 @@ class UserController {
     def sendResetEmail(String username) {
         def user = User.findByUsername(username)
         if (user != null) {
-            System.console().println("resetting")
             user.makeResetKey()
+            emailService.sendPasswordReset(user)
             user.save(flush: true)
         }
         respond true
