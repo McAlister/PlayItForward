@@ -48,7 +48,7 @@
     box-shadow: 0 0 3px rgba(0,0,0,.5);
     cursor: default;
 }
-#horserace .wave:nth-child(3n-1) .scoremark {
+#horserace .wave:nth-child(3n+1) .scoremark {
     visibility: visible;
 }
 #horserace .wave .tooltip {

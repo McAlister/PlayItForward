@@ -39,19 +39,6 @@ class BootStrap
                 it.clear()
             }
         }
-
-        role = Role.findByAuthority('ROLE_ANYONE');
-        if (role == null) {
-
-            role = new Role('ROLE_ANYONE').save();
-            User user = new User('nobody', 'nobody').save();
-            UserRole.create(user, role);
-            UserRole.withSession {
-
-                it.flush()
-                it.clear()
-            }
-        }
     }
 
     def destroy = {
