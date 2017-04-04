@@ -17,7 +17,8 @@ class EmailService {
                 '?user=${to.encodeAsURL()}&resetKey=${user.resetKey.encodeAsUrl()}">' +
                 'this link</a> to set or change your password.'
 
-        amazonSESService.send(to, subject, body, sender)
-        System.console().println("Sent password reset email to ${to} with key ${user.resetKey}")
+        int result = amazonSESService.send(to, subject, body, sender)
+        System.console().println("Sent password reset email to ${to} with key ${user.resetKey} and result ${result}")
+        return result
     }
 }

@@ -18,6 +18,19 @@ class UserController {
             emailService.sendPasswordReset(user)
             user.save(flush: true)
         }
-        respond true
+        respond([message: 'email sent if user exists'])
+    }
+
+    def setNewPassword(String username) {
+        def password = params.password
+        def resetKey = params.key
+        def user = User.findByUsername(username)
+        if (user.resetKey != resetKey) {
+            return respond([status: 403], [message: 'Incorrect key'])
+        }
+        user.password = password
+        user.resetKey = null
+        user.save(flush: true)
+        respond([message: 'success'])
     }
 }

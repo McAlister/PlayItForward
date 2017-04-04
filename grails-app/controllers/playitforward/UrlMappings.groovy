@@ -29,8 +29,11 @@ class UrlMappings {
                 controller: 'eventStanding', action: 'latestRound'
         );
 
-        post "/api/User/sendResetEmail/$username" (
+        post "/api/User/$username/sendResetEmail" (
                 controller: 'user', action: 'sendResetEmail'
+        )
+        post "/api/User/$username/setNewPassword" (
+                controller: 'user', action: 'setNewPassword'
         )
 
         delete "/api/$controller/$id(.$format)?"(action:"delete");
