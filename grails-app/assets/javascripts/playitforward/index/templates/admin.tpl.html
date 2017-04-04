@@ -15,7 +15,7 @@
 
         <div class="alert alert-danger" ng-show="personData.personError">
 
-            There was a problem retrieving the ail list.
+            There was a problem retrieving the mail list.
 
             <br />
 
@@ -139,7 +139,85 @@
 
     <div id="admin-winners" ng-show="isActiveTab('prizes')">
 
-        Win
+        <div class="alert alert-danger" ng-show="prizeData.prizeError">
+
+            There was a problem retrieving the prize list.
+
+            <br />
+
+            {{prizeData.prizeError}}
+
+        </div>
+
+        <div ng-show="prizeData.prizeError==''">
+
+            <h1>Add/Edit:</h1>
+
+            <div class="gp-dropdown">
+                <select name="prizeSelect" id="prizeSelect" ng-model="currentEvent"
+                        ng-options="event.name for event in winnerData.eventList track by event.id"
+                        ng-change="selectEvent()">
+                </select>
+            </div>
+
+            <form ng-submit="createPrize()" class="form">
+
+                <div class="form-group">
+                    <label for="inputDonorName" class="control-label">Donor:</label>
+                    <input type="text" id="inputDonorName" class="form-control" placeholder="Donor" ng-model="prizeData.newDonor" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="inputPrize" class="control-label">Prize:</label>
+                    <input type="text" id="inputPrize" class="form-control" placeholder="Prize" ng-model="prizeData.newPrize" required>
+                </div>
+
+
+                <button class="btn btn-primary center-block" type="submit">Add</button>
+
+            </form>
+
+            <br/>
+
+            <table class="table table-bordered table-striped">
+
+                <thead>
+                <tr>
+                    <th>
+                        <a href ng-click="bountyArray.sortType = 'donor'; bountyArray.sortReverse = !bountyArray.sortReverse">
+                            Donor
+                            <span ng-show="sortType == 'donor' && !bountyArray.sortReverse" class="fa fa-caret-down"></span>
+                            <span ng-show="sortType == 'donor' && bountyArray.sortReverse" class="fa fa-caret-up"></span>
+                        </a>
+                    </th>
+                    <th>
+                        <a href ng-click="bountyArray.sortType = 'prize'; bountyArray.sortReverse = !bountyArray.sortReverse">
+                            Prize
+                            <span ng-show="sortType == 'prize' && !sortReverse" class="fa fa-caret-down"></span>
+                            <span ng-show="sortType == 'prize' && sortReverse" class="fa fa-caret-up"></span>
+                        </a>
+                    </th>
+                    <th>
+                        <a href ng-click="bountyArray.sortType = 'actions'; bountyArray.sortReverse = !bountyArray.sortReverse">
+                            Actions
+                            <span ng-show="sortType == 'prize' && !sortReverse" class="fa fa-caret-down"></span>
+                            <span ng-show="sortType == 'prize' && sortReverse" class="fa fa-caret-up"></span>
+                        </a>
+                    </th>
+                </tr>
+                </thead>
+
+                <tbody>
+                <tr ng-repeat="bounty in prizeData.prizeList | orderBy:bountyArray.sortType:bountyArray.sortReverse | filter:currentEvent.name">
+                    <td>{{ bounty.donor }}</td>
+                    <td>{{ bounty.prize }}</td>
+                    <td><button class="btn btn-primary center-block" type="submit" ng-click="deletePrize(bounty)">Delete</button></td>
+                </tr>
+                </tbody>
+
+            </table>
+
+        </div>
 
     </div>
 
@@ -160,9 +238,9 @@
             <h1>Add/Edit:</h1>
 
             <div class="gp-dropdown">
-                <select name="winnerSelect" id="winnerSelect" ng-model="winnerData.currentEvent"
+                <select name="winnerSelect" id="winnerSelect" ng-model="currentEvent"
                         ng-options="event.name for event in winnerData.eventList track by event.id"
-                        ng-change="selectWinnerEvent()">
+                        ng-change="selectEvent()">
                 </select>
             </div>
 

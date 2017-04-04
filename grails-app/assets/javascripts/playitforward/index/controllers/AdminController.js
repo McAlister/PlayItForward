@@ -4,7 +4,7 @@ angular
     .module("playitforward.index")
     .controller("AdminController", AdminController);
 
-function AdminController(contextPath, userPersistenceService, $scope, $http) {
+function AdminController(contextPath, userPersistenceService, $scope, $http, $location, $filter) {
 
     var vm = this;
     vm.contextPath = contextPath;
@@ -13,6 +13,8 @@ function AdminController(contextPath, userPersistenceService, $scope, $http) {
     $scope.authenticated = $scope.sessionData.authenticated;
     $scope.accessToken = $scope.sessionData.accessToken;
     $scope.role = $scope.sessionData.role;
+    
+    $scope.currentEvent = null;
 
     $scope.header = 
 
@@ -36,10 +38,18 @@ function AdminController(contextPath, userPersistenceService, $scope, $http) {
 
     $scope.activate = function (tabName) {
         
-        $scope.activeTab = tabName;
+        if (tabName != null) {
+
+            $scope.activeTab = tabName;
+            $location.search('tab', tabName);
+        }
+        else {
+            $scope.activeTab = 'mail';
+            $location.search('tab', 'mail');
+        }
     };
 
-    $scope.activate('mail');
+    $scope.activate($location.search().tab);
 
 
     // ///////////// //
@@ -144,6 +154,96 @@ function AdminController(contextPath, userPersistenceService, $scope, $http) {
 
     };
 
+    // ///////// //
+    // Prize Tab //
+    // ///////// //
+    
+    $scope.prizeData = {
+
+        prizeError: '',
+        prizeHash: {},
+        prizeList: [],
+        newDonor: '',
+        newPrize: ''
+    };
+
+    $scope.populateBounties = function() {
+
+        $http({
+            method: 'GET',
+            url: '/api/EventBounty'
+        }).then(function successCallback(response) {
+
+            $scope.prizeData.prizeList = response.data;
+            $scope.prizeData.prizeHash = {};
+            
+            for (var i = 1; i < response.data.length; ++i) {
+
+                var prize = response.data[i];
+                if ( ! (prize.eventId in $scope.prizeData.prizeHash)) {
+                    $scope.prizeData.prizeHash[prize.eventId] = [];
+                }
+
+                $scope.prizeData.prizeHash[prize.eventId].push(prize);
+            }
+
+        }, function errorCallback(response) {
+
+            $scope.prizeData.prizeError = 'ERROR: ' + response.data.message;
+        });
+    };
+
+    $scope.populateBounties();
+    
+    $scope.createPrize = function() {
+        
+        var data = {
+
+            donor: $scope.prizeData.newDonor,
+            prize: $scope.prizeData.newPrize,
+            event: {
+                id: $scope.currentEvent.id
+            }
+        };
+
+        var config = {
+            headers : {
+                'Content-Type': 'application/json;charset=utf-8;'
+            }
+        };
+
+        $http.post('/api/EventBounty', data, config).then(
+            function(){
+                $scope.populateBounties();
+            },
+            function(response){
+                alert ('Error: Failed to add prize: ' + response.data.message);
+            }
+        );
+    };
+    
+    $scope.deletePrize = function(bounty) {
+
+        var data = bounty;
+
+        var config = {
+            headers : {
+                'Content-Type': 'application/json;charset=utf-8;'
+            }
+        };
+
+        $http.delete('/api/EventBounty/' + bounty.id, data, config).then(
+            function(){
+                
+                $scope.populateBounties();
+            },
+            function(response){
+                
+                alert ('Error: Failed to delete bounty: ' + response.data.message);
+            }
+        );
+    };
+    
     // //////////////// //
     // Event Winner Tab //
     // //////////////// //
@@ -151,7 +251,6 @@ function AdminController(contextPath, userPersistenceService, $scope, $http) {
     $scope.winnerData = {
 
         currentWinner: null,
-        currentEvent: null,
         winnerError: '',
         winnerHash: {},
         eventList: []
@@ -164,9 +263,20 @@ function AdminController(contextPath, userPersistenceService, $scope, $http) {
             function successCallback(response) {
 
                 $scope.winnerData.eventList = response.data;
-                $scope.winnerData.currentEvent = $scope.winnerData.eventList[0];
+                $scope.currentEvent = $scope.winnerData.eventList[0];
                 $scope.winnerData.currentWinner = 
-                    $scope.winnerData.winnerHash[$scope.winnerData.currentEvent.id];
+                    $scope.winnerData.winnerHash[$scope.currentEvent.id];
+
+                var eventId = $location.search().event;
+                if(eventId) {
+
+                    var event = $filter('filter')($scope.winnerData.eventList, {id: eventId});
+                    if (event.length > 0) {
+                        $scope.currentEvent = event[0];
+                    }
+                }
+
+                $scope.selectEvent();
 
             }, function errorCallback(response) {
 
@@ -198,10 +308,15 @@ function AdminController(contextPath, userPersistenceService, $scope, $http) {
     
     $scope.getWinners();
     
-    $scope.selectWinnerEvent = function() {
+    $scope.selectEvent = function() {
 
-        $scope.winnerData.currentWinner =
-            $scope.winnerData.winnerHash[$scope.winnerData.currentEvent.id];
+        var id = $scope.currentEvent.id;
+        
+        if (id && $location.search().id !== id) {
+            $location.search("event", id);
+        }
+
+        $scope.winnerData.currentWinner = $scope.winnerData.winnerHash[id];
     };
 
     $scope.upsertWinner = function() {
@@ -215,7 +330,7 @@ function AdminController(contextPath, userPersistenceService, $scope, $http) {
             record: winner.record,
             blurb: winner.blurb,
             event: {
-                id: $scope.winnerData.currentEvent.id
+                id: $scope.currentEvent.id
             }
         };
 

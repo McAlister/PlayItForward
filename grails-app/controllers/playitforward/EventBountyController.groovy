@@ -1,5 +1,7 @@
 package playitforward
 
+import grails.plugin.springsecurity.annotation.Secured
+
 import static org.springframework.http.HttpStatus.*
 import grails.transaction.Transactional
 
@@ -17,6 +19,7 @@ class EventBountyController {
         respond eventBounty
     }
 
+    @Secured('ROLE_ADMIN')
     @Transactional
     def save(EventBounty eventBounty) {
         if (eventBounty == null) {
@@ -36,6 +39,7 @@ class EventBountyController {
         respond eventBounty, [status: CREATED, view:"show"]
     }
 
+    @Secured('ROLE_ADMIN')
     @Transactional
     def update(EventBounty eventBounty) {
         if (eventBounty == null) {
@@ -55,6 +59,7 @@ class EventBountyController {
         respond eventBounty, [status: OK, view:"show"]
     }
 
+    @Secured('ROLE_ADMIN')
     @Transactional
     def delete(EventBounty eventBounty) {
 
