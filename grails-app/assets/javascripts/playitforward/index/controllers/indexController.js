@@ -249,7 +249,7 @@ function IndexController(userPersistenceService, contextPath, $state, $scope, $h
     // /////////////// //
     
     $scope.sessionData = userPersistenceService.getCookieData();
-    
+
     $scope.authenticated = $scope.sessionData.authenticated;
     $scope.loginError = '';
     $scope.credentials = {};
@@ -265,7 +265,7 @@ function IndexController(userPersistenceService, contextPath, $state, $scope, $h
             
             if (data.access_token) {
 
-                $scope.authenticated = data.roles[0] != 'ROLE_ANYONE';
+                $scope.authenticated = data.roles[0] !== 'ROLE_ANONYMOUS' && data.roles[0] !== 'ROLE_ANYONE';
                 $scope.accessToken = data.access_token;
                 $scope.loginError = '';
                 $scope.role = data.roles[0];
