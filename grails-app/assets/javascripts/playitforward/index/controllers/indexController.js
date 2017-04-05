@@ -242,13 +242,18 @@ function IndexController(userPersistenceService, contextPath, $state, $scope, $h
         return $sce.trustAsHtml(slides[currIndex].promote);
     };
 
+    $scope.isAuthenticated = function() {
+        return userPersistenceService.isAuthenticated();
+    };
+
+    $scope.getRole = function() {
+        return userPersistenceService.getCookieData().role;
+    };
+
     $interval($scope.autoIncrement, 3000);
 
     // set Bearer token on all API calls when authenticated
-    $scope.sessionData = userPersistenceService.getCookieData();
-    $scope.authenticated = $scope.sessionData.authenticated;
-    $scope.role = $scope.sessionData.role;
-    if ($scope.authenticated) {
+    if (userPersistenceService.isAuthenticated()) {
         $http.defaults.headers.common['Authorization'] = "Bearer " + $scope.accessToken;
     }
 }

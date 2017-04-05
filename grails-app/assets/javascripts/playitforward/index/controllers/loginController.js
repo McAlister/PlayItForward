@@ -79,7 +79,11 @@ function LoginController(userPersistenceService, $scope, $http) {
             });
     };
 
-    if ($scope.authenticated) {
+    $scope.isAuthenticated = function() {
+        return userPersistenceService.isAuthenticated();
+    };
+
+    if ($scope.isAuthenticated()) {
         $http.defaults.headers.common['Authorization'] = "Bearer " + $scope.accessToken;
     }
 

@@ -1,8 +1,8 @@
 
 <div role="main">
 
-    <h1 ng-hide="authenticated">Login: </h1>
-    <h1 ng-show="authenticated">Log Off: </h1>
+    <h1 ng-hide="isAuthenticated()">Login: </h1>
+    <h1 ng-show="isAuthenticated()">Log Off: </h1>
 
     <div class="information" ng-show="infoBox" ng-cloak>
         <p class="bg-primary text-center center-block">{{infoBox}}</p>
@@ -18,7 +18,7 @@
 
     </div>
 
-    <form ng-show="!authenticated && !forgotPassword" class="centered-form" role="form" ng-submit="login()">
+    <form ng-show="!isAuthenticated() && !forgotPassword" class="centered-form" role="form" ng-submit="login()">
 
         <div class="form-group">
 
@@ -40,7 +40,7 @@
                 style="margin-top: 1em" ng-click="forgotPassword = true">Forgot password</button>
     </form>
 
-    <form ng-show="authenticated && !forgotPassword" class="centered-form" role="form" ng-submit="logOff()">
+    <form ng-show="isAuthenticated() && !forgotPassword" class="centered-form" role="form" ng-submit="logOff()">
 
         <button type="submit" class="btn btn-primary center-block">Log Off</button>
 
