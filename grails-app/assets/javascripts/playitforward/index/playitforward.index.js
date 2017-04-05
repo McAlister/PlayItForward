@@ -43,10 +43,12 @@ function config($stateProvider, $urlRouterProvider) {
         })
         .state('login', {
             url: '/login',
+            controller: 'LoginController',
             templateUrl: '/playitforward/index/login.html'
         })
         .state('logoff', {
             url: '/logoff',
+            controller: 'LoginController',
             templateUrl: '/playitforward/index/login.html'
         })
         .state('currentGP', {

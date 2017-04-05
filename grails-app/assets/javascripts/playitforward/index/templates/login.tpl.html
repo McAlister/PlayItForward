@@ -4,7 +4,11 @@
     <h1 ng-hide="authenticated">Login: </h1>
     <h1 ng-show="authenticated">Log Off: </h1>
 
-    <div class="alert alert-danger" ng-show="loginError">
+    <div class="information" ng-show="infoBox" ng-cloak>
+        <p class="bg-primary text-center center-block">{{infoBox}}</p>
+    </div>
+
+    <div class="alert alert-danger" ng-show="loginError" ng-cloak>
 
         There was a problem logging in. Please try again.
 
@@ -14,7 +18,7 @@
 
     </div>
 
-    <form ng-hide="authenticated" class="centered-form" role="form" ng-submit="login()">
+    <form ng-show="!authenticated && !forgotPassword" class="centered-form" role="form" ng-submit="login()">
 
         <div class="form-group">
 
@@ -32,12 +36,23 @@
 
         <button type="submit" class="btn btn-primary center-block">Log In</button>
 
+        <button class="btn btn-primary center-block" type="button"
+                style="margin-top: 1em" ng-click="forgotPassword = true">Forgot password</button>
     </form>
 
-    <form ng-show="authenticated" class="centered-form" role="form" ng-submit="logOff()">
+    <form ng-show="authenticated && !forgotPassword" class="centered-form" role="form" ng-submit="logOff()">
 
         <button type="submit" class="btn btn-primary center-block">Log Off</button>
 
+    </form>
+
+    <form ng-show="forgotPassword" class="centered-form" role="form" ng-submit="sendResetPassword()">
+        <div class="form-group">
+            <input type="email" class="form-control" id="forgot-username"
+                   placeholder="Email Address" name="username" ng-model="credentials.username"/>
+        </div>
+
+        <button type="submit" class="btn btn-primary center-block">Reset Password</button>
     </form>
 
 </div>
