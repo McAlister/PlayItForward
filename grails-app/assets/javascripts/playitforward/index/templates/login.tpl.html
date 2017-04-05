@@ -4,8 +4,8 @@
     <h1 ng-hide="isAuthenticated()">Login: </h1>
     <h1 ng-show="isAuthenticated()">Log Off: </h1>
 
-    <div class="information" ng-show="infoBox" ng-cloak>
-        <p class="bg-primary text-center center-block">{{infoBox}}</p>
+    <div class="alert alert-info" ng-show="infoBox" ng-cloak>
+        {{infoBox}}
     </div>
 
     <div class="alert alert-danger" ng-show="loginError" ng-cloak>

@@ -51,6 +51,11 @@ function config($stateProvider, $urlRouterProvider) {
             controller: 'LoginController',
             templateUrl: '/playitforward/index/login.html'
         })
+        .state('setPass', {
+            url: '/setPass',
+            controller: 'SetPassController',
+            templateUrl: '/playitforward/index/setPass.html'
+        })
         .state('currentGP', {
             url: '/currentGP',
             controller: 'GPController',

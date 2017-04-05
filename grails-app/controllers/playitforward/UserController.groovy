@@ -26,11 +26,11 @@ class UserController {
 
     @Secured(['ROLE_ANONYMOUS', 'ROLE_ADMIN'])
     def setNewPassword(String username) {
-        def password = params.password
-        def resetKey = params.key
+        def password = params.password ?: request.JSON?.password
+        def resetKey = params.key ?: request.JSON?.key
         def user = User.findByUsername(username)
         if (user.resetKey != resetKey) {
-            return respond([status: 403], [message: 'Incorrect key'])
+            return respond([status: 403], [message: 'Incorrect key, be sure to use the latest reset email'])
         }
         user.password = password
         user.resetKey = null
