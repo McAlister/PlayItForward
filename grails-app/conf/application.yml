@@ -63,8 +63,8 @@ grails:
         awssdk:
             region: us-west-2
             ses:
-                accessKey: AKIAIIZVZHVNSNYE6GTQ
-                secretKey: AgGWQvI60BPRKYpPyJ3Y5R1hFgoUzr75v6BKgU15FchO
+                accessKey: AKIAIZIYVYRSL3LVCN7Q
+                secretKEy: AggC9juZNNE4tfMxE5YfXMTq3tvstwhsnvCGj9HJ2rip
 
 ---
 hibernate:
