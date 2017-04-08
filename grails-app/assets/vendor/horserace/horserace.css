@@ -128,6 +128,13 @@
     border-color: transparent transparent transparent grey;
 }
 
+.unselectable {
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
 /* media controls */
 #horserace .controls {
     position: absolute;
