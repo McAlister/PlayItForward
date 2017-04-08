@@ -18,6 +18,7 @@ class User implements Serializable {
     boolean accountExpired
     boolean accountLocked
     boolean passwordExpired
+    String resetKey
 
     User(String username, String password) {
         this()
@@ -43,11 +44,20 @@ class User implements Serializable {
         password = springSecurityService?.passwordEncoder ? springSecurityService.encodePassword(password) : password
     }
 
+    def makeResetKey() {
+        def random = new Random()
+        String charset = (('A'..'F') + ('0'..'9')).join('')
+        resetKey = (1..20).collect {
+            charset[random.nextInt(charset.length())]
+        }.join('')
+    }
+
     static transients = ['springSecurityService']
 
     static constraints = {
         username blank: false, unique: true
         password blank: false
+        resetKey nullable: true
     }
 
     static mapping = {

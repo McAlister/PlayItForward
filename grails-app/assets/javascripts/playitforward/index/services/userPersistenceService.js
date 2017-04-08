@@ -30,7 +30,7 @@ function userPersistenceService($cookies) {
         
         getCookieData: function() {
 
-            data.authenticated = $cookies.get("authenticated") == "true";
+            data.authenticated = $cookies.get("authenticated") === "true";
             data.accessToken = $cookies.get("accessToken");
             data.role = $cookies.get("role");
             
@@ -46,6 +46,10 @@ function userPersistenceService($cookies) {
             $cookies.remove("authenticated");
             $cookies.remove("accessToken");
             $cookies.remove("role");
+        },
+
+        isAuthenticated: function() {
+            return $cookies.get("authenticated") === "true";
         }
     }
     

@@ -1,0 +1,35 @@
+<div role="main">
+
+    <div style="margin-top: 3em">
+    </div>
+
+    <div class="alert alert-info text-center" ng-show="info" ng-cloak>
+        {{info}}
+    </div>
+
+    <div class="alert alert-danger text-center" ng-show="error" ng-cloak>
+        {{error}}
+    </div>
+
+    <h1>New password for {{user}}:</h1>
+
+    <form class="centered-form" role="form" ng-submit="submitPassword()" ng-cloak>
+
+        <div class="form-group">
+
+            <input type="password" class="form-control" id="password"
+                   placeholder="Password" name="password" ng-model="data.password"/>
+
+        </div>
+
+        <div class="form-group">
+
+            <input type="password" class="form-control" id="check"
+                   placeholder="Confirm" name="check" ng-model="data.check"/>
+
+        </div>
+
+        <button type="submit" class="btn btn-primary center-block">Submit</button>
+    </form>
+
+</div>
