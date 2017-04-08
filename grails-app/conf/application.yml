@@ -61,14 +61,15 @@ grails:
         encoding: UTF-8
     plugin:
         awssdk:
-            # apiUser - only has s3 access currently
-            accessKey: AKIAJMNKTZEQN33HJJ7Q
-            secretKey: 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
             region: us-west-2
             ses:
                 # ses user
                 accessKey: AKIAIZIYVYRSL3LVCN7Q
                 secretKEy: AggC9juZNNE4tfMxE5YfXMTq3tvstwhsnvCGj9HJ2rip
+            s3:
+                # apiUser - only has s3 access currently
+                accessKey: AKIAJMNKTZEQN33HJJ7Q
+                secretKey: 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
 
 ---
 hibernate:
