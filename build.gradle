@@ -79,6 +79,7 @@ dependencies {
     compile "org.hibernate:hibernate-ehcache:5.1.1.Final"
     compile 'org.grails.plugins:spring-security-rest:2.0.0.M2'
     compile 'org.grails.plugins:aws-sdk-ses:2.1.5'
+    compile 'org.grails.plugins:aws-sdk-s3:2.1.5'
     console "org.grails:grails-console"
     compile "org.grails.plugins:twilio:0.1"
     profile "org.grails.profiles:angular"

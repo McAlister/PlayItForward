@@ -61,8 +61,12 @@ grails:
         encoding: UTF-8
     plugin:
         awssdk:
+            # apiUser - only has s3 access currently
+            accessKey: AKIAJMNKTZEQN33HJJ7Q
+            secretKey: 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
             region: us-west-2
             ses:
+                # ses user
                 accessKey: AKIAIZIYVYRSL3LVCN7Q
                 secretKEy: AggC9juZNNE4tfMxE5YfXMTq3tvstwhsnvCGj9HJ2rip
 
@@ -84,6 +88,7 @@ dataSource:
 
 environments:
     development:
+        bucket: playitforward-magic-dev
         twilio:
             sid: 'ACa8987067df275043dad1760a79d08532'
             token: '35d0572469ce5f30a15f238f007c034f'
@@ -92,6 +97,7 @@ environments:
             dbCreate: update
             url: jdbc:postgresql://localhost:5432/magicmom
     test:
+        bucket: playitforward-magic-dev
         twilio:
             sid: 'ACa8987067df275043dad1760a79d08532'
             token: '35d0572469ce5f30a15f238f007c034f'
@@ -100,6 +106,7 @@ environments:
             dbCreate: update
             url: jdbc:postgresql://localhost:5432/magicmom
     production:
+        bucket: playitforward-magic
         twilio:
             sid: 'AC535ebaff99248ccc888e872e71a050d0'
             token: '097c40f3dff014564a9b48765235962a'
