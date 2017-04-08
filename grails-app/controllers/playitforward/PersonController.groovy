@@ -20,7 +20,7 @@ class PersonController {
         respond person;
     }
 
-    @Secured(['ROLE_ANONYMOUS', 'ROLE_ADMIN'])
+    @Secured('permitAll')
     @Transactional
     def save(Person person) {
 
