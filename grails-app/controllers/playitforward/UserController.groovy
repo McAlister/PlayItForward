@@ -13,7 +13,7 @@ class UserController {
     def index() {
     }
 
-    @Secured(['ROLE_ANONYMOUS', 'ROLE_ADMIN'])
+    @Secured(['permitAll'])
     def sendResetEmail(String username) {
         def user = User.findByUsername(username)
         if (user != null) {
@@ -24,7 +24,7 @@ class UserController {
         respond([message: 'email sent if user exists'])
     }
 
-    @Secured(['ROLE_ANONYMOUS', 'ROLE_ADMIN'])
+    @Secured(['permitAll'])
     def setNewPassword(String username) {
         def password = params.password ?: request.JSON?.password
         def resetKey = params.key ?: request.JSON?.key
