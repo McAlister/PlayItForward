@@ -64,7 +64,7 @@ function GPController(contextPath, $scope, $http, $location) {
 
     $scope.getImageName = function() {
 
-        if ($scope.GPs.currentEvent != null) {
+        if ($scope.GPs.currentEvent) {
             
             var name = $scope.GPs.currentEvent.name;
             name = name.replace(/\s/g, "-").substring(3);
@@ -106,19 +106,17 @@ function GPController(contextPath, $scope, $http, $location) {
     // //////////// //
 
     $scope.isFutureGP = function() {
-        
-        if ($scope.GPs.currentEvent != null) {
-            return $scope.GPs.eventWinners[$scope.GPs.currentEvent.id] == null;
-        }
-        
-        return true;
+
+        var now = new Date();
+        //noinspection JSUnresolvedVariable
+        return !$scope.GPs.currentEvent || $scope.GPs.currentEvent.startDate > now;
     };
     
     $scope.monthList = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September',
                         'October', 'November', 'December'];
     $scope.gpStartDateString = function() {
 
-        if ($scope.GPs.currentEvent != null) {
+        if ($scope.GPs.currentEvent) {
             var startDate = new Date($scope.GPs.currentEvent.startDate);
             return $scope.monthList[startDate.getMonth()] + ' ' + ( startDate.getDate() + 1) + ', ' + startDate.getFullYear();
         }
@@ -144,7 +142,7 @@ function GPController(contextPath, $scope, $http, $location) {
 
     $scope.getWinnerImageName = function() {
 
-        if ($scope.GPs.currentEvent != null) {
+        if ($scope.GPs.currentEvent) {
 
             var winner = $scope.GPs.eventWinners[$scope.GPs.currentEvent.id];
             if (winner != null && winner.imageName != null) {
@@ -183,7 +181,7 @@ function GPController(contextPath, $scope, $http, $location) {
 
     $scope.bountiesExist = function() {
 
-        if ($scope.GPs.currentEvent != null) {
+        if ($scope.GPs.currentEvent) {
             var currentBounties = $scope.bountyArray.bounties.filter(function (bounty) {
                 return bounty.event == $scope.GPs.currentEvent.name;
             });

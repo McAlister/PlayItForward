@@ -23,9 +23,8 @@ class EventStandingController {
         def query = session.createSQLQuery(sql);
         List<Object[]> rows = query.list();
 
-        Map<String, Integer> args = new HashMap<>();
-        args.put("latestRound", Integer.parseInt(rows.get(0).toString()));
-        respond args, view:'latestRound';
+        def lastRound = rows[0] == null ? 0 : rows[0].toString() as Integer
+        respond(['latestRound': lastRound], view:'latestRound')
     }
 
     def index(Integer eventId, Integer roundNum) {

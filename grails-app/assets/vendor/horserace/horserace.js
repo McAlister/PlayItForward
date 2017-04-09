@@ -4,7 +4,8 @@ HorseRace = {};
     var scoreRange = 1000,
         maxPoints = 45,
         OFFSET = 1,
-        horserace = document.getElementById('horserace');
+        horserace = document.getElementById('horserace'),
+        roundDisplay = document.getElementById('horseround');
 
     function getPosition(waveNum, score, round) {
         var raceHeight = horserace.clientHeight,
@@ -114,15 +115,16 @@ HorseRace = {};
 
     function processScores(scorelist, round) {
         var maxScore = 0,
-            waveKeys, lastWave,
-            roundDisplay = document.getElementById('horseround');
+            waveKeys, lastWave;
 
         scorelist.forEach(function (el) {
             maxScore = el.score > maxScore ? el.score : maxScore;
         });
         scoreRange = Math.min(maxScore-(maxScore%18)+18, maxPoints);
 
-        if (round > 9) {
+        if (scorelist.length === 0) {
+            roundDisplay.innerHTML = 'No standings data yet';
+        } else if (round > 9) {
             roundDisplay.innerHTML = 'Day 2 Round ' + round;
         } else {
             roundDisplay.innerHTML = 'Day 1 Round ' + round;
@@ -235,14 +237,14 @@ HorseRace = {};
         HorseRace.back = function () {
             HorseRace.pause();
             round = round <= 0 ? 0 : round-1;
-            getRound(event, round, true);
-            document.getElementById('horseround').innerHTML = 'Loading round ' + round + ' ...';
+            getRound(event, round);
+            roundDisplay.innerHTML = 'Loading round ' + round + ' ...';
         };
         HorseRace.next = function () {
             HorseRace.pause();
             round = round >= maxRounds ? maxRounds : round+1;
-            getRound(event, round, true);
-            document.getElementById('horseround').innerHTML = 'Loading round ' + round + ' ...';
+            getRound(event, round);
+            roundDisplay.innerHTML = 'Loading round ' + round + ' ...';
         };
 
         HorseRace.play();
