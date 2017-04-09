@@ -15,6 +15,7 @@ class UserController {
 
     @Secured(['permitAll'])
     def sendResetEmail(String username) {
+        username = username.toLowerCase()
         def user = User.findByUsername(username)
         if (user != null) {
             user.makeResetKey()
@@ -26,6 +27,7 @@ class UserController {
 
     @Secured(['permitAll'])
     def setNewPassword(String username) {
+        username = username.toLowerCase()
         def password = params.password ?: request.JSON?.password
         def resetKey = params.key ?: request.JSON?.key
         def user = User.findByUsername(username)
