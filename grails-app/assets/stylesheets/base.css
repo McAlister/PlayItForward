@@ -83,3 +83,28 @@ img {
 a.btn {
     text-decoration: none;
 }
+
+.tableControl ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+.tableControl li {
+    float: left;
+    padding: 5px;
+    border: 1px solid #ffffff;
+}
+
+.tableControl li.active {
+    background-color: #ffffff;
+}
+
+.tableControl li.active a {
+    color: #000000;
+}
+.tableControl a {
+    text-decoration: none;
+    color: #ffffff;
+    margin: 5px 10px;
+}

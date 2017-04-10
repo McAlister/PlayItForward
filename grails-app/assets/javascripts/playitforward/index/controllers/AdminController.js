@@ -38,7 +38,7 @@ function AdminController(contextPath, userPersistenceService, $scope, $http, $lo
 
     $scope.activate = function (tabName) {
         
-        if (tabName != null) {
+        if (tabName) {
 
             $scope.activeTab = tabName;
             $location.search('tab', tabName);
@@ -125,7 +125,7 @@ function AdminController(contextPath, userPersistenceService, $scope, $http, $lo
             }
         };
 
-        if($scope.mailData.currentPerson.id != 0) {
+        if($scope.mailData.currentPerson.id !== 0) {
 
             data['id'] = $scope.mailData.currentPerson.id;
 
@@ -340,7 +340,7 @@ function AdminController(contextPath, userPersistenceService, $scope, $http, $lo
             }
         };
 
-        if(winner.id != null) {
+        if(winner.id !== null) {
 
             data['id'] = winner.id;
             data['imageName'] = winner.imageName;
@@ -369,5 +369,123 @@ function AdminController(contextPath, userPersistenceService, $scope, $http, $lo
                 }
             );
         }
+    };
+
+
+    // ////////// //
+    // Player Tab //
+    // ////////// //
+
+    $scope.playerData = {
+
+        newPlayer: {},
+        playerList: [],
+        filteredList: [],
+        playerError: '',
+        pagedPlayers: [],
+        currentPage: 0,
+        itemsPerPage: 10,
+        sortReverse: true,
+        sortType: 'Name',
+        searchString: ''
+    };
+
+    $scope.populatePlayerPages = function () {
+
+        $scope.playerData.pagedPlayers = [];
+
+        for (var i = 0; i < $scope.playerData.filteredList.length; i++) {
+
+            var index = Math.floor(i / $scope.playerData.itemsPerPage);
+
+            if(! (index in $scope.playerData.pagedPlayers) ) {
+                $scope.playerData.pagedPlayers[index] = [];
+            }
+
+            $scope.playerData.pagedPlayers[index].push($scope.playerData.filteredList[i]);
+        }
+    };
+
+    $scope.filterPlayers = function() {
+
+        $scope.playerData.filteredList = $filter('filter')($scope.playerData.playerList, $scope.playerData.searchString);
+
+        $scope.playerData.filteredList = $filter('orderBy')($scope.playerData.filteredList, $scope.playerData.sortType,
+            $scope.playerData.sortReverse);
+        $scope.populatePlayerPages();
+    };
+
+    $scope.sortPlayers = function(column) {
+
+        $scope.playerData.sortType = column;
+        $scope.playerData.sortReverse = ! $scope.playerData.sortReverse;
+
+        $scope.playerData.filteredList = $filter('filter')($scope.playerData.playerList, $scope.playerData.searchString);
+
+        $scope.playerData.filteredList = $filter('orderBy')($scope.playerData.filteredList, column,
+            $scope.playerData.sortReverse);
+
+        $scope.populatePlayerPages();
+    };
+
+    $scope.populatePlayers = function() {
+
+        $http({
+            method: 'GET',
+            url: '/api/Player/adminList'
+        }).then(function successCallback(response) {
+
+            $scope.playerData.playerList = response.data;
+            $scope.sortPlayers();
+
+        }, function errorCallback(response) {
+
+            $scope.playerData.playerError = 'ERROR: ' + response.data.message;
+        });
+    };
+
+    $scope.populatePlayers();
+
+    $scope.playerTableRange = function () {
+
+        var ret = [];
+        var begin = $scope.playerData.currentPage;
+        var end = begin + 5;
+
+        if (end > $scope.playerData.pagedPlayers.length - 1) {
+            end = $scope.playerData.pagedPlayers.length - 1;
+            begin = end - 5;
+            if (begin < 0 ) {
+                begin = 0;
+            }
+        }
+
+        for (var i = begin ; i <= end ; i++) {
+            ret.push(i);
+        }
+
+        if ($scope.playerData.currentPage > end && end >= 0) {
+            $scope.playerData.currentPage = end;
+        }
+
+        return ret;
+    };
+
+    $scope.prevPlayerPage = function () {
+
+        if ($scope.playerData.currentPage > 0) {
+            $scope.playerData.currentPage--;
+        }
+    };
+
+    $scope.nextPlayerPage = function () {
+
+        if ($scope.playerData.currentPage < $scope.playerData.pagedPlayers.length - 1) {
+            $scope.playerData.currentPage++;
+        }
+    };
+
+    $scope.setPlayerPage = function (pageNum) {
+        $scope.playerData.currentPage = pageNum;
     };
 }

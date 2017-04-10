@@ -28,6 +28,7 @@
             <h1>Add/Edit:</h1>
 
             <div class="gp-dropdown">
+                <!--suppress HtmlFormInputWithoutLabel -->
                 <select name="personSelect" id="personSelect" ng-model="mailData.currentPerson"
                         ng-options="person.fullName for person in personData.personList track by person.id">
                 </select>
@@ -61,7 +62,7 @@
 
                 <div class="form-group">
                     <label for="inputPhone" class="control-label">Phone Number:</label>
-                    <input type='text'id="inputPhone" class="form-control" placeholder="Phone Number" ng-model="mailData.currentPerson.phone" autofocus>
+                    <input type='text' id="inputPhone" class="form-control" placeholder="Phone Number" ng-model="mailData.currentPerson.phone" autofocus>
                 </div>
 
                 <div class="form-group">
@@ -137,7 +138,7 @@
 
     </div>
 
-    <div id="admin-winners" ng-show="isActiveTab('prizes')">
+    <div id="admin-prizes" ng-show="isActiveTab('prizes')">
 
         <div class="alert alert-danger" ng-show="prizeData.prizeError">
 
@@ -154,6 +155,7 @@
             <h1>Add/Edit:</h1>
 
             <div class="gp-dropdown">
+                <!--suppress HtmlFormInputWithoutLabel -->
                 <select name="prizeSelect" id="prizeSelect" ng-model="currentEvent"
                         ng-options="event.name for event in winnerData.eventList track by event.id"
                         ng-change="selectEvent()">
@@ -221,11 +223,11 @@
 
     </div>
 
-    <div id="admin-prizes" ng-show="isActiveTab('winners')">
+    <div id="admin-winners" ng-show="isActiveTab('winners')">
 
         <div class="alert alert-danger" ng-show="winnerData.winnerError">
 
-            There was a problem retrieving the ail list.
+            There was a problem retrieving the winner list.
 
             <br />
 
@@ -238,6 +240,7 @@
             <h1>Add/Edit:</h1>
 
             <div class="gp-dropdown">
+                <!--suppress HtmlFormInputWithoutLabel -->
                 <select name="winnerSelect" id="winnerSelect" ng-model="currentEvent"
                         ng-options="event.name for event in winnerData.eventList track by event.id"
                         ng-change="selectEvent()">
@@ -263,8 +266,9 @@
 
                 <div class="form-group">
                     <label for="inputBlurb" class="control-label">Blurb:</label>
-                    <textarea cols="40" rows="5" type="text" id="inputBlurb" class="form-control" ng-model="winnerData.currentWinner.blurb" required>
-                    </textarea>
+                    <textarea cols="40" rows="5" id="inputBlurb" class="form-control"
+                              ng-model="winnerData.currentWinner.blurb" required>
+                </textarea>
                 </div>
 
                 <button class="btn btn-primary center-block" type="submit">Add/Edit</button>
@@ -277,7 +281,118 @@
 
     <div id="admin-players" ng-show="isActiveTab('players')">
 
-        play
+        <h1>Leading Ladies:</h1>
+
+        <div class="alert alert-danger" ng-show="playerData.playerError">
+
+            There was a problem retrieving the player list.
+
+            <br />
+
+            {{playerData.playerError}}
+
+        </div>
+
+        <form ng-submit="upsertPlayer()" class="form">
+
+            <div class="form-group">
+                <label for="inputPlayerName" class="control-label">Name in Standings:</label>
+                <input type="text" id="inputPlayerName" class="form-control" placeholder="Aiken, Simone [US]"
+                       ng-model="playerData.newPlayer.name" required>
+            </div>
+
+            <div class="form-group">
+                <label for="inputPlayerAlias" class="control-label">Alias:</label>
+                <input type="text" id="inputPlayerAlias" class="form-control" placeholder="Alias"
+                       ng-model="playerData.newPlayer.alias" required>
+            </div>
+
+            <div class="form-group">
+                <label for="inputPlayerImageName" class="control-label">Image Name:</label>
+                <input type="text" id="inputPlayerImageName" class="form-control" placeholder="Image Name"
+                       ng-model="playerData.newPlayer.imgUrl" required >
+            </div>
+
+            <button class="btn btn-primary center-block" type="submit">Add</button>
+
+        </form>
+
+        <br/>
+
+        <form>
+            <div class="form-group">
+                <div class="input-group">
+                    <div class="input-group-addon"><i class="fa fa-search"></i></div>
+                    <input type="text" class="form-control" placeholder="Search Players"
+                           ng-change="filterPlayers()" ng-model="playerData.searchString">
+                </div>
+            </div>
+        </form>
+
+        <table class="table table-bordered table-striped">
+
+            <thead>
+            <tr>
+                <th>
+                    <a href ng-click="sortPlayers('imgUrl')">
+                        Image
+                        <span ng-show="playerData.sortType == 'imgUrl' && !playerData.sortReverse" class="fa fa-caret-down"></span>
+                        <span ng-show="playerData.sortType == 'imgUrl' && playerData.sortReverse" class="fa fa-caret-up"></span>
+                    </a>
+                </th>
+                <th>
+                    <a href ng-click="sortPlayers('name')">
+                        Name
+                        <span ng-show="playerData.sortType == 'name' && !playerData.sortReverse" class="fa fa-caret-down"></span>
+                        <span ng-show="playerData.sortType == 'name' && playerData.sortReverse" class="fa fa-caret-up"></span>
+                    </a>
+                </th>
+                <th>
+                    <a href ng-click="sortPlayers('alias')">
+                        Alias
+                        <span ng-show="playerData.sortType == 'alias' && !playerData.sortReverse" class="fa fa-caret-down"></span>
+                        <span ng-show="playerData.sortType == 'alias' && playerData.sortReverse" class="fa fa-caret-up"></span>
+                    </a>
+                </th>
+            </tr>
+            </thead>
+
+            <tbody>
+                <tr ng-repeat="player in playerData.pagedPlayers[playerData.currentPage]">
+                    <td>{{ player.imgUrl }}</td>
+                    <td>{{ player.name }}</td>
+                    <td>{{ player.alias }}</td>
+                </tr>
+            </tbody>
+
+            <tfoot>
+
+
+            </tfoot>
+
+        </table>
+
+        <div class="tableControl pull-right">
+
+            <ul>
+
+                <li ng-class="{disabled: playerData.currentPage == 0}">
+                    <a href ng-click="prevPlayerPage()">«</a>
+                </li>
+
+                <li ng-repeat="n in playerTableRange()"
+                    ng-class="{active: n == playerData.currentPage}" ng-click="setPlayerPage(n)">
+
+                    <a href ng-bind="n + 1">1</a>
+                </li>
+
+                <li ng-class="{disabled: (currentPage) == layerData.pagedPlayers.length - 1}">
+                    <a href class="button" ng-click="nextPlayerPage()">»</a>
+                </li>
+
+            </ul>
+
+        </div>
 
     </div>
 

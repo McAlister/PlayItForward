@@ -31,10 +31,15 @@ class UrlMappings {
 
         post "/api/User/$username/sendResetEmail" (
                 controller: 'user', action: 'sendResetEmail'
-        )
+        );
+
         post "/api/User/$username/setNewPassword" (
                 controller: 'user', action: 'setNewPassword'
-        )
+        );
+
+        get "/api/Player/adminList" (
+                controller: 'player', action: 'trueList'
+        );
 
         delete "/api/$controller/$id(.$format)?"(action:"delete");
         get "/api/$controller(.$format)?"(action:"index");

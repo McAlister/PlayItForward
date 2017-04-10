@@ -4,10 +4,4 @@ model {
 	Player player
 }
 
-json {
-
-    id player.id;
-    name player.alias;
-    imgUrl player.imgUrl;
-    fem player.isWoman;
-}
+json g.render(player)
