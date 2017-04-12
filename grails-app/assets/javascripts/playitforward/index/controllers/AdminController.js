@@ -104,7 +104,7 @@ function AdminController(contextPath, userPersistenceService, $scope, $http, $lo
 
         }, function errorCallback(response) {
 
-            alert ('Error: Could not contact database: ' + response.data.message);
+            window.alert('Error: Could not contact database: ' + response.data.message);
             
         });
 
@@ -127,15 +127,15 @@ function AdminController(contextPath, userPersistenceService, $scope, $http, $lo
 
         if($scope.mailData.currentPerson.id !== 0) {
 
-            data['id'] = $scope.mailData.currentPerson.id;
+            data.id = $scope.mailData.currentPerson.id;
 
-            $http.put('/api/Person/' + data['id'], data, config).then(
+            $http.put('/api/Person/' + data.id, data, config).then(
                 function(){
                     $scope.getPeople();
-                    alert ('They were updated successfully.');
+                    window.alert('They were updated successfully.');
                 },
                 function(response){
-                    alert ('Error: Failed to add you to mailling list! ' + response.data.message);
+                    window.alert('Error: Failed to add you to mailling list! ' + response.data.message);
                 }
             );
         }
@@ -144,10 +144,10 @@ function AdminController(contextPath, userPersistenceService, $scope, $http, $lo
             $http.post('/api/Person', data, config).then(
                 function(){
                     $scope.getPeople();
-                    alert ('They were added successfully.');
+                    window.alert('They were added successfully.');
                 },
                 function(response){
-                    alert ('Error: Failed to add you to mailling list! ' + response.data.message);
+                    window.alert('Error: Failed to add you to mailling list! ' + response.data.message);
                 }
             );
         }
@@ -217,7 +217,7 @@ function AdminController(contextPath, userPersistenceService, $scope, $http, $lo
                 $scope.populateBounties();
             },
             function(response){
-                alert ('Error: Failed to add prize: ' + response.data.message);
+                window.alert('Error: Failed to add prize: ' + response.data.message);
             }
         );
     };
@@ -239,7 +239,7 @@ function AdminController(contextPath, userPersistenceService, $scope, $http, $lo
             },
             function(response){
                 
-                alert ('Error: Failed to delete bounty: ' + response.data.message);
+                window.alert('Error: Failed to delete bounty: ' + response.data.message);
             }
         );
     };
@@ -342,30 +342,30 @@ function AdminController(contextPath, userPersistenceService, $scope, $http, $lo
 
         if(winner.id !== null) {
 
-            data['id'] = winner.id;
-            data['imageName'] = winner.imageName;
+            data.id = winner.id;
+            data.imageName = winner.imageName;
 
-            $http.put('/api/EventWinner/' + data['id'], data, config).then(
+            $http.put('/api/EventWinner/' + data.id, data, config).then(
                 function(){
                     $scope.getPeople();
-                    alert ('They were updated successfully.');
+                    window.alert('They were updated successfully.');
                 },
                 function(response){
-                    alert ('Error: Failed to update winner: ' + response.data.message);
+                    window.alert('Error: Failed to update winner: ' + response.data.message);
                 }
             );
         }
         else {
 
-            data['imageName'] = 'Unknown.jpg';
+            data.imageName = 'Unknown.jpg';
             
             $http.post('/api/EventWinner', data, config).then(
                 function(){
                     $scope.getPeople();
-                    alert ('They were added successfully.');
+                    window.alert('They were added successfully.');
                 },
                 function(response){
-                    alert ('Error: Failed to add winner: ' + response.data.message);
+                    window.window.alert('Error: Failed to add winner: ' + response.data.message);
                 }
             );
         }
@@ -378,7 +378,7 @@ function AdminController(contextPath, userPersistenceService, $scope, $http, $lo
 
     $scope.playerData = {
 
-        newPlayer: {},
+        currentPlayer: null,
         playerList: [],
         filteredList: [],
         playerError: '',
@@ -487,5 +487,55 @@ function AdminController(contextPath, userPersistenceService, $scope, $http, $lo
 
     $scope.setPlayerPage = function (pageNum) {
         $scope.playerData.currentPage = pageNum;
+    };
+
+    $scope.addNewPlayerSetup = function() {
+
+        $scope.playerData.currentPlayer = null;
+    };
+
+    $scope.upsertPlayer = function() {
+
+        var data = {
+
+            alias: $scope.playerData.currentPlayer.alias,
+            imgUrl: $scope.playerData.currentPlayer.imgUrl,
+            isWoman: $scope.playerData.currentPlayer.isWoman,
+            name: $scope.playerData.currentPlayer.name
+        };
+
+        var config = {
+            headers : {
+                'Content-Type': 'application/json;charset=utf-8;'
+            }
+        };
+
+        if('id' in $scope.playerData.currentPlayer && $scope.playerData.currentPlayer.id > 0) {
+
+            data.id = $scope.playerData.currentPlayer.id;
+
+            $http.put('/api/Player/' + data.id, data, config).then(
+                function(){
+                    $scope.populatePlayers();
+                    window.alert('They were updated successfully.');
+                },
+                function(response){
+                    window.alert('Error: Failed to add Player! ' + response.data.message);
+                }
+            );
+        }
+        else {
+
+            $http.post('/api/Player', data, config).then(
+                function(){
+                    $scope.populatePlayers();
+                    window.alert('Player added successfully.');
+                },
+                function(response){
+                    window.alert('Error: Failed to add Player! ' + response.data.message);
+                }
+            );
+        }
+
     };
 }

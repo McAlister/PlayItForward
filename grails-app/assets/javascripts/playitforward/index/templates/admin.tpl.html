@@ -293,27 +293,45 @@
 
         </div>
 
+        <div class="gp-dropdown">
+            <!--suppress HtmlFormInputWithoutLabel -->
+            <select name="playerSelect" id="playerSelect" ng-model="playerData.currentPlayer"
+                    ng-options="player.name for player in playerData.playerList | orderBy: 'name' track by player.id" >
+                <option value="" disabled selected hidden>Create New Player ...</option>
+            </select>
+        </div>
+
         <form ng-submit="upsertPlayer()" class="form">
 
             <div class="form-group">
                 <label for="inputPlayerName" class="control-label">Name in Standings:</label>
                 <input type="text" id="inputPlayerName" class="form-control" placeholder="Aiken, Simone [US]"
-                       ng-model="playerData.newPlayer.name" required>
+                       ng-model="playerData.currentPlayer.name" required>
             </div>
 
             <div class="form-group">
                 <label for="inputPlayerAlias" class="control-label">Alias:</label>
                 <input type="text" id="inputPlayerAlias" class="form-control" placeholder="Alias"
-                       ng-model="playerData.newPlayer.alias" required>
+                       ng-model="playerData.currentPlayer.alias" required>
             </div>
 
             <div class="form-group">
                 <label for="inputPlayerImageName" class="control-label">Image Name:</label>
                 <input type="text" id="inputPlayerImageName" class="form-control" placeholder="Image Name"
-                       ng-model="playerData.newPlayer.imgUrl" required >
+                       ng-model="playerData.currentPlayer.imgUrl" required >
             </div>
 
-            <button class="btn btn-primary center-block" type="submit">Add</button>
+            <div class="form-group">
+                <label>Is Woman: <input type="checkbox" ng-model="playerData.currentPlayer.isWoman"
+                                        ng-true-value="true" ng-false-value="false" checked="checked">
+                </label>
+            </div>
+
+            <div class="text-center">
+                <button class="btn btn-primary" type="button" ng-click="addNewPlayerSetup()">Clear</button>
+                <button class="btn btn-primary" type="submit" ng-show="playerData.currentPlayer.id">Edit</button>
+                <button class="btn btn-primary" type="submit" ng-hide="playerData.currentPlayer.id">Add</button>
+            </div>
 
         </form>
 

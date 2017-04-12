@@ -1,6 +1,12 @@
 package playitforward
 
+import grails.plugin.springsecurity.annotation.Secured
 import grails.transaction.Transactional
+
+import static org.springframework.http.HttpStatus.CREATED
+import static org.springframework.http.HttpStatus.NOT_FOUND
+import static org.springframework.http.HttpStatus.NOT_FOUND
+import static org.springframework.http.HttpStatus.OK
 
 @Transactional(readOnly = true)
 class PlayerController {
@@ -25,6 +31,8 @@ class PlayerController {
         respond playerList, model:[playerCount: Player.count()];
     }
 
+    @Secured('ROLE_ADMIN')
+    @Transactional
     def trueList() {
 
         List<Player> playerList = Player.list();
@@ -48,5 +56,45 @@ class PlayerController {
 
     def show(Player player) {
         respond player;
+    }
+
+    @Secured('ROLE_ADMIN')
+    @Transactional
+    def save(Player player) {
+        if (player == null) {
+            transactionStatus.setRollbackOnly()
+            render status: NOT_FOUND
+            return
+        }
+
+        if (player.hasErrors()) {
+            transactionStatus.setRollbackOnly()
+            respond player.errors, view:'create'
+            return
+        }
+
+        player.save flush:true
+
+        respond player, [status: CREATED, view:"show"]
+    }
+
+    @Secured('ROLE_ADMIN')
+    @Transactional
+    def update(Player player) {
+        if (player == null) {
+            transactionStatus.setRollbackOnly()
+            render status: NOT_FOUND
+            return
+        }
+
+        if (player.hasErrors()) {
+            transactionStatus.setRollbackOnly()
+            respond player.errors, view:'edit'
+            return
+        }
+
+        player.save flush:true
+
+        respond player, [status: OK, view:"show"]
     }
 }
