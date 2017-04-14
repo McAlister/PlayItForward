@@ -34,7 +34,7 @@
 
             <a ui-sref="index">
                 <header class="header">
-                    <image src="/assets/banner.png" class="main-logo-image"/>
+                    <asset:image src="/banner.png" class="main-logo-image"/>
                 </header>
             </a>
 
