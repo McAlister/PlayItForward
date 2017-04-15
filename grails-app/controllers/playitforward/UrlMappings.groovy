@@ -41,6 +41,10 @@ class UrlMappings {
                 controller: 'player', action: 'trueList'
         );
 
+        put "/api/Image/generateCameo" (
+                controller: 'image', action: 'generateCameo'
+        )
+
         delete "/api/$controller/$id(.$format)?"(action:"delete");
         get "/api/$controller(.$format)?"(action:"index");
         get "/api/$controller/$id(.$format)?"(action:"show");
