@@ -33,17 +33,12 @@ function LoginController(userPersistenceService, $scope, $http) {
                 $scope.loginError = '';
                 $scope.role = data.roles[0];
                 userPersistenceService.setCookieData($scope.accessToken, $scope.role);
-
-                $http.defaults.headers.common['Authorization'] = "Bearer " + $scope.accessToken;
-
             }
             else {
 
                 $scope.authenticated = false;
                 $scope.loginError = 'Bad User Name Or Password.';
                 $scope.accessToken = '';
-
-                delete $http.defaults.headers.common['Authorization'];
             }
 
         }).error(function() {
@@ -51,8 +46,6 @@ function LoginController(userPersistenceService, $scope, $http) {
             $scope.authenticated = false;
             $scope.loginError = 'Bad Username or Password.';
             $scope.accessToken = '';
-
-            delete $http.defaults.headers.common['Authorization'];
         });
     };
 
@@ -64,8 +57,6 @@ function LoginController(userPersistenceService, $scope, $http) {
         $scope.authenticated = $scope.sessionData.authenticated;
         $scope.accessToken = $scope.sessionData.accessToken;
         $scope.role = $scope.sessionData.role;
-
-        delete $http.defaults.headers.common['Authorization'];
     };
 
     $scope.sendResetPassword = function() {
@@ -82,9 +73,4 @@ function LoginController(userPersistenceService, $scope, $http) {
     $scope.isAuthenticated = function() {
         return userPersistenceService.isAuthenticated();
     };
-
-    if ($scope.isAuthenticated()) {
-        $http.defaults.headers.common['Authorization'] = "Bearer " + $scope.accessToken;
-    }
-
 }

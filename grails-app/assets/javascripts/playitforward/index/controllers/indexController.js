@@ -252,8 +252,4 @@ function IndexController(userPersistenceService, contextPath, $state, $scope, $h
 
     $interval($scope.autoIncrement, 3000);
 
-    // set Bearer token on all API calls when authenticated
-    if (userPersistenceService.isAuthenticated()) {
-        $http.defaults.headers.common['Authorization'] = "Bearer " + $scope.accessToken;
-    }
 }

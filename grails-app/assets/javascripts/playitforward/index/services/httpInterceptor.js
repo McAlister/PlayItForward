@@ -10,7 +10,19 @@ angular
 function myHttpInterceptor(userPersistenceService, $q) {
 
     var sessionRecover = {
-        
+
+        request: function(config) {
+
+            // Add Auth token if logged in.
+            var data = userPersistenceService.getCookieData();
+            if (data.authenticated) {
+
+                config.headers.Authorization = 'Bearer ' + data.accessToken;
+            }
+
+            return config || $q.when(config);
+        },
+
         responseError: function(response) {
             
             // Session has expired
