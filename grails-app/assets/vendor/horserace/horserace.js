@@ -63,7 +63,7 @@ HorseRace = {};
 
         horse = wave.getElementsByClassName("horse")[0];
         if (horseInfo.img && !horseInfo.img.match(/\//)) {
-            horseInfo.img = 'https://s3-us-west-2.amazonaws.com/playitforward-magic/images/race/oval/' + horseInfo.img;
+            horseInfo.img = 'https://s3-us-west-2.amazonaws.com/playitforward-magic/images/race/ovals/' + horseInfo.img;
         }
         horse.src = horseInfo.img || "placeholder.png";
         horse.onclick = function(e) {
@@ -76,7 +76,7 @@ HorseRace = {};
         wave.appendChild(horse);
 
         profileImg = wave.getElementsByClassName("profile")[0].getElementsByTagName("img")[0];
-        profileImg.src = horse.src.replace('/oval/', '/');
+        profileImg.src = horse.src.replace('/ovals/', '/');
 
         if (insertAfter)
             horserace.insertBefore(wave, insertAfter.nextSibling);
