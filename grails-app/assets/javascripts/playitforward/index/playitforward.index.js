@@ -70,6 +70,11 @@ function config($stateProvider, $urlRouterProvider) {
             url: '/admin',
             controller: 'AdminController',
             templateUrl: '/playitforward/index/admin.html'
+        })
+        .state('groupAdmin', {
+            url: '/groupAdmin',
+            controller: 'GroupAdminController',
+            templateUrl: '/playitforward/index/groupAdmin.html'
     });
 
     $urlRouterProvider.otherwise('/');

@@ -39,6 +39,19 @@ class BootStrap
                 it.clear()
             }
         }
+
+        role = Role.findByAuthority('ROLE_GROUP_LEADER');
+        if (role == null) {
+
+            role = new Role( authority: 'ROLE_GROUP_LEADER').save();
+            User user = new User( 'saiken@ulfheim.net',  'Bring1tLadies!').save();
+            UserRole.create(user, role);
+            UserRole.withSession {
+
+                it.flush();
+                it.clear();
+            }
+        }
     }
 
     def destroy = {

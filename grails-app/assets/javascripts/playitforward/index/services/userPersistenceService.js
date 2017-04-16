@@ -51,6 +51,6 @@ function userPersistenceService($cookies) {
         isAuthenticated: function() {
             return $cookies.get("authenticated") === "true";
         }
-    }
+    };
     
 }
