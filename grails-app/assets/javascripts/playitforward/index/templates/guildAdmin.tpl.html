@@ -20,7 +20,85 @@
 
     <div id="group-profile" ng-show="isActiveTab('guild-profile')">
 
-        Profile Placeholder.
+        <h1>{{guild.name}}:
+
+            <span class="glyphicon glyphicon-pencil" ng-show="viewGuild" ng-click="toggleView()"></span>
+            <span class="glyphicon" ng-show="!viewGuild" ng-click="toggleView()">x</span>
+
+        </h1>
+
+        <div class="alert alert-danger" ng-show="guildError">
+
+            There was a problem retrieving the group profile.
+
+            <br />
+
+            {{guildError}}
+
+        </div>
+
+        <div class="section" ng-hide="guildError">
+
+            <form ng-submit="updateGuild()" ng-class="form"><fieldset ng-disabled="viewGuild">
+
+                <div class="form-group">
+                    <label for="group-description" class="control-label">Description:</label>
+                    <textarea cols="40" rows="3" id="group-description" class="form-control"
+                              ng-hide="viewGuild" ng-model="guild.description">
+                    </textarea>
+                    <p ng-show="viewGuild">{{guild.description}}</p>
+                </div>
+
+                <div class="form-group">
+                    <label for="group-email" class="control-label">Email (only visible to group members):</label>
+                    <input type="text" id="group-email" class="form-control" placeholder="example@likeThis.com"
+                           ng-hide="viewGuild" ng-model="guild.email" required>
+                    <p ng-show="viewGuild">{{guild.email}}</p>
+                </div>
+
+                <div class="form-group">
+                    <label for="group-phone" class="control-label">Phone (only visible to group members):</label>
+                    <input type="text" id="group-phone" class="form-control" placeholder="555-555-5555"
+                           ng-hide="viewGuild" ng-model="guild.phone" >
+                    <p ng-show="viewGuild">{{guild.phone}}</p>
+                </div>
+
+                <div class="form-group">
+                    <label for="group-url" class="control-label">Url:</label>
+                    <input type="text" id="group-url" class="form-control" placeholder="facebook page?"
+                           ng-hide="viewGuild" ng-model="guild.url" >
+                    <p ng-show="viewGuild">{{guild.url}}</p>
+                </div>
+
+                <div class="form-group">
+                    <label for="group-tweet" class="control-label">Twitter:</label>
+                    <input type="text" id="group-tweet" class="form-control" placeholder="if you have one"
+                           ng-hide="viewGuild" ng-model="guild.twitter" >
+                    <p ng-show="viewGuild">{{guild.twitter}}</p>
+                </div>
+
+                <div class="form-group">
+                    <label for="group-area" class="control-label">Area Code:</label>
+                    <input type="text" id="group-area" class="form-control" placeholder="So people near you can find you."
+                           ng-hide="viewGuild" ng-model="guild.address" >
+                    <p ng-show="viewGuild">{{guild.address}}</p>
+                </div>
+
+                <br />
+
+            </fieldset>
+
+                <div class="text-center">
+
+                    <button class="btn btn-primary" type="submit" ng-show="!viewGuild">Save</button>
+
+                </div>
+
+                <br />
+                <br />
+            </form>
+
+        </div>
 
     </div>
 

@@ -11,11 +11,12 @@ function userPersistenceService($cookies) {
     data.authenticated = false;
     data.accessToken = '';
     data.role = '';
+    data.username = '';
 
     //noinspection JSUnusedGlobalSymbols
     return {
         
-        setCookieData: function(token, roleName) {
+        setCookieData: function(token, roleName, username) {
 
             data.authenticated = true;
             $cookies.put("authenticated", data.authenticated);
@@ -25,7 +26,9 @@ function userPersistenceService($cookies) {
 
             data.role = roleName;
             $cookies.put("role", data.role);
-            
+
+            data.username = username;
+            $cookies.put("username", data.username);
         },
         
         getCookieData: function() {
@@ -33,6 +36,7 @@ function userPersistenceService($cookies) {
             data.authenticated = $cookies.get("authenticated") === "true";
             data.accessToken = $cookies.get("accessToken");
             data.role = $cookies.get("role");
+            data.username = $cookies.get("username");
             
             return data;
         },
@@ -46,6 +50,7 @@ function userPersistenceService($cookies) {
             $cookies.remove("authenticated");
             $cookies.remove("accessToken");
             $cookies.remove("role");
+            $cookies.remove("username");
         },
 
         isAuthenticated: function() {

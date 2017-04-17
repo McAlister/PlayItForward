@@ -32,7 +32,7 @@ function LoginController(userPersistenceService, $scope, $http) {
                 $scope.accessToken = data.access_token;
                 $scope.loginError = '';
                 $scope.role = data.roles[0];
-                userPersistenceService.setCookieData($scope.accessToken, $scope.role);
+                userPersistenceService.setCookieData($scope.accessToken, $scope.role, $scope.credentials.username);
             }
             else {
 

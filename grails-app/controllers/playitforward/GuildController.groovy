@@ -22,6 +22,14 @@ class GuildController
         respond guild
     }
 
+    @Secured('ROLE_GROUP_LEADER')
+    def getMyGuild(String username) {
+
+        User user = User.findByUsername(username);
+        GuildLeader guildLeader = GuildLeader.findByUser(user);
+        respond guildLeader.guild;
+    }
+
     @Secured('ROLE_ADMIN')
     @Transactional
     def save(Guild guild) {

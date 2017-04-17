@@ -108,3 +108,7 @@ a.btn {
     color: #ffffff;
     margin: 5px 10px;
 }
+
+.form-group p {
+    margin-left: 20px;
+}

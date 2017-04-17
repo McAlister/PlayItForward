@@ -13,7 +13,8 @@ function GuildAdminController(contextPath, userPersistenceService, $scope, $http
     $scope.authenticated = $scope.sessionData.authenticated;
     $scope.accessToken = $scope.sessionData.accessToken;
     $scope.role = $scope.sessionData.role;
-    
+    $scope.username = $scope.sessionData.username;
+
     // /////////////// //
     // Active Tab Code //
     // /////////////// //
@@ -48,23 +49,91 @@ function GuildAdminController(contextPath, userPersistenceService, $scope, $http
     $scope.activate($location.search().tab);
 
 
-    // ///////////// //
-    // Mail List Tab //
-    // ///////////// //
+    // /////////// //
+    // Profile Tab //
+    // /////////// //
 
+    $scope.guildError = '';
+    $scope.guild = {};
+    $scope.viewGuild = true;
+    $scope.pristineGuild = {};
 
-    // ///////// //
-    // Prize Tab //
-    // ///////// //
+    $scope.loadGroup = function() {
+
+        $http.get('/api/Guild/getMyGuild/' + $scope.username).then(
+            function successCallback(response) {
+
+                $scope.guild = response.data;
+
+            }, function errorCallback(response) {
+
+                $scope.guildError = response.data;
+            }
+        );
+    };
+
+    $scope.loadGroup();
+
+    $scope.toggleView = function() {
+
+        if ($scope.viewGuild) {
+
+            $scope.pristineGuild = angular.copy($scope.guild);
+            $scope.viewGuild = false;
+        }
+        else {
+
+            $scope.viewGuild = true;
+            $scope.guild = angular.copy($scope.pristineGuild);
+        }
+    };
+
+    $scope.updateGuild = function() {
+
+        var data = {
+
+            id: $scope.guild.id,
+            name: $scope.guild.name,
+            description: $scope.guild.description,
+            url: $scope.guild.url,
+            twitter: $scope.guild.twitter,
+            address: $scope.guild.address,
+            email: $scope.guild.email,
+            phone: $scope.guild.phone
+        };
+
+        var config = {
+            headers : {
+                'Content-Type': 'application/json;charset=utf-8;'
+            }
+        };
+
+        $http.put('/api/Guild/' + data.id, data, config).then(
+
+            function() {
+
+                $scope.loadGroup();
+                $scope.viewGuild = true;
+            },
+            function(response){
+
+                window.alert('Error: Failed to add Player! ' + response.data.message);
+            }
+        );
+    }
+
+    // /////////// //
+    // Members Tab //
+    // /////////// //
     
 
-    // //////////////// //
-    // Event Winner Tab //
-    // //////////////// //
+    // //////////// //
+    // Stangins Tab //
+    // //////////// //
 
 
-    // ////////// //
-    // Player Tab //
-    // ////////// //
+    // ///////// //
+    // Store Tab //
+    // ///////// //
 
 }

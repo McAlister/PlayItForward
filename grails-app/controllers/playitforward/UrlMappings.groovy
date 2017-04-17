@@ -45,6 +45,10 @@ class UrlMappings {
                 controller: 'image', action: 'generateCameo'
         )
 
+        get "/api/Guild/getMyGuild/$username" (
+                controller: 'guild', action: 'getMyGuild'
+        );
+
         delete "/api/$controller/$id(.$format)?"(action:"delete");
         get "/api/$controller(.$format)?"(action:"index");
         get "/api/$controller/$id(.$format)?"(action:"show");
