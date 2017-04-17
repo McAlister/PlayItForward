@@ -8749,7 +8749,7 @@ function $CompileProvider($provide, $$sanitizeUriProvider) {
           nodeLinkFnFound = nodeLinkFnFound || nodeLinkFn;
         }
 
-        //use the previous context only for the first element in the virtual group
+        //use the previous context only for the first element in the virtual guild
         previousCompileContext = null;
       }
 
@@ -22935,9 +22935,9 @@ function FormController(element, attrs, $scope, $animate, $interpolate) {
  * @description
  * Nestable alias of {@link ng.directive:form `form`} directive. HTML
  * does not allow nesting of form elements. It is useful to nest forms, for example if the validity of a
- * sub-group of controls needs to be determined.
+ * sub-guild of controls needs to be determined.
  *
- * Note: the purpose of `ngForm` is to group controls,
+ * Note: the purpose of `ngForm` is to guild controls,
  * but not to be a replacement for the `<form>` tag with all of its capabilities
  * (e.g. posting to the server, ...).
  *
@@ -29331,7 +29331,7 @@ var ngOptionsMinErr = minErr('ngOptions');
 var NG_OPTIONS_REGEXP = /^\s*([\s\S]+?)(?:\s+as\s+([\s\S]+?))?(?:\s+group\s+by\s+([\s\S]+?))?(?:\s+disable\s+when\s+([\s\S]+?))?\s+for\s+(?:([$\w][$\w]*)|(?:\(\s*([$\w][$\w]*)\s*,\s*([$\w][$\w]*)\s*\)))\s+in\s+([\s\S]+?)(?:\s+track\s+by\s+([\s\S]+?))?$/;
                         // 1: value expression (valueFn)
                         // 2: label expression (displayFn)
-                        // 3: group by expression (groupByFn)
+                        // 3: guild by expression (groupByFn)
                         // 4: disable when expression (disableWhenFn)
                         // 5: array item variable name
                         // 6: object item key variable name
@@ -29783,8 +29783,8 @@ var ngOptionsDirective = ['$compile', '$document', '$parse', function($compile, 
 
           if (isDefined(option.group)) {
 
-            // This option is to live in a group
-            // See if we have already created this group
+            // This option is to live in a guild
+            // See if we have already created this guild
             groupElement = groupElementMap[option.group];
 
             if (!groupElement) {
@@ -29792,7 +29792,7 @@ var ngOptionsDirective = ['$compile', '$document', '$parse', function($compile, 
               groupElement = optGroupTemplate.cloneNode(false);
               listFragment.appendChild(groupElement);
 
-              // Update the label on the group element
+              // Update the label on the guild element
               // "null" is special cased because of Safari
               groupElement.label = option.group === null ? 'null' : option.group;
 
@@ -29804,7 +29804,7 @@ var ngOptionsDirective = ['$compile', '$document', '$parse', function($compile, 
 
           } else {
 
-            // This option is not in a group
+            // This option is not in a guild
             addOptionElement(option, listFragment);
           }
         });

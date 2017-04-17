@@ -1,0 +1,8 @@
+import playitforward.Guild
+
+model {
+	Iterable<Guild> groupList
+}
+
+json tmpl.group(groupList ?: [])
+

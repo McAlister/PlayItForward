@@ -87,7 +87,7 @@
                         </a>
                     </li>
                     <li class="navigation-list-item" ng-if="getRole() === 'ROLE_GROUP_LEADER'" ng-cloak>
-                        <a ui-sref="groupAdmin" class="navigation-link">
+                        <a ui-sref="guildAdmin" class="navigation-link">
                             Group Admin
                         </a>
                     </li>

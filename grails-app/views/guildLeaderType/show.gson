@@ -1,0 +1,7 @@
+import playitforward.GuildLeaderType
+
+model {
+	GuildLeaderType groupLeaderType
+}
+
+json tmpl.groupLeaderType(groupLeaderType)

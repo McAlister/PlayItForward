@@ -17,13 +17,13 @@ class EventTypeControllerSpec extends Specification {
         mockDomain(EventType, [
                 [description: "Grand Prix", type: "GP"],
                 [description: "Unknown Type", type: "OTHER"],
-        ])
+        ]);
 
         when:"The index action is executed"
-            controller.index(null)
+            controller.index(null);
 
         then:"The response is correct"
             response.text == '[{"id":1,"description":"Grand Prix","type":"GP"},' +
-                    '{"id":2,"description":"Unknown Type","type":"OTHER"}]'
+                    '{"id":2,"description":"Unknown Type","type":"OTHER"}]';
     }
 }

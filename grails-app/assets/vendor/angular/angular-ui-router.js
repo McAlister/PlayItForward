@@ -916,7 +916,7 @@ UrlMatcher.prototype.exec = function (path, searchParams) {
     nPath = this.segments.length - 1,
     values = {}, i, j, cfg, paramName;
 
-  if (nPath !== m.length - 1) throw new Error("Unbalanced capture group in route '" + this.source + "'");
+  if (nPath !== m.length - 1) throw new Error("Unbalanced capture guild in route '" + this.source + "'");
 
   function decodePathArray(string) {
     function reverseString(str) { return str.split("").reverse().join(""); }

@@ -1,0 +1,7 @@
+import playitforward.Guild
+
+model {
+	Guild group
+}
+
+json g.render(group)

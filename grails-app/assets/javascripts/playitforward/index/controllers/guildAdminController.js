@@ -2,9 +2,9 @@
 
 angular
     .module("playitforward.index")
-    .controller("GroupAdminController", GroupAdminController);
+    .controller("GuildAdminController", GuildAdminController);
 
-function GroupAdminController(contextPath, userPersistenceService, $scope, $http, $location, $filter) {
+function GuildAdminController(contextPath, userPersistenceService, $scope, $http, $location, $filter) {
 
     var vm = this;
     vm.contextPath = contextPath;
@@ -40,8 +40,8 @@ function GroupAdminController(contextPath, userPersistenceService, $scope, $http
             $location.search('tab', tabName);
         }
         else {
-            $scope.activeTab = 'group-profile';
-            $location.search('tab', 'group-profile');
+            $scope.activeTab = 'guild-profile';
+            $location.search('tab', 'guild-profile');
         }
     };
 

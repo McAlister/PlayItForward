@@ -5,7 +5,7 @@
  * Version: 1.3.3 - 2016-05-22
  * License: MIT
  */angular.module("ui.bootstrap", ["ui.bootstrap.tpls", "ui.bootstrap.collapse","ui.bootstrap.accordion","ui.bootstrap.alert","ui.bootstrap.buttons","ui.bootstrap.carousel","ui.bootstrap.dateparser","ui.bootstrap.isClass","ui.bootstrap.datepicker","ui.bootstrap.position","ui.bootstrap.datepickerPopup","ui.bootstrap.debounce","ui.bootstrap.dropdown","ui.bootstrap.stackedMap","ui.bootstrap.modal","ui.bootstrap.paging","ui.bootstrap.pager","ui.bootstrap.pagination","ui.bootstrap.tooltip","ui.bootstrap.popover","ui.bootstrap.progressbar","ui.bootstrap.rating","ui.bootstrap.tabs","ui.bootstrap.timepicker","ui.bootstrap.typeahead"]);
-angular.module("ui.bootstrap.tpls", ["uib/template/accordion/accordion-group.html","uib/template/accordion/accordion.html","uib/template/alert/alert.html","uib/template/carousel/carousel.html","uib/template/carousel/slide.html","uib/template/datepicker/datepicker.html","uib/template/datepicker/day.html","uib/template/datepicker/month.html","uib/template/datepicker/year.html","uib/template/datepickerPopup/popup.html","uib/template/modal/backdrop.html","uib/template/modal/window.html","uib/template/pager/pager.html","uib/template/pagination/pagination.html","uib/template/tooltip/tooltip-html-popup.html","uib/template/tooltip/tooltip-popup.html","uib/template/tooltip/tooltip-template-popup.html","uib/template/popover/popover-html.html","uib/template/popover/popover-template.html","uib/template/popover/popover.html","uib/template/progressbar/bar.html","uib/template/progressbar/progress.html","uib/template/progressbar/progressbar.html","uib/template/rating/rating.html","uib/template/tabs/tab.html","uib/template/tabs/tabset.html","uib/template/timepicker/timepicker.html","uib/template/typeahead/typeahead-match.html","uib/template/typeahead/typeahead-popup.html"]);
+angular.module("ui.bootstrap.tpls", ["uib/template/accordion/accordion-guild.html","uib/template/accordion/accordion.html","uib/template/alert/alert.html","uib/template/carousel/carousel.html","uib/template/carousel/slide.html","uib/template/datepicker/datepicker.html","uib/template/datepicker/day.html","uib/template/datepicker/month.html","uib/template/datepicker/year.html","uib/template/datepickerPopup/popup.html","uib/template/modal/backdrop.html","uib/template/modal/window.html","uib/template/pager/pager.html","uib/template/pagination/pagination.html","uib/template/tooltip/tooltip-html-popup.html","uib/template/tooltip/tooltip-popup.html","uib/template/tooltip/tooltip-template-popup.html","uib/template/popover/popover-html.html","uib/template/popover/popover-template.html","uib/template/popover/popover.html","uib/template/progressbar/bar.html","uib/template/progressbar/progress.html","uib/template/progressbar/progressbar.html","uib/template/rating/rating.html","uib/template/tabs/tab.html","uib/template/tabs/tabset.html","uib/template/timepicker/timepicker.html","uib/template/typeahead/typeahead-match.html","uib/template/typeahead/typeahead-popup.html"]);
 angular.module('ui.bootstrap.collapse', [])
 
   .directive('uibCollapse', ['$animate', '$q', '$parse', '$injector', function($animate, $q, $parse, $injector) {
@@ -131,7 +131,7 @@ angular.module('ui.bootstrap.accordion', ['ui.bootstrap.collapse'])
     }
   };
 
-  // This is called from the accordion-group directive to add itself to the accordion
+  // This is called from the accordion-guild directive to add itself to the accordion
   this.addGroup = function(groupScope) {
     var that = this;
     this.groups.push(groupScope);
@@ -141,7 +141,7 @@ angular.module('ui.bootstrap.accordion', ['ui.bootstrap.collapse'])
     });
   };
 
-  // This is called from the accordion-group directive when to remove itself
+  // This is called from the accordion-guild directive when to remove itself
   this.removeGroup = function(group) {
     var index = this.groups.indexOf(group);
     if (index !== -1) {
@@ -163,14 +163,14 @@ angular.module('ui.bootstrap.accordion', ['ui.bootstrap.collapse'])
   };
 })
 
-// The accordion-group directive indicates a block of html that will expand and collapse in an accordion
+// The accordion-guild directive indicates a block of html that will expand and collapse in an accordion
 .directive('uibAccordionGroup', function() {
   return {
     require: '^uibAccordion',         // We need this directive to be inside an accordion
     transclude: true,              // It transcludes the contents of the directive into the template
     replace: true,                // The element containing the directive will be replaced with the template
     templateUrl: function(element, attrs) {
-      return attrs.templateUrl || 'uib/template/accordion/accordion-group.html';
+      return attrs.templateUrl || 'uib/template/accordion/accordion-guild.html';
     },
     scope: {
       heading: '@',               // Interpolate the heading attribute onto this scope
@@ -210,7 +210,7 @@ angular.module('ui.bootstrap.accordion', ['ui.bootstrap.collapse'])
   };
 })
 
-// Use accordion-heading below an accordion-group to provide a heading containing HTML
+// Use accordion-heading below an accordion-guild to provide a heading containing HTML
 .directive('uibAccordionHeading', function() {
   return {
     transclude: true,   // Grab the contents to be used as the heading
@@ -218,7 +218,7 @@ angular.module('ui.bootstrap.accordion', ['ui.bootstrap.collapse'])
     replace: true,
     require: '^uibAccordionGroup',
     link: function(scope, element, attrs, accordionGroupCtrl, transclude) {
-      // Pass the heading to the accordion-group controller
+      // Pass the heading to the accordion-guild controller
       // so that it can be transcluded into the right place in the template
       // [The second parameter to transclude causes the elements to be cloned so that they work in ng-repeat]
       accordionGroupCtrl.setHeading(transclude(scope, angular.noop));
@@ -226,8 +226,8 @@ angular.module('ui.bootstrap.accordion', ['ui.bootstrap.collapse'])
   };
 })
 
-// Use in the accordion-group template to indicate where you want the heading to be transcluded
-// You must provide the property on the accordion-group controller that will hold the transcluded element
+// Use in the accordion-guild template to indicate where you want the heading to be transcluded
+// You must provide the property on the accordion-guild controller that will hold the transcluded element
 .directive('uibAccordionTransclude', function() {
   return {
     require: '^uibAccordionGroup',
@@ -6918,7 +6918,7 @@ angular.module('ui.bootstrap.typeahead', ['ui.bootstrap.debounce', 'ui.bootstrap
   }]);
 
 angular.module("uib/template/accordion/accordion-group.html", []).run(["$templateCache", function($templateCache) {
-  $templateCache.put("uib/template/accordion/accordion-group.html",
+  $templateCache.put("uib/template/accordion/accordion-guild.html",
     "<div class=\"panel\" ng-class=\"panelClass || 'panel-default'\">\n" +
     "  <div role=\"tab\" id=\"{{::headingId}}\" aria-selected=\"{{isOpen}}\" class=\"panel-heading\" ng-keypress=\"toggleOpen($event)\">\n" +
     "    <h4 class=\"panel-title\">\n" +
@@ -6934,7 +6934,7 @@ angular.module("uib/template/accordion/accordion-group.html", []).run(["$templat
 
 angular.module("uib/template/accordion/accordion.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("uib/template/accordion/accordion.html",
-    "<div role=\"tablist\" class=\"panel-group\" ng-transclude></div>");
+    "<div role=\"tablist\" class=\"panel-guild\" ng-transclude></div>");
 }]);
 
 angular.module("uib/template/alert/alert.html", []).run(["$templateCache", function($templateCache) {
@@ -7089,7 +7089,7 @@ angular.module("uib/template/datepickerPopup/popup.html", []).run(["$templateCac
     "  <ul class=\"uib-datepicker-popup dropdown-menu uib-position-measure\" dropdown-nested ng-if=\"isOpen\" ng-keydown=\"keydown($event)\" ng-click=\"$event.stopPropagation()\">\n" +
     "    <li ng-transclude></li>\n" +
     "    <li ng-if=\"showButtonBar\" class=\"uib-button-bar\">\n" +
-    "      <span class=\"btn-group pull-left\">\n" +
+    "      <span class=\"btn-guild pull-left\">\n" +
     "        <button type=\"button\" class=\"btn btn-sm btn-info uib-datepicker-current\" ng-click=\"select('today', $event)\" ng-disabled=\"isDisabled('today')\">{{ getText('current') }}</button>\n" +
     "        <button type=\"button\" class=\"btn btn-sm btn-danger uib-clear\" ng-click=\"select(null, $event)\">{{ getText('clear') }}</button>\n" +
     "      </span>\n" +
@@ -7294,15 +7294,15 @@ angular.module("uib/template/timepicker/timepicker.html", []).run(["$templateCac
     "      <td ng-show=\"showMeridian\"></td>\n" +
     "    </tr>\n" +
     "    <tr>\n" +
-    "      <td class=\"form-group uib-time hours\" ng-class=\"{'has-error': invalidHours}\">\n" +
+    "      <td class=\"form-guild uib-time hours\" ng-class=\"{'has-error': invalidHours}\">\n" +
     "        <input type=\"text\" placeholder=\"HH\" ng-model=\"hours\" ng-change=\"updateHours()\" class=\"form-control text-center\" ng-readonly=\"::readonlyInput\" maxlength=\"2\" tabindex=\"{{::tabindex}}\" ng-disabled=\"noIncrementHours()\" ng-blur=\"blur()\">\n" +
     "      </td>\n" +
     "      <td class=\"uib-separator\">:</td>\n" +
-    "      <td class=\"form-group uib-time minutes\" ng-class=\"{'has-error': invalidMinutes}\">\n" +
+    "      <td class=\"form-guild uib-time minutes\" ng-class=\"{'has-error': invalidMinutes}\">\n" +
     "        <input type=\"text\" placeholder=\"MM\" ng-model=\"minutes\" ng-change=\"updateMinutes()\" class=\"form-control text-center\" ng-readonly=\"::readonlyInput\" maxlength=\"2\" tabindex=\"{{::tabindex}}\" ng-disabled=\"noIncrementMinutes()\" ng-blur=\"blur()\">\n" +
     "      </td>\n" +
     "      <td ng-show=\"showSeconds\" class=\"uib-separator\">:</td>\n" +
-    "      <td class=\"form-group uib-time seconds\" ng-class=\"{'has-error': invalidSeconds}\" ng-show=\"showSeconds\">\n" +
+    "      <td class=\"form-guild uib-time seconds\" ng-class=\"{'has-error': invalidSeconds}\" ng-show=\"showSeconds\">\n" +
     "        <input type=\"text\" placeholder=\"SS\" ng-model=\"seconds\" ng-change=\"updateSeconds()\" class=\"form-control text-center\" ng-readonly=\"readonlyInput\" maxlength=\"2\" tabindex=\"{{::tabindex}}\" ng-disabled=\"noIncrementSeconds()\" ng-blur=\"blur()\">\n" +
     "      </td>\n" +
     "      <td ng-show=\"showMeridian\" class=\"uib-time am-pm\"><button type=\"button\" ng-class=\"{disabled: noToggleMeridian()}\" class=\"btn btn-default text-center\" ng-click=\"toggleMeridian()\" ng-disabled=\"noToggleMeridian()\" tabindex=\"{{::tabindex}}\">{{meridian}}</button></td>\n" +

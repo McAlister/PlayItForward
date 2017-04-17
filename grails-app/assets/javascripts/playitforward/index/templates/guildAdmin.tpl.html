@@ -1,0 +1,39 @@
+
+<div role="main">
+
+    <div class="bounty-tabs">
+
+        <ul>
+            <li ng-class="tabClass('guild-profile')" ng-click="activate('guild-profile')">Profile</li>
+            <li ng-class="tabClass('guild-members')" ng-click="activate('guild-members')" >Members</li>
+            <li ng-class="tabClass('guild-standings')" ng-click="activate('guild-standings')">Standings</li>
+            <li ng-class="tabClass('guild-store')" ng-click="activate('guild-store')">Home Store</li>
+        </ul>
+
+    </div>
+
+    <div id="group-profile" ng-show="isActiveTab('guild-profile')">
+
+        Profile Stub.
+
+    </div>
+
+    <div id="group-members" ng-show="isActiveTab('guild-members')">
+
+        Member Stub
+
+    </div>
+
+    <div id="group-standings" ng-show="isActiveTab('guild-standings')">
+
+        Standings Stub
+
+    </div>
+
+    <div id="group-store" ng-show="isActiveTab('guild-store')">
+
+        Store Stub
+
+    </div>
+
+</div>
