@@ -12,67 +12,67 @@ class GuildLeaderController
 
     def index(Integer max) {
 
-        respond GuildLeader.listOrderByName(), model:[groupLeaderCount: GuildLeader.count()];
+        respond GuildLeader.listOrderByName(), model:[guildLeaderCount: GuildLeader.count()];
     }
 
-    def show(GuildLeader groupLeader) {
+    def show(GuildLeader guildLeader) {
 
-        respond groupLeader;
+        respond guildLeader;
     }
 
     @Transactional
-    def save(GuildLeader groupLeader) {
+    def save(GuildLeader guildLeader) {
 
-        if (groupLeader == null) {
+        if (guildLeader == null) {
 
             transactionStatus.setRollbackOnly();
             render status: NOT_FOUND;
             return;
         }
 
-        if (groupLeader.hasErrors()) {
+        if (guildLeader.hasErrors()) {
 
             transactionStatus.setRollbackOnly();
-            respond groupLeader.errors, view:'create';
+            respond guildLeader.errors, view:'create';
             return;
         }
 
-        groupLeader.save flush:true;
-        respond groupLeader, [status: CREATED, view:"show"];
+        guildLeader.save flush:true;
+        respond guildLeader, [status: CREATED, view:"show"];
     }
 
     @Transactional
-    def update(GuildLeader groupLeader) {
+    def update(GuildLeader guildLeader) {
 
-        if (groupLeader == null) {
+        if (guildLeader == null) {
 
             transactionStatus.setRollbackOnly();
             render status: NOT_FOUND;
             return;
         }
 
-        if (groupLeader.hasErrors()) {
+        if (guildLeader.hasErrors()) {
 
             transactionStatus.setRollbackOnly();
-            respond groupLeader.errors, view:'edit';
+            respond guildLeader.errors, view:'edit';
             return;
         }
 
-        groupLeader.save flush:true;
-        respond groupLeader, [status: OK, view:"show"];
+        guildLeader.save flush:true;
+        respond guildLeader, [status: OK, view:"show"];
     }
 
     @Transactional
-    def delete(GuildLeader groupLeader) {
+    def delete(GuildLeader guildLeader) {
 
-        if (groupLeader == null) {
+        if (guildLeader == null) {
 
             transactionStatus.setRollbackOnly();
             render status: NOT_FOUND;
             return;
         }
 
-        groupLeader.delete flush:true;
+        guildLeader.delete flush:true;
         render status: NO_CONTENT;
     }
 }

@@ -4,4 +4,4 @@ model {
 	GuildLeaderType guildLeaderType
 }
 
-json tmpl.guildLeaderType(guildLeaderType)
+json g.render(guildLeaderType)

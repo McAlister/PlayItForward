@@ -1,7 +1,0 @@
-import playitforward.GuildLeader
-
-model {
-	GuildLeader groupLeader
-}
-
-json g.render(groupLeader)

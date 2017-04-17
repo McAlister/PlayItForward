@@ -14,65 +14,65 @@ class GuildController
 
     @Secured('permitAll')
     def index(Integer max) {
-        respond Guild.listOrderByName(), model:[groupCount: Guild.count()]
+        respond Guild.listOrderByName(), model:[guildCount: Guild.count()]
     }
 
     @Secured('permitAll')
-    def show(Guild group) {
-        respond group
+    def show(Guild guild) {
+        respond guild
     }
 
     @Secured('ROLE_ADMIN')
     @Transactional
-    def save(Guild group) {
-        if (group == null) {
+    def save(Guild guild) {
+        if (guild == null) {
             transactionStatus.setRollbackOnly()
             render status: NOT_FOUND
             return
         }
 
-        if (group.hasErrors()) {
+        if (guild.hasErrors()) {
             transactionStatus.setRollbackOnly()
-            respond group.errors, view:'create'
+            respond guild.errors, view:'create'
             return
         }
 
-        group.save flush:true
+        guild.save flush:true
 
-        respond group, [status: CREATED, view:"show"]
+        respond guild, [status: CREATED, view:"show"]
     }
 
     @Secured(['ROLE_ADMIN', 'ROLE_GROUP_LEADER'])
     @Transactional
-    def update(Guild group) {
-        if (group == null) {
+    def update(Guild guild) {
+        if (guild == null) {
             transactionStatus.setRollbackOnly()
             render status: NOT_FOUND
             return
         }
 
-        if (group.hasErrors()) {
+        if (guild.hasErrors()) {
             transactionStatus.setRollbackOnly()
-            respond group.errors, view:'edit'
+            respond guild.errors, view:'edit'
             return
         }
 
-        group.save flush:true
+        guild.save flush:true
 
-        respond group, [status: OK, view:"show"]
+        respond guild, [status: OK, view:"show"]
     }
 
     @Secured('ROLE_ADMIN')
     @Transactional
-    def delete(Guild group) {
+    def delete(Guild guild) {
 
-        if (group == null) {
+        if (guild == null) {
             transactionStatus.setRollbackOnly()
             render status: NOT_FOUND
             return
         }
 
-        group.delete flush:true
+        guild.delete flush:true
 
         render status: NO_CONTENT
     }

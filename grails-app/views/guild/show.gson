@@ -1,7 +1,7 @@
 import playitforward.Guild
 
 model {
-	Guild group
+	Guild guild
 }
 
-json tmpl.group(group)
+json tmpl.guild(guild)

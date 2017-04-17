@@ -46,7 +46,7 @@ class GuildLeaderControllerSpec extends Specification {
         ]);
 
         mockDomain(GuildLeader, [
-                [name: "Simone Aiken", type: 1, group: 1, user: 1, imageName: "Avacyn.png"]
+                [name: "Simone Aiken", type: 1, guild: 1, user: 1, imageName: "Avacyn.png"]
         ]);
 
         when:"The index action is executed"
@@ -72,9 +72,9 @@ class GuildLeaderControllerSpec extends Specification {
             response.reset();
             request.contentType = JSON_CONTENT_TYPE
             request.method = 'POST'
-            def groupLeader = new GuildLeader()
-            groupLeader.validate()
-            controller.save(groupLeader)
+            def guildLeader = new GuildLeader()
+            guildLeader.validate()
+            controller.save(guildLeader)
 
         then:"The create view is rendered again with the correct model"
             response.status == UNPROCESSABLE_ENTITY.value()
@@ -83,19 +83,19 @@ class GuildLeaderControllerSpec extends Specification {
         when:"The save action is executed with a valid instance"
             response.reset()
             populateValidParams(params)
-            groupLeader = new GuildLeader(params);
-            groupLeader.type.save();
-            groupLeader.guild.save();
-            groupLeader.user.save();
-            groupLeader = new GuildLeader(params);
+            guildLeader = new GuildLeader(params);
+            guildLeader.type.save();
+            guildLeader.guild.save();
+            guildLeader.user.save();
+            guildLeader = new GuildLeader(params);
 
-            controller.save(groupLeader);
+            controller.save(guildLeader);
 
         then:"A redirect is issued to the show action"
             GuildLeader.count() == 1;
             response.status == CREATED.value();
-            response.json.toString() == '{"imageName":"Avacyn.png","name":"Simone Aiken","id":1,"type":{"id":1},' +
-                    '"user":{"id":1},"guild":{"id":1}}';
+            response.json.toString() == '{"guild":{"id":1},"imageName":"Avacyn.png","name":"Simone Aiken",' +
+                    '"id":1,"type":{"id":1},"user":{"id":1}}';
     }
 
     void "Test that the show action returns the correct model"() {
@@ -108,18 +108,18 @@ class GuildLeaderControllerSpec extends Specification {
         when:"A domain instance is passed to the show action"
             populateValidParams(params);
             response.reset();
-            def groupLeader = new GuildLeader(params);
-            groupLeader.type.save();
-            groupLeader.guild.save();
-            groupLeader.user.save();
-            groupLeader.save();
-            controller.show(groupLeader);
+            def guildLeader = new GuildLeader(params);
+            guildLeader.type.save();
+            guildLeader.guild.save();
+            guildLeader.user.save();
+            guildLeader.save();
+            controller.show(guildLeader);
 
         then:"A model is populated containing the domain instance"
-            groupLeader!= null;
+            guildLeader!= null;
             response.status == OK.value();
-            response.json.toString() == '{"imageName":"Avacyn.png","name":"Simone Aiken","id":1,"type":{"id":1},' +
-                    '"user":{"id":1},"guild":{"id":1}}';
+            response.json.toString() == '{"guild":{"id":1},"imageName":"Avacyn.png","name":"Simone Aiken",' +
+                    '"id":1,"type":{"id":1},"user":{"id":1}}';
     }
 
     void "Test the update action performs an update on a valid domain instance"() {
@@ -134,9 +134,9 @@ class GuildLeaderControllerSpec extends Specification {
 
         when:"An invalid domain instance is passed to the update action"
             response.reset()
-            def groupLeader = new GuildLeader()
-            groupLeader.validate()
-            controller.update(groupLeader)
+            def guildLeader = new GuildLeader()
+            guildLeader.validate()
+            controller.update(guildLeader)
 
         then:"The edit view is rendered again with the invalid instance"
             response.status == UNPROCESSABLE_ENTITY.value()
@@ -146,18 +146,18 @@ class GuildLeaderControllerSpec extends Specification {
             response.reset()
             populateValidParams(params)
 
-            groupLeader = new GuildLeader(params);
-            groupLeader.type.save();
-            groupLeader.guild.save();
-            groupLeader.user.save();
-            groupLeader.save(flush:true);
+            guildLeader = new GuildLeader(params);
+            guildLeader.type.save();
+            guildLeader.guild.save();
+            guildLeader.user.save();
+            guildLeader.save(flush:true);
 
-            controller.update(groupLeader)
+            controller.update(guildLeader)
 
         then:"A redirect is issued to the show action"
-            groupLeader != null
+            guildLeader != null
             response.status == OK.value()
-            response.json.id == groupLeader.id
+            response.json.id == guildLeader.id
     }
 
     void "Test that the delete action deletes an instance if it exists"() {
@@ -174,17 +174,17 @@ class GuildLeaderControllerSpec extends Specification {
             response.reset();
             populateValidParams(params);
 
-            def groupLeader = new GuildLeader(params);
-            groupLeader.type.save();
-            groupLeader.guild.save();
-            groupLeader.user.save();
-            groupLeader.save(flush:true);
+            def guildLeader = new GuildLeader(params);
+            guildLeader.type.save();
+            guildLeader.guild.save();
+            guildLeader.user.save();
+            guildLeader.save(flush:true);
 
         then:"It exists"
             GuildLeader.count() == 1;
 
         when:"The domain instance is passed to the delete action"
-            controller.delete(groupLeader);
+            controller.delete(guildLeader);
 
         then:"The instance is deleted"
             GuildLeader.count() == 0;

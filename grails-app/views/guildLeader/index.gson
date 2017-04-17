@@ -1,8 +1,8 @@
 import playitforward.GuildLeader
 
 model {
-	Iterable<GuildLeader> groupLeaderList
+	Iterable<GuildLeader> guildLeaderList
 }
 
-json tmpl.groupLeader(groupLeaderList ?: [])
+json tmpl.guildLeader(guildLeaderList ?: [])
 

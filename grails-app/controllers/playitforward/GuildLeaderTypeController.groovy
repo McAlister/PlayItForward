@@ -12,12 +12,12 @@ class GuildLeaderTypeController
 
     @Secured('permitAll')
     def index(Integer max) {
-        respond GuildLeaderType.listOrderByType(), model:[groupLeaderTypeCount: GuildLeaderType.count()]
+        respond GuildLeaderType.listOrderByType(), model:[guildLeaderTypeCount: GuildLeaderType.count()]
     }
 
     @Secured('permitAll')
-    def show(GuildLeaderType groupLeaderType) {
-        respond groupLeaderType
+    def show(GuildLeaderType guildLeaderType) {
+        respond guildLeaderType
     }
 
 }
