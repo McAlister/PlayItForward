@@ -19,6 +19,11 @@ function LoginController(userPersistenceService, $scope, $http) {
     $scope.role = $scope.sessionData.role;
     $scope.forgotPassword = false;
 
+    var setInfoError = function(info, error) {
+        $scope.infoBox = info || '';
+        $scope.loginError = error || '';
+    };
+
     $scope.login = function() {
 
         $http.post('/api/login', {
@@ -27,24 +32,23 @@ function LoginController(userPersistenceService, $scope, $http) {
         }).success(function(data) {
 
             if (data.access_token) {
-
+                setInfoError('Successful login.', '');
                 $scope.authenticated = true;
                 $scope.accessToken = data.access_token;
-                $scope.loginError = '';
                 $scope.role = data.roles[0];
                 userPersistenceService.setCookieData($scope.accessToken, $scope.role, $scope.credentials.username);
             }
             else {
 
                 $scope.authenticated = false;
-                $scope.loginError = 'Bad User Name Or Password.';
+                setInfoError('', 'Bad User Name Or Password.');
                 $scope.accessToken = '';
             }
 
         }).error(function() {
 
             $scope.authenticated = false;
-            $scope.loginError = 'Bad Username or Password.';
+            setInfoError('', 'Bad Username or Password.');
             $scope.accessToken = '';
         });
     };
@@ -62,11 +66,11 @@ function LoginController(userPersistenceService, $scope, $http) {
     $scope.sendResetPassword = function() {
         $http.post('/api/User/'+$scope.credentials.username+'/sendResetEmail', {}).then(
             function success () {
-                $scope.infoBox = 'Instructions sent to user';
+                setInfoError('Instructions sent to user', '');
                 $scope.forgotPassword = false;
             },
             function error (response) {
-                $scope.loginError = response.data.message;
+                setInfoError('', response.data.message);
             });
     };
 
