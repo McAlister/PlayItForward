@@ -259,6 +259,7 @@ HorseRace = {};
                 if (konami[konamiIndex] === 0) {
                     HorseRace.pause();
                     HorseRace.konami();
+                    konamiIndex = 0;
                 }
             } else if (key === 32 && state === 'paused') { // space
                 HorseRace.play();
@@ -287,6 +288,8 @@ HorseRace = {};
                 data.splice(0, 1);
                 if (data.length) {
                     window.setTimeout(doChunk, 400);
+                } else {
+                    window.setTimeout(HorseRace.play, 2000);
                 }
             });
         });

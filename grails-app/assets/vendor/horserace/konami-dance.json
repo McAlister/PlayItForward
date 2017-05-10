@@ -23,9 +23,9 @@
     {"score":  4, "key": 1},
     {"score":  5, "key": 2},
     {"score":  6, "key": 3},
-    {"score":  6, "key": 4},
+    {"score":  7, "key": 4},
     {"score":  7, "key": 5},
-    {"score":  6, "key": 6},
+    {"score":  7, "key": 6},
     {"score":  6, "key": 7},
     {"score":  5, "key": 8},
     {"score":  4, "key": 9}
@@ -236,7 +236,18 @@
     {"score":  8, "key": 4},
     {"score":  8, "key": 5},
     {"score":  8, "key": 6}
-  ],
-  []
+  ],[
+    {"score":  8, "key": 3},
+    {"score":  8, "key": 7},
+    {"score":  8, "key": 8}
+  ],[
+    {"score":  8, "key": 4},
+    {"score":  8, "key": 5},
+    {"score":  8, "key": 6}
+  ],[
+    {"score":  8, "key": 3},
+    {"score":  8, "key": 7},
+    {"score":  8, "key": 8}
+  ]
 ]
 }
