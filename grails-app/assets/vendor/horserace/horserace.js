@@ -279,7 +279,7 @@ HorseRace = {};
             data.forEach(function(a){a.forEach(function(h){
                 h.key = h.key + 999999;
                 h.name = 'dancer';
-                h.img = 'Kemba.png';
+                h.img = 'Mirri.png';
             })});
             window.setTimeout(function doChunk() {
                 processScores(data[0], 0.317);
