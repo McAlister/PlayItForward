@@ -1,0 +1,242 @@
+{"dance": [
+  [
+    {"score":  1, "key": 1},
+    {"score":  1, "key": 2},
+    {"score":  1, "key": 3},
+    {"score":  1, "key": 4},
+    {"score":  1, "key": 5},
+    {"score":  1, "key": 6},
+    {"score":  1, "key": 7},
+    {"score":  1, "key": 8},
+    {"score":  1, "key": 9}
+  ],[
+    {"score":  1, "key": 1},
+    {"score":  3, "key": 2},
+    {"score":  4, "key": 3},
+    {"score":  5, "key": 4},
+    {"score":  6, "key": 5},
+    {"score":  5, "key": 6},
+    {"score":  4, "key": 7},
+    {"score":  3, "key": 8},
+    {"score":  1, "key": 9}
+  ],[
+    {"score":  4, "key": 1},
+    {"score":  5, "key": 2},
+    {"score":  6, "key": 3},
+    {"score":  6, "key": 4},
+    {"score":  7, "key": 5},
+    {"score":  6, "key": 6},
+    {"score":  6, "key": 7},
+    {"score":  5, "key": 8},
+    {"score":  4, "key": 9}
+  ],[
+    {"score":  8, "key": 1},
+    {"score":  8, "key": 2},
+    {"score":  8, "key": 3},
+    {"score":  8, "key": 4},
+    {"score":  8, "key": 5},
+    {"score":  8, "key": 6},
+    {"score":  8, "key": 7},
+    {"score":  8, "key": 8},
+    {"score":  8, "key": 9}
+  ],[
+    {"score":  1, "key": 1},
+    {"score":  3, "key": 2},
+    {"score":  5, "key": 3},
+    {"score":  7, "key": 4},
+    {"score":  8, "key": 5},
+    {"score":  9, "key": 6},
+    {"score": 11, "key": 7},
+    {"score": 13, "key": 8},
+    {"score": 15, "key": 9}
+  ],[
+    {"score":  2, "key": 1},
+    {"score":  4, "key": 2},
+    {"score":  6, "key": 3},
+    {"score":  8, "key": 4},
+    {"score":  8, "key": 5},
+    {"score":  8, "key": 6},
+    {"score": 10, "key": 7},
+    {"score": 12, "key": 8},
+    {"score": 14, "key": 9}
+  ],[
+    {"score": 15, "key": 1},
+    {"score": 13, "key": 2},
+    {"score": 11, "key": 3},
+    {"score":  9, "key": 4},
+    {"score":  8, "key": 5},
+    {"score":  7, "key": 6},
+    {"score":  5, "key": 7},
+    {"score":  3, "key": 8},
+    {"score":  1, "key": 9}
+  ],[
+    {"score":  8, "key": 1},
+    {"score":  8, "key": 2},
+    {"score":  8, "key": 3},
+    {"score":  8, "key": 4},
+    {"score":  8, "key": 5},
+    {"score":  8, "key": 6},
+    {"score":  8, "key": 7},
+    {"score":  8, "key": 8},
+    {"score":  8, "key": 9}
+  ],[
+    {"score":  8, "key": 1},
+    {"score":  8, "key": 3},
+    {"score":  8, "key": 4},
+    {"score":  8, "key": 5},
+    {"score":  8, "key": 6},
+    {"score":  8, "key": 7},
+    {"score":  8, "key": 9}
+  ],[
+    {"score":  8, "key": 1},
+    {"score":  8, "key": 3},
+    {"score":  8, "key": 5},
+    {"score":  8, "key": 7},
+    {"score":  8, "key": 9}
+  ],[
+    {"score":  8, "key": 2},
+    {"score":  8, "key": 4},
+    {"score":  8, "key": 6},
+    {"score":  8, "key": 8}
+  ],[
+    {"score":  8, "key": 1},
+    {"score":  8, "key": 2},
+    {"score":  8, "key": 3},
+    {"score":  8, "key": 4},
+    {"score":  8, "key": 5},
+    {"score":  8, "key": 6},
+    {"score":  8, "key": 7},
+    {"score":  8, "key": 8},
+    {"score":  8, "key": 9}
+  ],[
+    {"score":  1, "key": 1},
+    {"score":  1, "key": 2},
+    {"score":  1, "key": 3},
+    {"score":  1, "key": 4},
+    {"score":  1, "key": 5},
+    {"score":  1, "key": 6},
+    {"score":  1, "key": 7},
+    {"score":  1, "key": 8},
+    {"score":  1, "key": 9}
+  ],[
+    {"score": 15, "key": 1},
+    {"score": 15, "key": 2},
+    {"score": 15, "key": 3},
+    {"score": 15, "key": 4},
+    {"score": 15, "key": 5},
+    {"score": 15, "key": 6},
+    {"score": 15, "key": 7},
+    {"score": 15, "key": 8},
+    {"score": 15, "key": 9}
+  ],[
+    {"score":  1, "key": 1},
+    {"score":  1, "key": 2},
+    {"score":  1, "key": 3},
+    {"score":  1, "key": 4},
+    {"score":  1, "key": 5},
+    {"score":  1, "key": 6},
+    {"score":  1, "key": 7},
+    {"score":  1, "key": 8},
+    {"score":  1, "key": 9}
+  ],[
+    {"score": 15, "key": 1},
+    {"score": 15, "key": 2},
+    {"score": 15, "key": 3},
+    {"score": 15, "key": 4},
+    {"score": 15, "key": 5},
+    {"score": 15, "key": 6},
+    {"score": 15, "key": 7},
+    {"score": 15, "key": 8},
+    {"score": 15, "key": 9}
+  ],[
+    {"score": 15, "key": 1},
+    {"score":  1, "key": 2},
+    {"score":  1, "key": 3},
+    {"score":  1, "key": 4},
+    {"score":  1, "key": 5},
+    {"score":  1, "key": 6},
+    {"score":  1, "key": 7},
+    {"score":  1, "key": 8},
+    {"score":  1, "key": 9}
+  ],[
+    {"score": 15, "key": 1},
+    {"score": 15, "key": 2},
+    {"score":  1, "key": 3},
+    {"score":  1, "key": 4},
+    {"score":  1, "key": 5},
+    {"score":  1, "key": 6},
+    {"score":  1, "key": 7},
+    {"score":  1, "key": 8},
+    {"score":  1, "key": 9}
+  ],[
+    {"score": 15, "key": 1},
+    {"score": 15, "key": 2},
+    {"score": 15, "key": 3},
+    {"score": 15, "key": 4},
+    {"score":  1, "key": 5},
+    {"score":  1, "key": 6},
+    {"score":  1, "key": 7},
+    {"score":  1, "key": 8},
+    {"score":  1, "key": 9}
+  ],[
+    {"score": 15, "key": 1},
+    {"score": 15, "key": 2},
+    {"score": 15, "key": 3},
+    {"score": 15, "key": 4},
+    {"score": 15, "key": 5},
+    {"score": 15, "key": 6},
+    {"score": 15, "key": 7},
+    {"score": 15, "key": 8},
+    {"score":  1, "key": 9}
+  ],[
+    {"score":  8, "key": 1},
+    {"score":  8, "key": 2},
+    {"score": 15, "key": 3},
+    {"score": 15, "key": 4},
+    {"score": 15, "key": 5},
+    {"score": 15, "key": 6},
+    {"score": 15, "key": 7},
+    {"score": 15, "key": 8},
+    {"score": 15, "key": 9}
+  ],[
+    {"score":  8, "key": 1},
+    {"score":  8, "key": 2},
+    {"score":  8, "key": 3},
+    {"score":  8, "key": 4},
+    {"score":  8, "key": 5},
+    {"score": 15, "key": 6},
+    {"score": 15, "key": 7},
+    {"score": 15, "key": 8},
+    {"score": 15, "key": 9}
+  ],[
+    {"score":  8, "key": 1},
+    {"score":  8, "key": 2},
+    {"score":  8, "key": 3},
+    {"score":  8, "key": 4},
+    {"score":  8, "key": 5},
+    {"score":  8, "key": 6},
+    {"score":  8, "key": 7},
+    {"score":  8, "key": 8},
+    {"score":  8, "key": 9}
+  ],[
+    {"score":  8, "key": 2},
+    {"score":  8, "key": 3},
+    {"score":  8, "key": 4},
+    {"score":  8, "key": 5},
+    {"score":  8, "key": 6},
+    {"score":  8, "key": 7},
+    {"score":  8, "key": 8}
+  ],[
+    {"score":  8, "key": 3},
+    {"score":  8, "key": 4},
+    {"score":  8, "key": 5},
+    {"score":  8, "key": 6},
+    {"score":  8, "key": 7}
+  ],[
+    {"score":  8, "key": 4},
+    {"score":  8, "key": 5},
+    {"score":  8, "key": 6}
+  ],
+  []
+]
+}

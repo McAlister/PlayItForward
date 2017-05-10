@@ -30,7 +30,8 @@
     background: url(sine.png) repeat-x;
     background-size: 100px 300px;
 }
-#horserace .wave.clicked .horse {
+#horserace .wave.clicked .horse,
+#horserace .wave.konami .horse {
     animation: gallop 7s infinite;
 }
 #horserace .scoremark {

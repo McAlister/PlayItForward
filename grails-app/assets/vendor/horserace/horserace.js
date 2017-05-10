@@ -199,7 +199,9 @@ HorseRace = {};
                 c.getElementsByClassName( 'play')[0].style.display = play ? 'none' : 'inline';
                 c.getElementsByClassName('pause')[0].style.display = play ? 'inline' : 'none';
             },
-            state = 'play';
+            state = 'play',
+            konami = [38, 38, 40, 40, 37, 39, 37, 39, 65, 66, 0],
+            konamiIndex = 0;
 
         // check every 30 seconds for a new round and play if appropriate
         window.setInterval(function updateLastRound() {
@@ -252,7 +254,13 @@ HorseRace = {};
         // watch for esc and arrow keys
         document.addEventListener('keydown', function(e) {
             var key = window.event ? e.keyCode : e.which;
-            if (key === 32 && state === 'paused') { // space
+            if (key === konami[konamiIndex]) {
+                konamiIndex++;
+                if (konami[konamiIndex] === 0) {
+                    HorseRace.pause();
+                    HorseRace.konami();
+                }
+            } else if (key === 32 && state === 'paused') { // space
                 HorseRace.play();
             } else if (key === 27) { // ESC
                 HorseRace.pause();
@@ -263,6 +271,26 @@ HorseRace = {};
             }
         });
     }
+
+    HorseRace.konami = function() {
+        ajax('konami-dance.json', function (json) {
+            var data = json['dance'];
+            data.forEach(function(a){a.forEach(function(h){
+                h.key = h.key + 999999;
+                h.name = 'dancer';
+                h.img = 'Kemba.png';
+            })});
+            window.setTimeout(function doChunk() {
+                processScores(data[0], 0.317);
+                var waves = Array.prototype.slice.call(horserace.getElementsByClassName('wave'));
+                waves.forEach(function(el){el.classList.add('konami');});
+                data.splice(0, 1);
+                if (data.length) {
+                    window.setTimeout(doChunk, 400);
+                }
+            });
+        });
+    };
 
     HorseRace.start = function(event) {
         getLastRound(event, function(l) { replay(event, l); });
