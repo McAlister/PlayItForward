@@ -16,6 +16,7 @@ class PersonController {
         respond Person.list(), model:[personCount: Person.count()]
     }
 
+    @Secured('ROLE_ADMIN')
     def show(Person person) {
         respond person;
     }

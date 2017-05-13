@@ -63,7 +63,7 @@ class GuildLeaderControllerSpec extends Specification {
         when:"The save action is given a null"
         request.contentType = JSON_CONTENT_TYPE;
         request.method = 'POST';
-        controller.save(null);;
+        controller.save(null);
 
         then:"Cannot find endpoint"
         response.status == NOT_FOUND.value();
@@ -87,7 +87,6 @@ class GuildLeaderControllerSpec extends Specification {
             guildLeader.type.save();
             guildLeader.guild.save();
             guildLeader.user.save();
-            guildLeader = new GuildLeader(params);
 
             controller.save(guildLeader);
 
@@ -99,6 +98,7 @@ class GuildLeaderControllerSpec extends Specification {
     }
 
     void "Test that the show action returns the correct model"() {
+
         when:"The show action is executed with a null domain"
             controller.show(null);
 
@@ -116,7 +116,7 @@ class GuildLeaderControllerSpec extends Specification {
             controller.show(guildLeader);
 
         then:"A model is populated containing the domain instance"
-            guildLeader!= null;
+            guildLeader != null;
             response.status == OK.value();
             response.json.toString() == '{"guild":{"id":1},"imageName":"Avacyn.png","name":"Simone Aiken",' +
                     '"id":1,"type":{"id":1},"user":{"id":1}}';

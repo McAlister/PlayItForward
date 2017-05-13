@@ -63,7 +63,7 @@ class EventOrganizerFunctionalSpec extends GebSpec {
         response.json[0].has('url');
     }
 
-    void "Test the save action correctly persists an instance"() {
+    void "Test CRUD Happy Path"() {
 
         int oldCount = EventOrganizer.count();
 
