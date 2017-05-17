@@ -25,7 +25,7 @@ class EventControllerSpec extends Specification {
         params["eventCode"] = 'gp_test_17';
         params["startDate"] = new Date(2017, 1, 1);
         params["endDate"] = new Date(2017, 1, 1);
-        params["organizer"] = new EventOrganizer(id: 1, name: "Last Knight Games", url: "hhtp://www.test.com");
+        params["organizer"] = new EventOrganizer(id: 1, name: "Last Knight Games", url: "http://www.test.com");
     }
 
     void "Test the index action returns the correct response"() {
