@@ -192,7 +192,7 @@ HorseRace = {};
 
     function replay(event, maxRounds) {
         var myTimer,
-            round = 0,
+            round = (maxRounds > 9 ? 10 : 0),
             speed = window.location.search.match(/[?&]fast/) ? 300 : 1000,
             togglePlayPause = function(play) {
                 var c = horserace.getElementsByClassName('controls')[0];
