@@ -340,14 +340,14 @@ function AdminController(contextPath, userPersistenceService, $scope, $http, $lo
             }
         };
 
-        if(winner.id !== null) {
+        if('id' in winner && winner.id > 0) {
 
             data.id = winner.id;
             data.imageName = winner.imageName;
 
             $http.put('/api/EventWinner/' + data.id, data, config).then(
                 function(){
-                    $scope.getPeople();
+                    $scope.getWinners();
                     window.alert('They were updated successfully.');
                 },
                 function(response){
@@ -361,7 +361,7 @@ function AdminController(contextPath, userPersistenceService, $scope, $http, $lo
             
             $http.post('/api/EventWinner', data, config).then(
                 function(){
-                    $scope.getPeople();
+                    $scope.getWinners();
                     window.alert('They were added successfully.');
                 },
                 function(response){
