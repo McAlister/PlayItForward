@@ -4,7 +4,7 @@ angular
     .module("playitforward.index")
     .controller("AdminController", AdminController);
 
-function AdminController(contextPath, userPersistenceService, $scope, $http, $location, $filter) {
+function AdminController(contextPath, userPersistenceService, $scope, $http, $location, $filter, fileReader) {
 
     var vm = this;
     vm.contextPath = contextPath;
@@ -538,4 +538,25 @@ function AdminController(contextPath, userPersistenceService, $scope, $http, $lo
         }
 
     };
+
+    // /////////////// //
+    // Upload File Tab //
+    // /////////////// //
+
+    $scope.getFile = function () {
+
+        $scope.progress = 0;
+        $scope.imageSrc = null;
+        $scope.showImage = false;
+
+        if ($scope.file) {
+
+            fileReader.readAsDataUrl($scope.file, $scope)
+                .then(function (result) {
+                    $scope.showImage = true;
+                    $scope.imageSrc = result;
+                });
+        }
+    };
+
 }

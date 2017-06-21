@@ -112,3 +112,7 @@ a.btn {
 .form-group p {
     margin-left: 20px;
 }
+
+input[type="file"] {
+    line-height: 10px;
+}

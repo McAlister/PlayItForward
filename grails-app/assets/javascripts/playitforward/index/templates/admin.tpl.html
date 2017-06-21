@@ -7,6 +7,7 @@
             <li ng-class="tabClass('prizes')" ng-click="activate('prizes')" >Prizes</li>
             <li ng-class="tabClass('winners')" ng-click="activate('winners')">Winners</li>
             <li ng-class="tabClass('players')" ng-click="activate('players')">Players</li>
+            <li ng-class="tabClass('files')" ng-click="activate('files')">Images</li>
         </ul>
     </div>
 
@@ -411,6 +412,38 @@
             </ul>
 
         </div>
+
+    </div>
+
+    <div id="admin-files" ng-show="isActiveTab('files')">
+
+        <h1>Manage Files:</h1>
+
+        <div class="alert alert-danger" ng-show="fileData.fileError">
+
+            There was a problem uploading the file.
+
+            <br />
+
+            {{fileData.fileError}}
+
+        </div>
+
+
+        <form ng-submit="uploadFile()" class="form">
+
+            <div class="form-group">
+                <label for="inputFile" class="control-label">Image:</label>
+                <input id="inputFile" type="file" ng-file-select="onFileSelect($files)">
+            </div>
+
+            <button class="btn btn-primary center-block" type="submit">Upload</button>
+
+        </form>
+
+        <br/>
+
+        <img ng-show="showImage" ng-src="{{imageSrc}}" />
 
     </div>
 
