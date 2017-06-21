@@ -1,6 +1,14 @@
 
-<div role="main">
-
+<!--suppress ALL -->
+<div class="bounty-tabs">
+    <ul>
+        <li ng-class="tabClass('schedules')" ng-click="activate('schedules')">Schedules</li>
+        <li ng-class="tabClass('podcasts')" ng-click="activate('podcasts')" >PodCasts</li>
+        <li ng-class="tabClass('facebook')" ng-click="activate('facebook')">Facebook</li>
+        <li ng-class="tabClass('articles')" ng-click="activate('articles')">Articles</li>
+    </ul>
+</div>
+<div id="resource-schedule" ng-show="isActiveTab('schedules')">
     <h1>Event Schedules:</h1>
 
     <ul>
@@ -13,20 +21,64 @@
 
     </ul>
 
+</div>
+
+<div id="resource-podcasts" ng-show="isActiveTab('podcasts')">
     <h1>Strategy Podcasts (see mtgcast.com):</h1>
 
-    <ul>
+    <table class="resource-table">
+        <tr>
+            <td><a href="http://spikefeed.com/" target="_blank"><img src="/assets/resources/spike-feed.png"></a></td>
+            <td valign="top"><a href="http://spikefeed.com/">The Spike Feed</a><p>the Spike Feed specializes in tournament news and finance.</p>
+            </td>
+        </tr>
 
-        <li><a href="https://itunes.apple.com/us/podcast/limited-resources/id385051731?mt=2">Limited Resources</a></li>
-        <li><a href="http://toplevelpodcast.libsyn.com/">Top Level Podcast</a></li>
-        <li><a href="http://www.crcast.com/">Constructed Resources</a></li>
-        <li><a href="https://alliedstrategiespodcast.wordpress.com/">Allied Strategies</a></li>
-        <li><a href="http://spikefeed.com/">The Spike Feed</a></li>
-        <li><a href="https://itunes.apple.com/us/podcast/thesnapcast/id1114941532?mt=2">The SnapCast</a></li>
-        <li><a href="http://www.mtgprotutor.com/">MTG Pro Tutor</a></li>
+        <tr>
+            <td><a href="https://itunes.apple.com/us/podcast/limited-resources/id385051731?mt=2" target="_blank"><img src="/assets/resources/LR.png"></a></td>
+            <td valign="top"><a href="https://itunes.apple.com/us/podcast/limited-resources/id385051731?mt=2">Limited Resources</a><p>
+                A weekly podcast dedicated to improving your play at Magic: The Gathering with an emphasis on Limited play.
+            </p></td>
+        </tr>
 
-    </ul>
+        <tr>
+            <td><a href="http://toplevelpodcast.libsyn.com/" target="_blank"><img src="/assets/resources/TLP.png"></a></td>
+            <td valign="top"><a href="http://toplevelpodcast.libsyn.com/">Top Level Podcast</a><p>
+                Competitive Constructed Magic: The Gathering podcast hosted by Patrick Chapin and Michael J. Flores
+            </p></td>
+        </tr>
 
+        <tr>
+            <td><a href="http://www.crcast.com/" target="_blank"><img src="assets/resources/constructed-resources.png"></a></td>
+            <td valign="top"><a href="http://www.crcast.com/">Constructed Resources</a><p>
+                Where you come to improve at Magic: the Gathering, with a focus on Constructed play.
+            </p>
+            </td>
+        </tr>
+
+        <tr>
+            <td><a href="https://alliedstrategiespodcast.wordpress.com/" target="_blank"><img src="assets/resources/Allied-Strat.png"></a></td>
+            <td valign="top"><a href="https://alliedstrategiespodcast.wordpress.com/">Allied Strategies</a><p>
+                A podcast about Magic: The Gathering
+            </p>
+            </td>
+
+        </tr>
+
+        <tr>
+            <td><a href="https://itunes.apple.com/us/podcast/thesnapcast/id1114941532?mt=2" target="_blank"><img src="assets/resources/snapcast.png"></a></td>
+            <td valign="top"><a href="https://itunes.apple.com/us/podcast/thesnapcast/id1114941532?mt=2">The SnapCast</a><p>
+                The Snapcast is a weekly podcast covering the world of competitive magic. Join us as we discuss everything from strategy, price speculations and more!
+            </p>
+            </td>
+
+        </tr>
+
+
+    </table>
+
+</div>
+
+<div id="resource-facebook" ng-show="isActiveTab('facebook')">
     <h1>Facebook Groups:</h1>
 
     <ul>
@@ -35,6 +87,9 @@
 
     </ul>
 
+</div>
+
+<div id="resource-articles" ng-show="isActiveTab('articles')">
     <h1>Articles:</h1>
 
     <ul>
@@ -45,3 +100,4 @@
     </ul>
 
 </div>
+

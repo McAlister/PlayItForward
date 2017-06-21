@@ -27,3 +27,16 @@ td, th {
 
     font-size: 10px;
 }
+
+.resource-table p {
+    line-height: 1;
+    font-style: italic;
+    margin-left: 15px;
+    font-size: smaller;
+}
+
+.resource-table a {
+    font-weight: bolder;
+    color: gray;
+
+}

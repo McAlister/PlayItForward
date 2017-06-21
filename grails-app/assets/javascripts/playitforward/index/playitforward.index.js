@@ -35,6 +35,7 @@ function config($stateProvider, $urlRouterProvider) {
             })
         .state('resources', {
             url: '/resources',
+            controller: 'ResourceController',
             templateUrl: '/playitforward/index/resources.html'
         })
         .state('contact', {
