@@ -433,6 +433,15 @@
         <form ng-submit="uploadFile()" class="form">
 
             <div class="form-group">
+                <label for="inputPath" class="control-label">Path:</label><br/>
+                <select name="inputPath" id="inputPath" ng-model="fileData.path" >
+                    <option value="images/winners">winners</option>
+                    <option value="images/race">race</option>
+                    <option value="images/race/ovals">oval</option>
+                </select>
+            </div>
+
+            <div class="form-group">
                 <label for="inputFile" class="control-label">Image:</label>
                 <input id="inputFile" type="file" ng-file-select="onFileSelect($files)">
             </div>

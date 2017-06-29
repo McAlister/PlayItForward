@@ -559,4 +559,41 @@ function AdminController(contextPath, userPersistenceService, $scope, $http, $lo
         }
     };
 
+    $scope.fileData = {
+
+        name: '',
+        path: 'images/winners',
+        fileError: ''
+    };
+
+    $scope.uploadFile = function () {
+
+        var formData = new FormData();
+        //formData.append("file", $scope.file);
+        formData.append("file", $scope.imageSrc);
+        formData.append("name", $scope.file.name);
+        formData.append("path", $scope.fileData.path);
+
+        var config = {
+
+            transformRequest: angular.identity,
+            headers : {
+                // 'enctype': 'multipart/form-data',
+                'Content-Type': undefined
+            }
+        };
+
+        $http.post('/api/Image', formData, config)
+            .success(function(){
+
+                window.alert("done");
+                $scope.fileData.fileError = '';
+
+            }).error(function(response) {
+
+                window.alert("failed");
+                $scope.fileData.fileError = response.message;
+            });
+    };
+
 }

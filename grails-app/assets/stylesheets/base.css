@@ -36,6 +36,10 @@ input, select, textarea {
     font-family: "Open Sans", "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
 }
 
+select {
+    color: #000;
+}
+
 h1, h2, h3 {
     font-weight: normal;
     font-size: 1.25em;
