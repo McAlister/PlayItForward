@@ -105,10 +105,14 @@ HorseRace = {};
             horseWidth = getHorseWidth();
         stick.style.left = pos.left + 'px';
         horse.style.left = (pos.left-Math.floor(horseWidth/2)) + 'px';
-        if (pos.left < horserace.clientWidth/2) {
-            tooltip.style.left = (pos.left + horseWidth/2 + 10) + 'px';
+        if (horserace.clientWidth <= 480 ){
+            tooltip.style.left = horserace.clientWidth/2-tooltip.offsetWidth/2 + 'px';
         } else {
-            tooltip.style.left = (pos.left - horseWidth/2 - 10 - tooltip.clientWidth) + 'px';
+            if (pos.left < horserace.clientWidth/2) {
+                tooltip.style.left = (pos.left + horseWidth/2 + 10) + 'px';
+            } else {
+                tooltip.style.left = (pos.left - horseWidth/2 - 10 - tooltip.clientWidth) + 'px';
+            }
         }
         updateTooltip(horse, horseInfo);
     }

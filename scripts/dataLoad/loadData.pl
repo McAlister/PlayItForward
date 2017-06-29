@@ -163,7 +163,9 @@ sub processAlterFolder() {
         my $path = "$folder/$name";
         if ( -f $path && $path =~ /\.sql$/ ) {
 
-            my $sql = `cat $path`;
+            open FILE, "$path";
+            my @lines = <FILE>;
+            my $sql = join '', @lines;
             $dbh->do($sql) or die "Cannot run sql $path: $!\n\n";
         }
     }
