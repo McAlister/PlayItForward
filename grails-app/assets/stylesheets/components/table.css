@@ -27,3 +27,29 @@ td, th {
 
     font-size: 10px;
 }
+
+.resource-table td {
+    /*border-width: 0;*/
+}
+
+.resource-table p {
+    line-height: 1;
+    font-style: italic;
+    margin-left: 15px;
+    font-size: smaller;
+}
+
+.resource-table a {
+    font-weight: bolder;
+    color: #ffffff;
+    text-decoration: none;
+ }
+
+.resource-table a:hover {
+    color: #ccbbcc;
+}
+
+.resource-table img {
+    min-width: 170px;
+    height: 170px;
+}

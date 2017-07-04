@@ -52,6 +52,11 @@
                         </a>
                     </li>
                     <li class="navigation-list-item">
+                        <a ui-sref="supporters" class="navigation-link">
+                            Sponsors
+                        </a>
+                    </li>
+                    <li class="navigation-list-item">
                         <a ui-sref="contribute" class="navigation-link">
                             Contribute
                         </a>
