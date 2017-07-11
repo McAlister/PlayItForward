@@ -91,6 +91,11 @@
                             Administration
                         </a>
                     </li>
+                    <li class="navigation-list-item" ng-if="['ROLE_ADMIN', 'ROLE_EVENT_ORGANIZER'].indexOf(getRole()) >= 0" ng-cloak>
+                        <a ui-sref="event" class="navigation-link">
+                            Event Tools
+                        </a>
+                    </li>
                     <li class="navigation-list-item" ng-if="getRole() === 'ROLE_GROUP_LEADER'" ng-cloak>
                         <a ui-sref="guildAdmin" class="navigation-link">
                             Group Admin

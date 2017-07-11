@@ -75,6 +75,11 @@ function config($stateProvider, $urlRouterProvider) {
             controller: 'AdminController',
             templateUrl: '/playitforward/index/admin.html'
         })
+        .state('event', {
+            url: '/event',
+            controller: 'EventController',
+            templateUrl: '/playitforward/index/event.html'
+        })
         .state('guildAdmin', {
             url: '/guildAdmin',
             controller: 'GuildAdminController',

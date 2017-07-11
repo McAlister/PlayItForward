@@ -52,6 +52,19 @@ class BootStrap
                 it.clear();
             }
         }
+
+        role = Role.findByAuthority('ROLE_EVENT_ORGANIZER');
+        if (role == null) {
+
+            role = new Role( authority: 'ROLE_EVENT_ORGANIZER').save();
+            User user = new User( 'bluesaddict@gmail.com',  'Set4Spell').save();
+            UserRole.create(user, role);
+            UserRole.withSession {
+
+                it.flush();
+                it.clear();
+            }
+        }
     }
 
     def destroy = {
