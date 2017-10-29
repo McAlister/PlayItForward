@@ -5,4 +5,4 @@ if [[ "$#" != 1 || ! -f "$1" ]]; then
   exit 1
 fi
 
-curl -s --upload-file $1 http://localhost:8080/api/Image/generateCameo
+curl -s --upload-file "$1" http://localhost:8080/api/Image/generateCameo
