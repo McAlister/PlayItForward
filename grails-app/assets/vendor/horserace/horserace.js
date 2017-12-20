@@ -4,6 +4,7 @@ HorseRace = {};
     var scoreRange = 1000,
         maxPoints = 45,
         OFFSET = 1,
+        TROT_STEPS = 4,
         horserace = document.getElementById('horserace'),
         roundDisplay = document.getElementById('horseround');
 
@@ -24,6 +25,33 @@ HorseRace = {};
         var tdata = horse.parentNode.getElementsByClassName('tdata')[0];
         tdata.innerHTML = horseInfo.name + "<br>Points: " + horseInfo.score;
     }
+
+    function moveHorsegroup(horsegroup, new_left, horseWidth) {
+        var a = horsegroup._positions,
+            start_left = (a && a[a.length-1]) || parseInt(horsegroup.style.left, 10) || Math.floor(horseWidth),
+            diff = new_left - start_left,
+            i, step, a;
+        if (horsegroup.func_id) {
+            window.clearInterval(horsegroup.func_id);
+        }
+        step = diff / TROT_STEPS;
+
+        a = horsegroup._positions = [];
+        if (TROT_STEPS > 1) {
+            a.push(a.length ? a[a.length-1] : start_left);
+        }
+        for (i = 1; i < TROT_STEPS; i++) {
+            a.push(Math.floor(start_left + i*step + Math.random()*0.4*step - 0.2*step));
+        }
+        a.push(new_left);
+
+        horsegroup.func_id = window.setInterval(function() {
+            if (!horsegroup._positions.length) {
+                window.clearInterval(horsegroup.func_id);
+            }
+            horsegroup.style.left = horsegroup._positions.shift() + 'px';
+        }, 180);
+    };
 
     function calculatePositions(round) {
         var i, j, wave, waves, children, pos, horse, marks, markpos, horse, horsegroup,
@@ -105,7 +133,7 @@ HorseRace = {};
             stick = horse.parentNode.getElementsByClassName('stick')[0],
             tooltip = horse.parentNode.getElementsByClassName('tooltip')[0],
             horseWidth = getHorseWidth();
-        horsegroup.style.left = pos.left + 'px';
+        moveHorsegroup(horsegroup, pos.left, horseWidth);
         if (horserace.clientWidth <= 480 ){
             tooltip.style.left = horserace.clientWidth/2-tooltip.offsetWidth/2 + 'px';
         } else {
@@ -197,7 +225,8 @@ HorseRace = {};
 
     function replay(event, maxRounds) {
         var myTimer,
-            round = (maxRounds > 9 ? 9 : 0),
+            fresh = window.location.search.match(/[?&]fresh/) ? 1 : 0,
+            round = (!fresh && maxRounds > 9) ? 9 : 0,
             speed = window.location.search.match(/[?&]fast/) ? 300 : 1000,
             togglePlayPause = function(play) {
                 var c = horserace.getElementsByClassName('controls')[0];
@@ -281,6 +310,7 @@ HorseRace = {};
     HorseRace.konami = function() {
         ajax('konami-dance.json', function (json) {
             var data = json['dance'];
+            TROT_STEPS = 1;
             data.forEach(function(a){a.forEach(function(h){
                 h.key = h.key + 999999;
                 h.name = 'dancer';
@@ -295,6 +325,7 @@ HorseRace = {};
                     window.setTimeout(doChunk, 400);
                 } else {
                     window.setTimeout(HorseRace.play, 2000);
+                    TROT_STEPS = 4;
                 }
             });
         });

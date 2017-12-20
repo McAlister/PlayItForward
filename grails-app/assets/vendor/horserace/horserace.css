@@ -10,7 +10,7 @@
     overflow: hidden;
 }
 #horserace .horsegroup {
-    transition: all 0.4s cubic-bezier(0.68, 0, 0.33, 1.25);
+    transition: all 0.12s ease-in;
     position: absolute;
 }
 #horserace .stick {
