@@ -9,18 +9,22 @@
     position: relative;
     overflow: hidden;
 }
-#horserace .stick {
+#horserace .horsegroup {
     transition: all 0.4s cubic-bezier(0.68, 0, 0.33, 1.25);
-    margin-left: -2px;
     position: absolute;
+}
+#horserace .stick {
+    margin-left: -2px;
+    position: relative;
     top: 20px;
     width: 3px;
     height: 500px;
 }
 #horserace .horse {
-    transition: all 0.4s cubic-bezier(0.68, 0, 0.33, 1.25);
     cursor: pointer;
     position: absolute;
+    top: 0;
+    z-index: 1;
 }
 #horserace .wave {
     transition: top 0.3s ease-in-out;
@@ -54,18 +58,19 @@
 }
 #horserace .wave .tooltip {
     position: absolute;
-    z-index: 1;
+    top: -1.5em;
+    z-index: 2;
     background-color: #222;
     border: 2px solid #aaa;
     font-family: sans-serif;
     font-size: 1em;
     color: #ddd;
     border-radius: 5px;
-    margin-top: -1.5em;
     cursor: default;
     box-shadow: 0 0 3px rgba(0,0,0,.5);
     visibility: hidden;
     user-select: text;
+    width: 200px;
 }
 #horserace .wave.clicked .tooltip {
     transition: all 0.4s cubic-bezier(0.68, 0, 0.33, 1.25);
