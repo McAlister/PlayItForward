@@ -4,6 +4,7 @@ HorseRace = {};
     var scoreRange = 1000,
         maxPoints = 45,
         OFFSET = 1,
+        TROT_STEPS = 4,
         horserace = document.getElementById('horserace'),
         roundDisplay = document.getElementById('horseround');
 
@@ -25,8 +26,35 @@ HorseRace = {};
         tdata.innerHTML = horseInfo.name + "<br>Points: " + horseInfo.score;
     }
 
+    function moveHorsegroup(horsegroup, new_left, horseWidth) {
+        var a = horsegroup._positions,
+            start_left = (a && a[a.length-1]) || parseInt(horsegroup.style.left, 10) || Math.floor(horseWidth),
+            diff = new_left - start_left,
+            i, step, a;
+        if (horsegroup.func_id) {
+            window.clearInterval(horsegroup.func_id);
+        }
+        step = diff / TROT_STEPS;
+
+        a = horsegroup._positions = [];
+        if (TROT_STEPS > 1) {
+            a.push(a.length ? a[a.length-1] : start_left);
+        }
+        for (i = 1; i < TROT_STEPS; i++) {
+            a.push(Math.floor(start_left + i*step + Math.random()*0.4*step - 0.2*step));
+        }
+        a.push(new_left);
+
+        horsegroup.func_id = window.setInterval(function() {
+            if (!horsegroup._positions.length) {
+                window.clearInterval(horsegroup.func_id);
+            }
+            horsegroup.style.left = horsegroup._positions.shift() + 'px';
+        }, 180);
+    };
+
     function calculatePositions(round) {
-        var i, j, wave, waves, children, pos, stick, horse, marks, markpos,
+        var i, j, wave, waves, children, pos, horse, marks, markpos, horse, horsegroup,
             horseWidth = getHorseWidth();
         waves = horserace.getElementsByClassName('wave');
         for (i = 0; i < waves.length; i++) {
@@ -35,11 +63,11 @@ HorseRace = {};
             children = Array.prototype.slice.call(wave.children);
             wave.style.top = pos.top + 'px';
             wave.style.backgroundPosition = 0-20*i + 'px';
-            stick = wave.getElementsByClassName('stick')[0];
-            stick.style.left = (stick.style.left || Math.floor(horseWidth/2)) + 'px';
+            horsegroup = wave.getElementsByClassName('horsegroup')[0];
+            horsegroup.style.left = (horsegroup.style.left || Math.floor(horseWidth)) + 'px';
             horse = wave.getElementsByClassName('horse')[0];
             horse.style.width = horse.style.height = horseWidth + 'px';
-            horse.style.left = (horse.style.left || 0) + 'px';
+            horse.style.left = (-1 * Math.floor(horseWidth/2)) + 'px';
 
             marks = children.filter(function(el){return el.className === 'scoremark'});
             for (j = 0; j < marks.length; j++) {
@@ -50,7 +78,7 @@ HorseRace = {};
         }
     }
     function addWave (horseInfo, insertAfter) {
-        var wave, scoremark, mark, horse, profileImg;
+        var wave, scoremark, mark, horse, horsegroup, profileImg;
 
         wave = document.getElementById("waveTemplate").cloneNode(true);
         wave.id = 'wave_' + horseInfo.key;
@@ -60,6 +88,7 @@ HorseRace = {};
             mark.innerHTML = scoremark;
             wave.appendChild(mark);
         }
+        horsegroup = wave.getElementsByClassName("horsegroup")[0];
 
         horse = wave.getElementsByClassName("horse")[0];
         if (horseInfo.img && !horseInfo.img.match(/\//)) {
@@ -67,13 +96,13 @@ HorseRace = {};
         }
         horse.src = horseInfo.img || "placeholder.png";
         horse.onclick = function(e) {
-            if (this.parentNode.classList.contains('clicked'))
-                return this.parentNode.classList.remove('clicked');
+            var wave = this.parentNode.parentNode;
+            if (wave.classList.contains('clicked'))
+                return wave.classList.remove('clicked');
             HorseRace.clearSelection();
-            this.parentNode.classList.add('clicked');
+            wave.classList.add('clicked');
             e.stopPropagation();
         };
-        wave.appendChild(horse);
 
         profileImg = wave.getElementsByClassName("profile")[0].getElementsByTagName("img")[0];
         profileImg.src = horse.src.replace('/ovals/', '/');
@@ -100,18 +129,18 @@ HorseRace = {};
 
     function updateHorseScore (horse, horseInfo, round) {
         var pos = getPosition(0, (round === 0 ? 0 : horseInfo.score), round),
+            horsegroup = horse.parentNode,
             stick = horse.parentNode.getElementsByClassName('stick')[0],
             tooltip = horse.parentNode.getElementsByClassName('tooltip')[0],
             horseWidth = getHorseWidth();
-        stick.style.left = pos.left + 'px';
-        horse.style.left = (pos.left-Math.floor(horseWidth/2)) + 'px';
+        moveHorsegroup(horsegroup, pos.left, horseWidth);
         if (horserace.clientWidth <= 480 ){
             tooltip.style.left = horserace.clientWidth/2-tooltip.offsetWidth/2 + 'px';
         } else {
             if (pos.left < horserace.clientWidth/2) {
-                tooltip.style.left = (pos.left + horseWidth/2 + 10) + 'px';
+                tooltip.style.left = (horseWidth/2 + 10) + 'px';
             } else {
-                tooltip.style.left = (pos.left - horseWidth/2 - 10 - tooltip.clientWidth) + 'px';
+                tooltip.style.left = (-1 * horseWidth/2 - 10 - tooltip.clientWidth) + 'px';
             }
         }
         updateTooltip(horse, horseInfo);
@@ -196,7 +225,8 @@ HorseRace = {};
 
     function replay(event, maxRounds) {
         var myTimer,
-            round = (maxRounds > 9 ? 9 : 0),
+            fresh = window.location.search.match(/[?&]fresh/) ? 1 : 0,
+            round = (!fresh && maxRounds > 9) ? 9 : 0,
             speed = window.location.search.match(/[?&]fast/) ? 300 : 1000,
             togglePlayPause = function(play) {
                 var c = horserace.getElementsByClassName('controls')[0];
@@ -280,6 +310,7 @@ HorseRace = {};
     HorseRace.konami = function() {
         ajax('konami-dance.json', function (json) {
             var data = json['dance'];
+            TROT_STEPS = 1;
             data.forEach(function(a){a.forEach(function(h){
                 h.key = h.key + 999999;
                 h.name = 'dancer';
@@ -294,6 +325,7 @@ HorseRace = {};
                     window.setTimeout(doChunk, 400);
                 } else {
                     window.setTimeout(HorseRace.play, 2000);
+                    TROT_STEPS = 4;
                 }
             });
         });
