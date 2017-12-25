@@ -138,8 +138,6 @@ sub sortFiles {
         $b3 = $3;
     }
 
-    print "Comparing ||$a1.$a2.$a3|| to ||$b1.$b2.$b3|| ";
-
     if ($a1 == $b1) {
 
         if ($a2 == $b2) {

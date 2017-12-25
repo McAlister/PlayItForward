@@ -30,8 +30,8 @@ class EventStandingController {
     def index(Integer eventId, Integer roundNum) {
 
         final session = sessionFactory.currentSession;
-        final String sql = "Insert Into event_standing (id, version, event_id, player_id, points, round )\n" +
-                "Select nextval('hibernate_sequence'), 0, r.event_id, p.id, r.points, r.round\n" +
+        final String sql = "Insert Into event_standing (id, version, event_id, player_id, points, round, rank )\n" +
+                "Select nextval('hibernate_sequence'), 0, r.event_id, p.id, r.points, r.round, r.rank\n" +
                 "From Player p inner join raw_standings r On p.name = r.name\n" +
                 "Where r.event_id = " + eventId + "\n" +
                 "And r.round = " + roundNum + "\n" +
@@ -44,7 +44,7 @@ class EventStandingController {
         query.executeUpdate();
 
         List<EventStanding> standingList = EventStanding.findAll(sort: 'player', order: 'asc') {
-            event.id == eventId && round == roundNum
+            event.id == eventId && round == roundNum && player.isWoman == true
         };
 
         standingList.sort { a, b ->

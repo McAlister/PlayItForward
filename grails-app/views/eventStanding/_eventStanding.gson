@@ -10,6 +10,7 @@ json {
     eventId eventStanding.event.id;
     eventName eventStanding.event.name;
     round eventStanding.round;
+    rank eventStanding.rank;
     score eventStanding.points;
     key eventStanding.player.id;
     name eventStanding.player.alias;
