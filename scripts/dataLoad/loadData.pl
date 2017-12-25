@@ -9,7 +9,7 @@
 ################################################################################
 
 	use strict;
-	use FindBin;
+    use FindBin;
     use DBI;
 
 	if (@ARGV != 3)
@@ -73,6 +73,9 @@
             &processAlterFolder($name);
             $lastFolder = $name;
         }
+        else {
+            print "\t\tSkipping $name ...\n";
+        }
     }
 
     ########################################################
@@ -135,19 +138,20 @@ sub sortFiles {
         $b3 = $3;
     }
 
-    if ($a1 != $b1) {
+    if ($a1 == $b1) {
 
-        return $a1 > $b1;
-    }
-    elsif ($a2 != $b2) {
+        if ($a2 == $b2) {
 
-        return $a2 > $b2;
+            return $a3 <=> $b3;
+        }
+        else {
+
+            return $a2 <=> $b2;
+        }
     }
     else {
-        return $a3 > $b3;
+        return $a1 <=> $b1;
     }
-
-
 }
 
 sub processAlterFolder() {

@@ -6,6 +6,7 @@ class EventStanding {
     Player player;
     int round;
     int points;
+    int rank;
 
     static constraints = {
 
@@ -13,6 +14,8 @@ class EventStanding {
         player nullable: false;
         round nullable: false;
         points nullable: false;
+        // Change to false after deployment and population.
+        rank nullable: true;
     }
 
     static mapping = {
