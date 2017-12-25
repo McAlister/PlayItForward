@@ -23,7 +23,7 @@ HorseRace = {};
 
     function updateTooltip (horse, horseInfo) {
         var tdata = horse.parentNode.getElementsByClassName('tdata')[0];
-        tdata.innerHTML = horseInfo.name + "<br>Points: " + horseInfo.score;
+        tdata.innerHTML = horseInfo.name + "<br>Points: " + horseInfo.score + "<br>Rank: " + horseInfo.rank;
     }
 
     function moveHorsegroup(horsegroup, new_left, horseWidth) {
@@ -134,6 +134,10 @@ HorseRace = {};
             tooltip = horse.parentNode.getElementsByClassName('tooltip')[0],
             horseWidth = getHorseWidth();
         moveHorsegroup(horsegroup, pos.left, horseWidth);
+        if (horseInfo.leader)
+            horsegroup.classList.add('leader');
+        else
+            horsegroup.classList.remove('leader');
         if (horserace.clientWidth <= 480 ){
             tooltip.style.left = horserace.clientWidth/2-tooltip.offsetWidth/2 + 'px';
         } else {
@@ -148,7 +152,7 @@ HorseRace = {};
 
     function processScores(scorelist, round) {
         var maxScore = 0,
-            waveKeys, lastWave;
+            waveKeys, lastWave, lowestRank;
 
         scorelist.forEach(function (el) {
             maxScore = el.score > maxScore ? el.score : maxScore;
@@ -182,6 +186,18 @@ HorseRace = {};
                 lastWave = w;
             }
         });
+
+        // find the leader
+        lowestRank = 999999;
+        scorelist.forEach(function (el) {
+            lowestRank = Math.min(el.rank, lowestRank);
+        });
+        scorelist.forEach(function (el) {
+            if (el.rank === lowestRank)
+                el.leader = 1;
+        });
+
+        // update the horses
         scorelist.forEach(function (el) {
             var wave = document.getElementById('wave_' + el.key);
             updateHorseScore(wave.getElementsByClassName('horse')[0], el, round);
