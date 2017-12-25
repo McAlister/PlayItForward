@@ -25,6 +25,15 @@
     position: absolute;
     top: 0;
     z-index: 1;
+    content: "x";
+}
+#horserace .wave:not(.clicked) .leader::after {
+    position: inherit;
+    z-index: 2;
+    top: -0.5em;
+    left: 0.5em;
+    content: "🌟";
+    font-size: 1.5em;
 }
 #horserace .wave {
     transition: top 0.3s ease-in-out;
@@ -59,7 +68,7 @@
 #horserace .wave .tooltip {
     position: absolute;
     top: -1.5em;
-    z-index: 2;
+    z-index: 3;
     background-color: #222;
     border: 2px solid #aaa;
     font-family: sans-serif;
