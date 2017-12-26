@@ -94,7 +94,7 @@
 }
 #horserace .tooltip .tdata {
     padding: 0.5em;
-    min-width: 100px;
+    min-width: 80px;
     margin-left: 100px;
 }
 #horseround {
