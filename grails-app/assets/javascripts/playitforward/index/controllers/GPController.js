@@ -68,7 +68,9 @@ function GPController(contextPath, $scope, $http, $location) {
             
             var name = $scope.GPs.currentEvent.name;
             name = name.replace(/\s/g, "-").substring(3);
-            return "/assets/gps/" + name + ".jpg";
+            var baseString = "https://s3-us-west-2.amazonaws.com/playitforward-magic/images/playmats/";
+            var year = $scope.GPs.currentEvent.startDate.getFullYear() + "/";
+            return baseString + year + name + ".jpg";
         }
         
         return '';
