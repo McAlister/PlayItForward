@@ -18,24 +18,24 @@ HorseRace = {};
             left: round < 9 ? Math.floor(marginWidth + (score/scoreRange) * scoreZone)
                             : Math.floor(marginWidth + ((score-18)/(scoreRange-18)) * scoreZone),
             top: waveHeight*(waveNum+1)
-        }
+        };
     }
 
     function updateTooltip (horse, horseInfo) {
         var tdata = horse.parentNode.getElementsByClassName('tdata')[0];
-        tdata.innerHTML = horseInfo.name + "<br>Points: " + horseInfo.score
-            + "<br>Rank: " + horseInfo.rank + (horseInfo.leader ? "<br>✨ Leader" : "");
+        tdata.innerHTML = horseInfo.name + "<br>Points: " + horseInfo.score +
+            "<br>Rank: " + horseInfo.rank + (horseInfo.leader ? "<br>✨ Leader" : "");
     }
 
     function moveHorsegroup(horsegroup, new_left, horseWidth) {
         var a = horsegroup._positions,
             start_left = (a && a[a.length-1]) || parseInt(horsegroup.style.left, 10) || Math.floor(horseWidth),
             diff = new_left - start_left,
-            i, step, a;
+            step = diff / TROT_STEPS,
+            i;
         if (horsegroup.func_id) {
             window.clearInterval(horsegroup.func_id);
         }
-        step = diff / TROT_STEPS;
 
         a = horsegroup._positions = [];
         if (TROT_STEPS > 1) {
@@ -52,10 +52,10 @@ HorseRace = {};
             }
             horsegroup.style.left = horsegroup._positions.shift() + 'px';
         }, 180);
-    };
+    }
 
     function calculatePositions(round) {
-        var i, j, wave, waves, children, pos, horse, marks, markpos, horse, horsegroup,
+        var i, j, wave, waves, children, pos, horse, marks, markpos, horsegroup,
             horseWidth = getHorseWidth();
         waves = horserace.getElementsByClassName('wave');
         for (i = 0; i < waves.length; i++) {
@@ -70,7 +70,7 @@ HorseRace = {};
             horse.style.width = horse.style.height = horseWidth + 'px';
             horse.style.left = (-1 * Math.floor(horseWidth/2)) + 'px';
 
-            marks = children.filter(function(el){return el.className === 'scoremark'});
+            marks = children.filter(function(el){return el.className === 'scoremark';});
             for (j = 0; j < marks.length; j++) {
                 markpos = getPosition(i, parseInt(marks[j].textContent, 10), round);
                 marks[j].style.top = Math.floor(horseWidth/2) + 'px';
@@ -326,13 +326,13 @@ HorseRace = {};
 
     HorseRace.konami = function() {
         ajax('konami-dance.json', function (json) {
-            var data = json['dance'];
+            var data = json.dance;
             TROT_STEPS = 1;
             data.forEach(function(a){a.forEach(function(h){
                 h.key = h.key + 999999;
                 h.name = 'dancer';
                 h.img = 'Mirri.png';
-            })});
+            });});
             window.setTimeout(function doChunk() {
                 processScores(data[0], 0.317);
                 var waves = Array.prototype.slice.call(horserace.getElementsByClassName('wave'));
