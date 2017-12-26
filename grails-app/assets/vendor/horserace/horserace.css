@@ -79,7 +79,6 @@
     box-shadow: 0 0 3px rgba(0,0,0,.5);
     visibility: hidden;
     user-select: text;
-    width: 200px;
 }
 #horserace .wave.clicked .tooltip {
     transition: all 0.4s cubic-bezier(0.68, 0, 0.33, 1.25);
@@ -94,8 +93,9 @@
     display: block;
 }
 #horserace .tooltip .tdata {
-    display: inline-block;
     padding: 0.5em;
+    min-width: 100px;
+    margin-left: 100px;
 }
 #horseround {
     color: white;
