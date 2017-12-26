@@ -1,22 +1,23 @@
 HorseRace = {};
 
 (function app () {
-    var scoreRange = 1000,
-        maxPoints = 45,
-        OFFSET = 1,
-        TROT_STEPS = 4,
-        horserace = document.getElementById('horserace'),
-        roundDisplay = document.getElementById('horseround');
+    var glo = {
+            scoreRange: 1000,
+            maxPoints: 45,
+            OFFSET: 1,
+            TROT_STEPS: 4,
+            roundDisplay: document.getElementById('horseround'),
+            horserace: document.getElementById('horserace')};
 
     function getPosition(waveNum, score, round) {
-        var raceHeight = horserace.clientHeight,
-            raceWidth = horserace.clientWidth,
+        var raceHeight = glo.horserace.clientHeight,
+            raceWidth = glo.horserace.clientWidth,
             marginWidth = 50,
             scoreZone = raceWidth - marginWidth - 20,
-            waveHeight = Math.floor(raceHeight/(getWaveCount()+OFFSET));
+            waveHeight = Math.floor(raceHeight/(getWaveCount()+glo.OFFSET));
         return {
-            left: round < 9 ? Math.floor(marginWidth + (score/scoreRange) * scoreZone)
-                            : Math.floor(marginWidth + ((score-18)/(scoreRange-18)) * scoreZone),
+            left: round < 9 ? Math.floor(marginWidth + (score/glo.scoreRange) * scoreZone)
+                            : Math.floor(marginWidth + ((score-18)/(glo.scoreRange-18)) * scoreZone),
             top: waveHeight*(waveNum+1)
         };
     }
@@ -31,17 +32,17 @@ HorseRace = {};
         var a = horsegroup._positions,
             start_left = (a && a[a.length-1]) || parseInt(horsegroup.style.left, 10) || Math.floor(horseWidth),
             diff = new_left - start_left,
-            step = diff / TROT_STEPS,
+            step = diff / glo.TROT_STEPS,
             i;
         if (horsegroup.func_id) {
             window.clearInterval(horsegroup.func_id);
         }
 
         a = horsegroup._positions = [];
-        if (TROT_STEPS > 1) {
+        if (glo.TROT_STEPS > 1) {
             a.push(a.length ? a[a.length-1] : start_left);
         }
-        for (i = 1; i < TROT_STEPS; i++) {
+        for (i = 1; i < glo.TROT_STEPS; i++) {
             a.push(Math.floor(start_left + i*step + Math.random()*0.4*step - 0.2*step));
         }
         a.push(new_left);
@@ -55,43 +56,45 @@ HorseRace = {};
     }
 
     function calculatePositions(round) {
-        var i, j, wave, waves, children, pos, horse, marks, markpos, horsegroup,
-            horseWidth = getHorseWidth();
-        waves = horserace.getElementsByClassName('wave');
-        for (i = 0; i < waves.length; i++) {
-            pos = getPosition(i, 0, round);
-            wave = waves[i];
-            children = Array.prototype.slice.call(wave.children);
+        var horseWidth = getHorseWidth(),
+            waves = glo.horserace.getElementsByClassName('wave');
+
+        [].forEach.call(waves, function(wave, i) {
+            var pos = getPosition(i, 0, round),
+                horsegroup = wave.getElementsByClassName('horsegroup')[0],
+                horse = wave.getElementsByClassName('horse')[0],
+                marks, markpos;
+
             wave.style.top = pos.top + 'px';
             wave.style.backgroundPosition = 0-20*i + 'px';
-            horsegroup = wave.getElementsByClassName('horsegroup')[0];
             horsegroup.style.left = (horsegroup.style.left || Math.floor(horseWidth)) + 'px';
-            horse = wave.getElementsByClassName('horse')[0];
             horse.style.width = horse.style.height = horseWidth + 'px';
             horse.style.left = (-1 * Math.floor(horseWidth/2)) + 'px';
 
-            marks = children.filter(function(el){return el.className === 'scoremark';});
-            for (j = 0; j < marks.length; j++) {
-                markpos = getPosition(i, parseInt(marks[j].textContent, 10), round);
-                marks[j].style.top = Math.floor(horseWidth/2) + 'px';
-                marks[j].style.left = markpos.left + 'px';
-            }
-        }
+            marks = [].filter.call(wave.children, (function(el){return el.className === 'scoremark';}));
+            marks.forEach(function(el) {
+                markpos = getPosition(i, parseInt(el.textContent, 10), round);
+                el.style.top = Math.floor(horseWidth/2) + 'px';
+                el.style.left = markpos.left + 'px';
+            });
+        });
     }
-    function addWave (horseInfo, insertAfter) {
-        var wave, scoremark, mark, horse, horsegroup, profileImg;
 
-        wave = document.getElementById("waveTemplate").cloneNode(true);
+    function addWave (horseInfo, insertAfter) {
+        var wave = document.getElementById("waveTemplate").cloneNode(true),
+            horsegroup = wave.getElementsByClassName("horsegroup")[0],
+            horse = wave.getElementsByClassName("horse")[0],
+            profileImg = wave.getElementsByClassName("profile")[0].getElementsByTagName("img")[0],
+            scoremark, mark;
+
         wave.id = 'wave_' + horseInfo.key;
-        for (scoremark = 0; scoremark <= maxPoints; scoremark += 3) {
+        for (scoremark = 0; scoremark <= glo.maxPoints; scoremark += 3) {
             mark = document.createElement('span');
             mark.className = 'scoremark';
             mark.innerHTML = scoremark;
             wave.appendChild(mark);
         }
-        horsegroup = wave.getElementsByClassName("horsegroup")[0];
 
-        horse = wave.getElementsByClassName("horse")[0];
         if (horseInfo.img && !horseInfo.img.match(/\//)) {
             horseInfo.img = 'https://s3-us-west-2.amazonaws.com/playitforward-magic/images/race/ovals/' + horseInfo.img;
         }
@@ -105,16 +108,16 @@ HorseRace = {};
             e.stopPropagation();
         };
 
-        profileImg = wave.getElementsByClassName("profile")[0].getElementsByTagName("img")[0];
         profileImg.src = horse.src.replace('/ovals/', '/');
 
         if (insertAfter)
-            horserace.insertBefore(wave, insertAfter.nextSibling);
+            glo.horserace.insertBefore(wave, insertAfter.nextSibling);
         else
-            horserace.insertBefore(wave, horserace.firstChild);
+            glo.horserace.insertBefore(wave, glo.horserace.firstChild);
         updateTooltip(horse, horseInfo);
         return wave;
     }
+
     function removeWave (key, round) {
         var wave = document.getElementById('wave_' + key);
         wave.parentNode.removeChild(wave);
@@ -122,10 +125,11 @@ HorseRace = {};
     }
 
     function getWaveCount() {
-        return horserace.getElementsByClassName('wave').length;
+        return glo.horserace.getElementsByClassName('wave').length;
     }
+
     function getHorseWidth() {
-        return Math.max(1.2*Math.floor(horserace.clientHeight/(getWaveCount()+OFFSET)), 50);
+        return Math.max(1.2*Math.floor(glo.horserace.clientHeight/(getWaveCount()+glo.OFFSET)), 50);
     }
 
     function updateHorseScore (horse, horseInfo, round) {
@@ -134,15 +138,16 @@ HorseRace = {};
             stick = horse.parentNode.getElementsByClassName('stick')[0],
             tooltip = horse.parentNode.getElementsByClassName('tooltip')[0],
             horseWidth = getHorseWidth();
+
         moveHorsegroup(horsegroup, pos.left, horseWidth);
         if (horseInfo.leader)
             horsegroup.classList.add('leader');
         else
             horsegroup.classList.remove('leader');
-        if (horserace.clientWidth <= 480 ){
-            tooltip.style.left = horserace.clientWidth/2-tooltip.offsetWidth/2 + 'px';
+        if (glo.horserace.clientWidth <= 480 ){
+            tooltip.style.left = glo.horserace.clientWidth/2-tooltip.offsetWidth/2 + 'px';
         } else {
-            if (pos.left < horserace.clientWidth/2) {
+            if (pos.left < glo.horserace.clientWidth/2) {
                 tooltip.style.left = (horseWidth/2 + 10) + 'px';
             } else {
                 tooltip.style.left = (-1 * horseWidth/2 - 10 - tooltip.clientWidth) + 'px';
@@ -158,18 +163,18 @@ HorseRace = {};
         scorelist.forEach(function (el) {
             maxScore = el.score > maxScore ? el.score : maxScore;
         });
-        scoreRange = Math.min(maxScore-(maxScore%18)+18, maxPoints);
+        glo.scoreRange = Math.min(maxScore-(maxScore%18)+18, glo.maxPoints);
 
         if (scorelist.length === 0) {
-            roundDisplay.innerHTML = 'No standings data yet';
+            glo.roundDisplay.innerHTML = 'No standings data yet';
         } else if (round > 9) {
-            roundDisplay.innerHTML = 'Day 2 Round ' + round;
+            glo.roundDisplay.innerHTML = 'Day 2 Round ' + round;
         } else {
-            roundDisplay.innerHTML = 'Day 1 Round ' + round;
+            glo.roundDisplay.innerHTML = 'Day 1 Round ' + round;
         }
 
         // add/remove waves as necessary, preserving order
-        waveKeys = Array.prototype.map.call(horserace.getElementsByClassName('wave'),
+        waveKeys = [].map.call(glo.horserace.getElementsByClassName('wave'),
                 function (w) { return Number(w.id.replace('wave_', '')); });
         waveKeys.forEach(function removeIfNotListed (key) {
             var i;
@@ -189,14 +194,8 @@ HorseRace = {};
         });
 
         // find the leader
-        lowestRank = 999999;
-        scorelist.forEach(function (el) {
-            lowestRank = Math.min(el.rank, lowestRank);
-        });
-        scorelist.forEach(function (el) {
-            if (el.rank === lowestRank)
-                el.leader = 1;
-        });
+        lowestRank = Math.min.apply(0, scorelist.map(function (el) {return el.rank;}));
+        scorelist.forEach(function (el) { if (el.rank === lowestRank) el.leader = 1; });
 
         // update the horses
         scorelist.forEach(function (el) {
@@ -225,6 +224,7 @@ HorseRace = {};
             callback(json.lastRound);
         });
     }
+
     function getRound(event, round) {
         if (HorseRace.inflight)
             HorseRace.inflight.abort();
@@ -246,7 +246,7 @@ HorseRace = {};
             round = (!fresh && maxRounds > 9) ? 9 : 0,
             speed = window.location.search.match(/[?&]fast/) ? 300 : 1000,
             togglePlayPause = function(play) {
-                var c = horserace.getElementsByClassName('controls')[0];
+                var c = glo.horserace.getElementsByClassName('controls')[0];
                 c.getElementsByClassName( 'play')[0].style.display = play ? 'none' : 'inline';
                 c.getElementsByClassName('pause')[0].style.display = play ? 'inline' : 'none';
             },
@@ -291,13 +291,13 @@ HorseRace = {};
             HorseRace.pause();
             round = round <= 0 ? 0 : round-1;
             getRound(event, round);
-            roundDisplay.innerHTML = 'Loading round ' + round + ' ...';
+            glo.roundDisplay.innerHTML = 'Loading round ' + round + ' ...';
         };
         HorseRace.next = function () {
             HorseRace.pause();
             round = round >= maxRounds ? maxRounds : round+1;
             getRound(event, round);
-            roundDisplay.innerHTML = 'Loading round ' + round + ' ...';
+            glo.roundDisplay.innerHTML = 'Loading round ' + round + ' ...';
         };
 
         HorseRace.play();
@@ -327,7 +327,7 @@ HorseRace = {};
     HorseRace.konami = function() {
         ajax('konami-dance.json', function (json) {
             var data = json.dance;
-            TROT_STEPS = 1;
+            glo.TROT_STEPS = 1;
             data.forEach(function(a){a.forEach(function(h){
                 h.key = h.key + 999999;
                 h.name = 'dancer';
@@ -335,14 +335,14 @@ HorseRace = {};
             });});
             window.setTimeout(function doChunk() {
                 processScores(data[0], 0.317);
-                var waves = Array.prototype.slice.call(horserace.getElementsByClassName('wave'));
-                waves.forEach(function(el){el.classList.add('konami');});
+                var waves = glo.horserace.getElementsByClassName('wave');
+                [].forEach.call(waves, function(el){el.classList.add('konami');});
                 data.splice(0, 1);
                 if (data.length) {
                     window.setTimeout(doChunk, 400);
                 } else {
                     window.setTimeout(HorseRace.play, 2000);
-                    TROT_STEPS = 4;
+                    glo.TROT_STEPS = 4;
                 }
             });
         });
@@ -353,7 +353,7 @@ HorseRace = {};
     };
 
     HorseRace.clearSelection = function() {
-        var waves = Array.prototype.slice.call(horserace.getElementsByClassName('wave'));
-        waves.forEach(function(el){el.classList.remove('clicked');});
+        var waves = glo.horserace.getElementsByClassName('wave');
+        [].forEach.call(waves, function(el){el.classList.remove('clicked');});
     };
 }());
