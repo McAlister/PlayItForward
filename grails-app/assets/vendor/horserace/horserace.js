@@ -23,7 +23,8 @@ HorseRace = {};
 
     function updateTooltip (horse, horseInfo) {
         var tdata = horse.parentNode.getElementsByClassName('tdata')[0];
-        tdata.innerHTML = horseInfo.name + "<br>Points: " + horseInfo.score + "<br>Rank: " + horseInfo.rank;
+        tdata.innerHTML = horseInfo.name + "<br>Points: " + horseInfo.score
+            + "<br>Rank: " + horseInfo.rank + (horseInfo.leader ? "<br>✨ Leader" : "");
     }
 
     function moveHorsegroup(horsegroup, new_left, horseWidth) {
