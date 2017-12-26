@@ -3,9 +3,16 @@
 
     <div class="gp-dropdown">
         <select name="eventSelect" id="eventSelect" ng-model="GPs.currentEvent"
-                ng-options="option.name for option in GPs.allEvents track by option.id"
+                ng-options="option.name for option in (GPs.allEvents | filter:GPs.currentYear) track by option.id"
                 ng-change="selectEvent()">
 
+        </select>
+    </div>
+
+    <div class="gp-dropdown">
+        <select name="yearSelect" id="yearSelect" ng-model="GPs.currentYear"
+                ng-options="year for year in GPs.allYears"
+                ng-change="selectYear()">
         </select>
     </div>
 

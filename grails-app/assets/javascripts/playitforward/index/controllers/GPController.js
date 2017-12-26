@@ -15,7 +15,9 @@ function GPController(contextPath, $scope, $http, $location) {
         lastRound: 0,
         currentEvent: null,
         allEvents: [],
-        eventWinners: {}
+        eventWinners: {},
+        allYears: [2017, 2018],
+        currentYear: 2018
     };
 
     $scope.loadEvent = function() {
@@ -39,7 +41,13 @@ function GPController(contextPath, $scope, $http, $location) {
                             break;
                         }
                     }
+
+                    if ($scope.GPs.currentEvent === null) {
+                        $scope.GPs.currentEvent = response.data[response.data.length - 1];
+                    }
                 }
+
+                $scope.GPs.currentYear = $scope.GPs.currentEvent.startDate.getFullYear();
 
             }, function errorCallback(response) {
 
@@ -185,7 +193,7 @@ function GPController(contextPath, $scope, $http, $location) {
 
         if ($scope.GPs.currentEvent) {
             var currentBounties = $scope.bountyArray.bounties.filter(function (bounty) {
-                return bounty.event == $scope.GPs.currentEvent.name;
+                return bounty.eventId === $scope.GPs.currentEvent.id;
             });
 
             return currentBounties.length > 0;
@@ -206,10 +214,29 @@ function GPController(contextPath, $scope, $http, $location) {
         }
     };
 
+    $scope.selectYear = function() {
+
+        for (var i = 0 ; i < $scope.GPs.allEvents.length ; ++i) {
+
+            var event = $scope.GPs.allEvents[i];
+            if (event.startDate.getFullYear() === $scope.GPs.currentYear) {
+
+                $scope.GPs.currentEvent = event;
+                break;
+            }
+        }
+    };
+
     $scope.selectEvent = function() {
-        var id = $scope.GPs.currentEvent && $scope.GPs.currentEvent.id;
-        if (id && $location.search().id !== id) {
-            $location.search("event", id);
+
+        if ($scope.GPs.currentEvent) {
+
+            $scope.GPs.currentYear = $scope.GPs.currentEvent.startDate.getFullYear();
+
+            var id = $scope.GPs.currentEvent.id;
+            if (id && $location.search().id !== id) {
+                $location.search("event", id);
+            }
         }
     };
 }
