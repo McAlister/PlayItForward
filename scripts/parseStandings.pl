@@ -30,11 +30,11 @@
 
     my ($eventID, $start, $end) = &getEventID($abbr);
 
-    my $url = "http://magic.wizards.com/en/events/coverage/$abbr/round-$prefix" . $round . "-standings-$start";
+    my $url = "https://magic.wizards.com/en/events/coverage/$abbr/round-$prefix" . $round . "-standings-$start";
     my $file = "round-" . $round . "-standings-2017-$start";
     if ( $round > 9 ) {       
 
-            $url = "http://magic.wizards.com/en/events/coverage/$abbr/round-" . $round . "-standings-$end";
+            $url = "https://magic.wizards.com/en/events/coverage/$abbr/round-" . $round . "-standings-$end";
             $file = "round-" . $round . "-standings-$end";
     }
 
