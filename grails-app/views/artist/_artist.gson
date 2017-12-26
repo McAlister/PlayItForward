@@ -1,0 +1,7 @@
+import playitforward.Artist
+
+model {
+	Artist artist
+}
+
+json g.render(artist)
