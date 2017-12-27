@@ -1,0 +1,19 @@
+import playitforward.EventArt
+
+model {
+	EventArt eventArt
+}
+
+json {
+    id eventArt.id
+    title eventArt.title
+    artist eventArt.artist.name
+    facebook eventArt.artist.facebookUrl
+    deviant eventArt.artist.deviantArtUrl
+    patreon eventArt.artist.patreonUrl
+    website eventArt.artist.webSiteUrl
+    event eventArt.event.name
+    eventId eventArt.event.id
+    blurb eventArt.artist.blurb
+}
+

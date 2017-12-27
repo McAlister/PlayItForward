@@ -11,11 +11,16 @@ function GPController(contextPath, $scope, $http, $location) {
     vm.contextPath = contextPath;
 
     $scope.error = '';
+    $scope.artError = '';
+    $scope.artLoaded = false;
     $scope.GPs = {
         lastRound: 0,
         currentEvent: null,
         allEvents: [],
-        eventWinners: {}
+        eventWinners: {},
+        allYears: [2017, 2018],
+        currentYear: 2018,
+        eventArt: {}
     };
 
     $scope.loadEvent = function() {
@@ -39,7 +44,13 @@ function GPController(contextPath, $scope, $http, $location) {
                             break;
                         }
                     }
+
+                    if ($scope.GPs.currentEvent === null) {
+                        $scope.GPs.currentEvent = response.data[response.data.length - 1];
+                    }
                 }
+
+                $scope.GPs.currentYear = $scope.GPs.currentEvent.startDate.getFullYear();
 
             }, function errorCallback(response) {
 
@@ -68,7 +79,9 @@ function GPController(contextPath, $scope, $http, $location) {
             
             var name = $scope.GPs.currentEvent.name;
             name = name.replace(/\s/g, "-").substring(3);
-            return "/assets/gps/" + name + ".jpg";
+            var baseString = "https://s3-us-west-2.amazonaws.com/playitforward-magic/images/playmats/";
+            var year = $scope.GPs.currentEvent.startDate.getFullYear() + "/";
+            return baseString + year + name + ".jpg";
         }
         
         return '';
@@ -140,6 +153,29 @@ function GPController(contextPath, $scope, $http, $location) {
         }
     );
 
+    $http.get('/api/EventArt').then(
+
+        function successCallback(response) {
+
+            for (var i = 0 ; i < response.data.length ; ++i) {
+
+                var art = response.data[i];
+                $scope.GPs.eventArt[art.eventId] = art;
+            }
+
+            $scope.artLoaded = true;
+
+        }, function errorCallback(response) {
+
+            $scope.artError = response.data;
+        }
+    );
+
+    $scope.getActiveArt = function() {
+
+        return $scope.GPs.eventArt[$scope.GPs.currentEvent.id];
+    };
+
     $scope.getWinnerImageName = function() {
 
         if ($scope.GPs.currentEvent) {
@@ -183,7 +219,7 @@ function GPController(contextPath, $scope, $http, $location) {
 
         if ($scope.GPs.currentEvent) {
             var currentBounties = $scope.bountyArray.bounties.filter(function (bounty) {
-                return bounty.event == $scope.GPs.currentEvent.name;
+                return bounty.eventId === $scope.GPs.currentEvent.id;
             });
 
             return currentBounties.length > 0;
@@ -204,8 +240,32 @@ function GPController(contextPath, $scope, $http, $location) {
         }
     };
 
+    $scope.selectYear = function() {
+
+        for (var i = 0 ; i < $scope.GPs.allEvents.length ; ++i) {
+
+            var event = $scope.GPs.allEvents[i];
+            if (event.startDate.getFullYear() === $scope.GPs.currentYear) {
+
+                $scope.GPs.currentEvent = event;
+                $scope.setEventId();
+                break;
+            }
+        }
+    };
+
     $scope.selectEvent = function() {
-        var id = $scope.GPs.currentEvent && $scope.GPs.currentEvent.id;
+
+        if ($scope.GPs.currentEvent) {
+
+            $scope.GPs.currentYear = $scope.GPs.currentEvent.startDate.getFullYear();
+            $scope.setEventId();
+        }
+    };
+
+    $scope.setEventId = function() {
+
+        var id = $scope.GPs.currentEvent.id;
         if (id && $location.search().id !== id) {
             $location.search("event", id);
         }

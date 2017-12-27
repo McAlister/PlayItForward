@@ -1,0 +1,8 @@
+import playitforward.EventArt
+
+model {
+	Iterable<EventArt> eventArtList
+}
+
+json tmpl.eventArt(eventArtList ?: [])
+
