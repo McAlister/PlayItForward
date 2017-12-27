@@ -159,7 +159,7 @@ sub processAlterFolder() {
 	my $folder = $_[0];
 
     opendir(AH, "$folder") or die "Cannot open current directory.";
-    my @files = readdir(AH);
+    my @files = sort readdir(AH);
     closedir(AH);
 
     while ( my $name = shift @files ) {
@@ -168,6 +168,7 @@ sub processAlterFolder() {
         if ( -f $path && $path =~ /\.sql$/ ) {
 
             open FILE, "$path";
+            print "\t\t\tLoading $path ...\n";
             my @lines = <FILE>;
             my $sql = join '', @lines;
             $dbh->do($sql) or die "Cannot run sql $path: $!\n\n";

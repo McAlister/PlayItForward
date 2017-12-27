@@ -14,8 +14,7 @@ class EventStanding {
         player nullable: false;
         round nullable: false;
         points nullable: false;
-        // Change to false after deployment and population.
-        rank nullable: true;
+        rank nullable: false;
     }
 
     static mapping = {
