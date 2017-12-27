@@ -1,10 +1,12 @@
 
+<!--suppress HtmlUnknownTarget, JSUnresolvedVariable, JSUnresolvedVariable -->
+
 <div role="main">
 
     <div class="gp-dropdown">
         <select name="eventSelect" id="eventSelect" ng-model="GPs.currentEvent"
                 ng-options="option.name for option in (GPs.allEvents | filter:GPs.currentYear) track by option.id"
-                ng-change="selectEvent()">
+                ng-change="selectEvent()" title="eventSelectTitle">
 
         </select>
     </div>
@@ -12,7 +14,7 @@
     <div class="gp-dropdown">
         <select name="yearSelect" id="yearSelect" ng-model="GPs.currentYear"
                 ng-options="year for year in GPs.allYears"
-                ng-change="selectYear()">
+                ng-change="selectYear()" title="yearSelectTitle">
         </select>
     </div>
 
@@ -60,18 +62,45 @@
 
     <div id="gp-playmat" ng-show="isActiveTab('playmat')">
 
-        <p>
-            Behold!  The prize mat for {{GPs.currentEvent.name}}.
-        </p>
+        <div ng-if="artLoaded">
+            <p>
+                <span class="artTitle">{{getActiveArt().title}}</span> by
+                <span class="artist">{{getActiveArt().artist}}</span>
+            </p>
 
-        <p>
-            <img class="playmat-image" ng-src="{{getImageName()}}" />
-        </p>
+            <p>
+                <img class="playmat-image" ng-src="{{getImageName()}}" />
+            </p>
 
-        <p>
-            As always the mats themselves are provided by our heroes at <a href="http://gamermats.com/">GamerMats</a>. Check them out if you want a playmat that is all your own.
-        </p>
+            <p>
+                {{getActiveArt().blurb}}
+            </p>
 
+            <div class="socialIconsDiv">
+
+                <a target="_blank" ng-show="getActiveArt().website" href="{{getActiveArt().website}}">
+                    <img src="/assets/socialmedia/website.png" class="artistLinkImage"/>
+                </a>
+
+                <a target="_blank" ng-show="getActiveArt().patreon" href="{{getActiveArt().patreon}}">
+                    <img ng-show="getActiveArt().patreon" src="/assets/socialmedia/patreon.png" class="artistLinkImage"/>
+                </a>
+
+                <a target="_blank" ng-show="getActiveArt().deviant" href="{{getActiveArt().deviant}}">
+                    <img ng-show="getActiveArt().deviant" src="/assets/socialmedia/deviantart.png" class="artistLinkImage"/>
+                </a>
+
+                <a target="_blank" ng-show="getActiveArt().facebook" href="{{getActiveArt().facebook}}">
+                    <img ng-show="getActiveArt().facebook" src="/assets/socialmedia/facebook.png" class="artistLinkImage"/>
+                </a>
+
+            </div>
+
+            <p class="center">
+                Playmats provided by our heroes at <a href="http://gamermats.com/">GamerMats</a>.
+            </p>
+
+        </div>
     </div>
 
     <div id="gp-bounties" ng-show="isActiveTab('bounties')">

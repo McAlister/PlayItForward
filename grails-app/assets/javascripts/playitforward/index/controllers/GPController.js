@@ -11,13 +11,16 @@ function GPController(contextPath, $scope, $http, $location) {
     vm.contextPath = contextPath;
 
     $scope.error = '';
+    $scope.artError = '';
+    $scope.artLoaded = false;
     $scope.GPs = {
         lastRound: 0,
         currentEvent: null,
         allEvents: [],
         eventWinners: {},
         allYears: [2017, 2018],
-        currentYear: 2018
+        currentYear: 2018,
+        eventArt: {}
     };
 
     $scope.loadEvent = function() {
@@ -150,6 +153,29 @@ function GPController(contextPath, $scope, $http, $location) {
         }
     );
 
+    $http.get('/api/EventArt').then(
+
+        function successCallback(response) {
+
+            for (var i = 0 ; i < response.data.length ; ++i) {
+
+                var art = response.data[i];
+                $scope.GPs.eventArt[art.eventId] = art;
+            }
+
+            $scope.artLoaded = true;
+
+        }, function errorCallback(response) {
+
+            $scope.artError = response.data;
+        }
+    );
+
+    $scope.getActiveArt = function() {
+
+        return $scope.GPs.eventArt[$scope.GPs.currentEvent.id];
+    };
+
     $scope.getWinnerImageName = function() {
 
         if ($scope.GPs.currentEvent) {
@@ -222,6 +248,7 @@ function GPController(contextPath, $scope, $http, $location) {
             if (event.startDate.getFullYear() === $scope.GPs.currentYear) {
 
                 $scope.GPs.currentEvent = event;
+                $scope.setEventId();
                 break;
             }
         }
@@ -232,11 +259,15 @@ function GPController(contextPath, $scope, $http, $location) {
         if ($scope.GPs.currentEvent) {
 
             $scope.GPs.currentYear = $scope.GPs.currentEvent.startDate.getFullYear();
+            $scope.setEventId();
+        }
+    };
 
-            var id = $scope.GPs.currentEvent.id;
-            if (id && $location.search().id !== id) {
-                $location.search("event", id);
-            }
+    $scope.setEventId = function() {
+
+        var id = $scope.GPs.currentEvent.id;
+        if (id && $location.search().id !== id) {
+            $location.search("event", id);
         }
     };
 }

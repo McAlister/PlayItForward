@@ -5,6 +5,27 @@
     width: 550px;
 }
 
+.artTitle {
+    font-weight: bold;
+    font-style: italic;
+}
+
+.artist {
+    font-size: smaller;
+    font-style: italic;
+}
+
+.artistLinkImage {
+    float: right;
+    margin-left: 10px;
+    width: 26px;
+    height: 26px;
+}
+
+.socialIconsDiv {
+    height: 30px;
+}
+
 @media screen and (max-width: 480px) {
     .page {
         width: 100%;
