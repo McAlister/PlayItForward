@@ -25,7 +25,6 @@
     position: absolute;
     top: 0;
     z-index: 1;
-    content: "x";
 }
 #horserace .wave:not(.clicked) .leader::after {
     position: inherit;
