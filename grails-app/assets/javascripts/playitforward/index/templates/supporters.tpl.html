@@ -5,57 +5,217 @@
 
     <h1>Thank You All!</h1>
 
-    <p>Quick shout out to our corporate sponsors.  We love these guys.</p>
+    <div class="bounty-tabs">
+        <ul>
+            <li ng-class="tabClass('art')" ng-click="activate('art')">Playmat Art</li>
+            <li ng-class="tabClass('prizes')" ng-click="activate('prizes')">Prizes</li>
+            <li ng-class="tabClass('sponsors')" ng-click="activate('sponsors')" >Corporate Sponsors</li>
+        </ul>
+    </div>
 
-    <table class="resource-table">
+    <!-- Art -->
 
-        <tr>
-            <td>
-                <a href="https://reddeckwins.com/" target="_blank"><img width="170" height="170" src="/assets/supporters/rdw.png"></a>
-            </td>
-            <td>
-                <a href="https://reddeckwins.com/" target="_blank">Red Deck Wins:</a>
+    <div id="donor-art" ng-show="isActiveTab('art')">
 
-                <p>
-                    Red Deck Wins provides high quality & limited edition apparel for cardboard spellslingers.
-                    They will begin a monthly donation of a portion of their proceeds to Play It Forward in August
-                    as well as 100% of the profits from Play It Forward branded apparel.
-                </p>
+        <div ng-if="artArray.artLoaded && artArray.artistLoaded">
 
-            </td>
-        </tr>
+            <div class="gp-dropdown">
 
-        <tr>
-            <td>
-                <a href="http://gamermats.com/custom/" target="_blank"><img src="/assets/supporters/gm.png"></a>
-            </td>
-            <td>
-                <a href="http://gamermats.com/custom/" target="_blank">Gamermats:</a>
+                <label>Artist:</label>
 
-                <p>
-                    If you can't find the perfect playmat, GamerMats can make you a mat with your artwork and have
-                    it in your hands in about a week.  And they are where our gorgeous prize playmats come from.
-                </p>
+                <select name="yearSelect" id="artistSelect" ng-model="artArray.currentArtist"
+                        ng-options="artist.name for artist in artArray.artists"
+                        ng-change="selectArtist()" title="artistSelectTitle">
+                </select>
 
-            </td>
-        </tr>
+            </div>
 
-        <tr>
-            <td>
-                <a href="https://www.patreon.com/merkerinn" target="_blank"><img src="/assets/supporters/merkerinn.png"></a>
-            </td>
-            <td>
-                <a href="https://www.patreon.com/merkerinn" target="_blank">Merkerinn:</a>
+            <br/>
 
-                <p>
-                    Merkerinn is an amazingly talented freelance graphic artist from Poland who has donated
-                    the bulk of our playmat art for 2017.  Check out her Patreon to see other works of art
-                    and also streams of her creation process.
-                </p>
+            <div id="carousel-example-generic" class="carousel slide" data-ride="carousel" data-interval="3000">
 
-            </td>
-        </tr>
+                <!-- Wrapper for slides -->
+                <div class="carousel-inner" ng-repeat="slide in getSlides() track by slide.id" index="slide.id">
 
-    </table>
+                    <div ng-class="slide.active ? 'item active' : 'item'">
+
+                        <img ng-src="{{slide.image}}" alt="...">
+
+                    </div>
+
+                </div>
+
+                <!-- Indicators -->
+                <ol class="carousel-indicators" ng-show="getSlides().length > 1">
+                    <li ng-repeat="slide in getSlides()" data-target="#carousel-example-generic"
+                        ng-click="goToSlide(slide.id)" ng-class="getSlides()[slide.id].active ? 'active' : ''">
+                    </li>
+                </ol>
+
+                <!-- Controls -->
+                <a class="left carousel-control" ng-click="backImage()" role="button" data-slide="prev"> </a>
+                <a class="right carousel-control" ng-click="forwardImage()" role="button" data-slide="next"> </a>
+
+            </div>
+
+            <div class="center">
+
+                <h3>{{getSlides()[artArray.currIndex].title}}</h3>
+
+            </div>
+
+            <p>
+
+                {{artArray.currentArtist.blurb}}
+
+            </p>
+
+            <div class="socialIconsDiv">
+
+                <a target="_blank" ng-show="artArray.currentArtist.webSiteUrl" href="{{artArray.currentArtist.webSiteUrl}}">
+                    <img src="/assets/socialmedia/website.png" class="artistLinkImage"/>
+                </a>
+
+                <a target="_blank" ng-show="artArray.currentArtist.patreonUrl" href="{{artArray.currentArtist.patreonUrl}}">
+                    <img src="/assets/socialmedia/patreon.png" class="artistLinkImage"/>
+                </a>
+
+                <a target="_blank" ng-show="artArray.currentArtist.deviantArtUrl" href="{{artArray.currentArtist.deviantArtUrl}}">
+                    <img src="/assets/socialmedia/deviantart.png" class="artistLinkImage"/>
+                </a>
+
+                <a target="_blank" ng-show="artArray.currentArtist.facebookUrl" href="{{artArray.currentArtist.facebookUrl}}">
+                    <img src="/assets/socialmedia/facebook.png" class="artistLinkImage"/>
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Prizes -->
+
+    <div id="donor-prizes" ng-show="isActiveTab('prizes')">
+
+        <div class="gp-dropdown">
+            <select name="yearSelect" id="yearSelect" ng-model="bountyArray.currentYear"
+                    ng-options="year for year in bountyArray.allYears"
+                    ng-change="selectYear()" title="yearSelectTitle">
+            </select>
+        </div>
+
+        <div class='has-error' ng-show="bountyArray.errorMessage">
+            Error: Unable to load Bounties.
+        </div>
+
+        <div ng-show="bountyArray.errorMessage==''">
+
+            <form>
+                <div class="form-group">
+                    <div class="input-group">
+                        <div class="input-group-addon"><i class="fa fa-search"></i></div>
+                        <input type="text" class="form-control" placeholder="Search Bounties" ng-model="bountyArray.searchString">
+                    </div>
+                </div>
+            </form>
+
+            <table class="table table-bordered table-striped">
+
+                <thead>
+                <tr>
+                    <th>
+                        <a href ng-click="bountyArray.sortType = 'event'; bountyArray.sortReverse = !bountyArray.sortReverse">
+                            Event
+                            <span ng-show="sortType == 'event' && !bountyArray.sortReverse" class="fa fa-caret-down"></span>
+                            <span ng-show="sortType == 'event' && bountyArray.sortReverse" class="fa fa-caret-up"></span>
+                        </a>
+                    </th>
+                    <th>
+                        <a href ng-click="bountyArray.sortType = 'donor'; bountyArray.sortReverse = !bountyArray.sortReverse">
+                            Donor
+                            <span ng-show="sortType == 'donor' && !bountyArray.sortReverse" class="fa fa-caret-down"></span>
+                            <span ng-show="sortType == 'donor' && bountyArray.sortReverse" class="fa fa-caret-up"></span>
+                        </a>
+                    </th>
+                    <th>
+                        <a href ng-click="bountyArray.sortType = 'prize'; bountyArray.sortReverse = !bountyArray.sortReverse">
+                            Prize
+                            <span ng-show="sortType == 'prize' && !sortReverse" class="fa fa-caret-down"></span>
+                            <span ng-show="sortType == 'prize' && sortReverse" class="fa fa-caret-up"></span>
+                        </a>
+                    </th>
+                </tr>
+                </thead>
+
+                <tbody>
+                <tr ng-repeat="bounty in bountyArray.bounties | orderBy:bountyArray.sortType:bountyArray.sortReverse | filter:bountyArray.searchString">
+                    <td>{{ bounty.event }}</td>
+                    <td>{{ bounty.donor }}</td>
+                    <td>{{ bounty.prize }}</td>
+                </tr>
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+    <!-- Sponsors -->
+
+    <div id="donor-sponsors" ng-show="isActiveTab('sponsors')">
+
+        <table class="resource-table">
+
+            <tr>
+                <td>
+                    <a href="http://store.channelfireball.com/landing" target="_blank"><img src="/assets/supporters/cfb.png"></a>
+                </td>
+                <td>
+                    <a href="http://store.channelfireball.com/landing" target="_blank">Channel Fireball:</a>
+
+                    <p>
+                        Channel Fireball is getting on the Play It Forward train in 2018!  Every Play
+                        It Forward winner will win free entry into their next Channel Fireball GP.
+                    </p>
+
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <a href="http://gamermats.com/custom/" target="_blank"><img src="/assets/supporters/gm.png"></a>
+                </td>
+                <td>
+                    <a href="http://gamermats.com/custom/" target="_blank">Gamermats:</a>
+
+                    <p>
+                        If you can't find the perfect playmat, GamerMats can make you a mat with your artwork and have
+                        it in your hands in about a week.  And they are where our gorgeous prize playmats come from.
+                    </p>
+
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <a href="https://reddeckwins.com/" target="_blank"><img width="170" height="170" src="/assets/supporters/rdw.png"></a>
+                </td>
+                <td>
+                    <a href="https://reddeckwins.com/" target="_blank">Red Deck Wins:</a>
+
+                    <p>
+                        Red Deck Wins provides high quality & limited edition apparel for cardboard spellslingers.
+                        They will begin a monthly donation of a portion of their proceeds to Play It Forward in August
+                        as well as 100% of the profits from Play It Forward branded apparel.
+                    </p>
+
+                </td>
+            </tr>
+
+        </table>
+
+    </div>
 
 </div>

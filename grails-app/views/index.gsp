@@ -47,13 +47,8 @@
                         </a>
                     </li>
                     <li class="navigation-list-item">
-                        <a ui-sref="contests" class="navigation-link">
-                            Bounties
-                        </a>
-                    </li>
-                    <li class="navigation-list-item">
                         <a ui-sref="supporters" class="navigation-link">
-                            Sponsors
+                            Supporters
                         </a>
                     </li>
                     <li class="navigation-list-item">

@@ -40,7 +40,7 @@ Insert Into event_art
 Select
     nextval('event_art_seq'),
     0,
-    'Haloween Witch',
+    'Halloween Witch',
     (Select id from artist where name = 'Malwina Kwiatkowska'),
     (Select id from event where start_date = '2017-02-11')
 Where Not Exists (Select id
@@ -52,7 +52,7 @@ Insert Into event_art
 Select
     nextval('event_art_seq'),
     0,
-    'Haloween Witch',
+    'Halloween Witch',
     (Select id from artist where name = 'Malwina Kwiatkowska'),
     (Select id from event where start_date = '2017-02-18')
 Where Not Exists (Select id
@@ -64,7 +64,7 @@ Insert Into event_art
 Select
     nextval('event_art_seq'),
     0,
-    'Haloween Witch',
+    'Halloween Witch',
     (Select id from artist where name = 'Malwina Kwiatkowska'),
     (Select id from event where start_date = '2017-10-28')
 Where Not Exists (Select id
@@ -185,7 +185,7 @@ Insert Into event_art
 Select
     nextval('event_art_seq'),
     0,
-    'Angel of Revival',
+    'Angel Of Revival',
     (Select id from artist where name = 'Malwina Kwiatkowska'),
     (Select id from event where start_date = '2017-08-05')
 Where Not Exists (Select id
@@ -197,7 +197,7 @@ Insert Into event_art
 Select
     nextval('event_art_seq'),
     0,
-    'Angel of Revival',
+    'Angel Of Revival',
     (Select id from artist where name = 'Malwina Kwiatkowska'),
     (Select id from event where start_date = '2017-08-19')
 Where Not Exists (Select id
@@ -209,7 +209,7 @@ Insert Into event_art
 Select
     nextval('event_art_seq'),
     0,
-    'Angel of Revival',
+    'Angel Of Revival',
     (Select id from artist where name = 'Malwina Kwiatkowska'),
     (Select id from event where start_date = '2017-08-26')
 Where Not Exists (Select id

@@ -8,6 +8,7 @@ json {
     id eventArt.id
     title eventArt.title
     artist eventArt.artist.name
+    artistId eventArt.artist.id
     facebook eventArt.artist.facebookUrl
     deviant eventArt.artist.deviantArtUrl
     patreon eventArt.artist.patreonUrl
