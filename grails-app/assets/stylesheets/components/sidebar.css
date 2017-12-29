@@ -16,12 +16,13 @@
     width: 117px;
     height: 26px;
     margin-top: 15px;
+    margin-bottom: 25px;
 }
 
 @media screen and (max-width: 480px) {
     .sidebar {
         flex: 0;
-        padding: 0 30px 30px 30px;
+        padding: 0 30px 15px 30px;
     }
 
     .navIconsDiv {

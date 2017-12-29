@@ -29,10 +29,6 @@ function config($stateProvider, $urlRouterProvider) {
             url: '/supporters',
             templateUrl: '/playitforward/index/supporters.html'
         })
-        .state('contribute', {
-            url: '/contribute',
-            templateUrl: '/playitforward/index/contribute.html'
-            })
         .state('resources', {
             url: '/resources',
             templateUrl: '/playitforward/index/resources.html'
