@@ -10,4 +10,5 @@ json {
     prize eventBounty.prize
     event eventBounty.event.name
     eventId eventBounty.event.id
+    startDate eventBounty.event.startDate
 }

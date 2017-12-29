@@ -3,9 +3,31 @@
     flex: 0 0 200px;
 }
 
+.navLinkImage {
+    float: right;
+    margin-left: 5px;
+    margin-right: 5px;
+    width: 29px;
+    height: 29px;
+}
+
+.navIconsDiv {
+
+    width: 117px;
+    height: 26px;
+    margin-top: 15px;
+    margin-bottom: 25px;
+}
+
 @media screen and (max-width: 480px) {
     .sidebar {
         flex: 0;
-        padding: 0 30px 10px 30px;
+        padding: 0 30px 15px 30px;
+    }
+
+    .navIconsDiv {
+
+        margin-left:auto;
+        margin-right:auto;
     }
 }

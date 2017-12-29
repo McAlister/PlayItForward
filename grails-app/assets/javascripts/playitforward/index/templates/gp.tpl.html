@@ -20,7 +20,7 @@
 
     <div class="bounty-tabs">
         <ul>
-            <li ng-class="tabClass('summary')" ng-click="activate('summary')">Overview</li>
+            <li ng-class="tabClass('summary')" ng-click="activate('summary')">Winner</li>
             <li ng-class="tabClass('playmat')" ng-click="activate('playmat')" >Playmat</li>
             <li ng-class="tabClass('bounties')" ng-click="activate('bounties')">Prizes</li>
             <li ng-class="tabClass('race')" ng-click="activate('race')"
@@ -62,7 +62,8 @@
 
     <div id="gp-playmat" ng-show="isActiveTab('playmat')">
 
-        <div ng-if="artLoaded">
+        <div ng-if="artLoaded && GPs.currentEvent">
+
             <p>
                 <span class="artTitle">{{getActiveArt().title}}</span> by
                 <span class="artist">{{getActiveArt().artist}}</span>
@@ -101,6 +102,7 @@
             </p>
 
         </div>
+
     </div>
 
     <div id="gp-bounties" ng-show="isActiveTab('bounties')">

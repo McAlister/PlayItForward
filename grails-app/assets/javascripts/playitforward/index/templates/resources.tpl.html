@@ -1,47 +1,261 @@
 
+
+<!--suppress HtmlUnknownTarget -->
 <div role="main">
 
-    <h1>Event Schedules:</h1>
+    <h1>Fight Like a Girl.</h1>
 
-    <ul>
+    <div class="bounty-tabs">
+        <ul>
+            <li ng-class="tabClass('art')" ng-click="activate('art')">Community</li>
+            <li ng-class="tabClass('prizes')" ng-click="activate('prizes')">Strategy</li>
+            <li ng-class="tabClass('sponsors')" ng-click="activate('sponsors')" >Events</li>
+        </ul>
+    </div>
 
-        <li><a href="http://magic.wizards.com/en/content/grand-prix-event-types-events">Grand Prix schedule</a></li>
-        <li><a href="http://magic.wizards.com/en/protour/preliminaryqualifiers">PPTQ schedule</a></li>
-        <li><a href="http://magic.wizards.com/en/protour/regionalqualifiers">RPTQ Schedule</a></li>
-        <li><a href="http://magic.wizards.com/en/content/all-events-schedule">Complete Wizards of the Coast Event Schedule</a></li>
-        <li><a href="http://www.starcitygames.com/content/schedule">Complete StarCity Games Tour Schedule</a></li>
+    <!--// Community //-->
 
-    </ul>
+    <div id="community-links" ng-show="isActiveTab('art')">
 
-    <h1>Strategy Podcasts (see mtgcast.com):</h1>
+        <table class="resource-table">
 
-    <ul>
+            <tr>
+                <td>
+                    <a href="https://www.facebook.com/groups/1651467591795832/" target="_blank"><img src="/assets/supporters/lotg.png"></a>
+                </td>
+                <td>
+                    <a href="https://www.facebook.com/groups/1651467591795832/" target="_blank">Ladies On the Grind:</a>
 
-        <li><a href="https://itunes.apple.com/us/podcast/limited-resources/id385051731?mt=2">Limited Resources</a></li>
-        <li><a href="http://toplevelpodcast.libsyn.com/">Top Level Podcast</a></li>
-        <li><a href="http://www.crcast.com/">Constructed Resources</a></li>
-        <li><a href="https://alliedstrategiespodcast.wordpress.com/">Allied Strategies</a></li>
-        <li><a href="http://spikefeed.com/">The Spike Feed</a></li>
-        <li><a href="https://itunes.apple.com/us/podcast/thesnapcast/id1114941532?mt=2">The SnapCast</a></li>
-        <li><a href="http://www.mtgprotutor.com/">MTG Pro Tutor</a></li>
+                    <p>
+                        LoTG is a facebook group for women who aspire to Magic greatness.  Share tips, triumphs
+                        and travel costs as you pursue the elusive top 8 finish.
+                    </p>
 
-    </ul>
+                </td>
+            </tr>
 
-    <h1>Facebook Groups:</h1>
+            <tr>
+                <td>
+                    <a href="http://ladyplaneswalkers.weebly.com/" target="_blank"><img src="/assets/supporters/lps.png"></a>
+                </td>
+                <td>
+                    <a href="http://ladyplaneswalkers.weebly.com/" target="_blank">Lady Planeswalker Society:</a>
 
-    <ul>
+                    <p>
+                        Breaking down the barriers of entry into Magic is the number one goal of the group, but we also
+                        aim to provide a stepping-stone into tournament play.
 
-        <li><a href="https://www.facebook.com/groups/1651467591795832/">Ladies on the Grind</a></li>
+                        With over 100 chapters in the world, this group has been very successful and continues to grow.
+                        The group teaches Magic at many conventions with a large, dedicated staff of experienced teachers.
+                    </p>
 
-    </ul>
+                </td>
+            </tr>
 
-    <h1>Articles:</h1>
+            <tr>
+                <td>
+                    <a href="http://www.mtgdiversity.org/" target="_blank"><img src="/assets/supporters/pfd.png"></a>
+                </td>
+                <td>
+                    <a href="http://www.mtgdiversity.org/" target="_blank">Planeswalkers For Diversity:</a>
 
-    <ul>
+                    <p>
+                        Our main focus has been on facilitating the creation of real life playgroups that
+                        emphasize a welcoming atmosphere for players of all kinds.
+                    </p>
 
-        <li><a href="https://broadly.vice.com/en_us/article/the-women-of-magic-the-gathering">On The Grind With The Women of Competitive Magic: the Gathering</a></li>
-        <li><a href="http://magic.wizards.com/en/events/coverage/gpden16/simone-aiken-pays-it-forward-2016-12-03">The Beginning of Play It Forward</a></li>
+                </td>
+            </tr>
 
-    </ul>
+            <tr>
+                <td>
+                    <a href="http://garotasmagicasbr.wixsite.com/site/magic--the-gathering" target="_blank"><img src="/assets/supporters/lgm.png"></a>
+                </td>
+                <td>
+                    <a href="http://garotasmagicasbr.wixsite.com/site/magic--the-gathering" target="_blank">Liga das Garotas Mágicas:</a>
+
+                    <p>
+                        The League of Magical Girls is the Brazilian version of Ladies on the Grind.  If you are a
+                        woman who loves magic and speaks portuguese check them out.
+                    </p>
+
+                </td>
+            </tr>
+
+        </table>
+
+    </div>
+
+    <!--// Strategy //-->
+
+    <div id="strategy-links" ng-show="isActiveTab('prizes')">
+
+        <table class="resource-table">
+
+            <tr>
+                <td>
+                    <a href="https://itunes.apple.com/us/podcast/limited-resources/id385051731?mt=2" target="_blank"><img src="/assets/supporters/lr.png"></a>
+                </td>
+                <td>
+                    <a href="https://itunes.apple.com/us/podcast/limited-resources/id385051731?mt=2" target="_blank">Limited Resources:</a>
+
+                    <p>
+                        A weekly podcast dedicated to improving your play at Magic: The Gathering with an
+                        emphasis on Limited play.
+                    </p>
+
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <a href="https://www.stitcher.com/podcast/limited-resources/constructed-resources" target="_blank"><img src="/assets/supporters/cr.png"></a>
+                </td>
+                <td>
+                    <a href="https://www.stitcher.com/podcast/limited-resources/constructed-resources" target="_blank">Constructed Resources:</a>
+
+                    <p>
+                        A much less frequent podcast Where you come to improve at Magic: the Gathering,
+                        with a focus on Constructed play.
+                    </p>
+
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <a href="https://alliedstrategiespodcast.wordpress.com/" target="_blank"><img src="/assets/supporters/as.png"></a>
+                </td>
+                <td>
+                    <a href="https://alliedstrategiespodcast.wordpress.com/s" target="_blank">Allied Strategies:</a>
+
+                    <p>
+                        Another podcast about constructed Magic.
+                    </p>
+
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <a href="http://www.mtgprotutor.com/" target="_blank"><img src="/assets/supporters/mpt.png"></a>
+                </td>
+                <td>
+                    <a href="http://www.mtgprotutor.com/" target="_blank">MTG Pro Tutor:</a>
+
+                    <p>
+                        MTG Pro Tutor is dedicated to increasing the skill of Magic players everywhere by
+                        delving into the minds of our community’s greatest players.
+                    </p>
+
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <a href="http://www.toplevelpodcast.com/" target="_blank"><img src="/assets/supporters/tl.png"></a>
+                </td>
+                <td>
+                    <a href="http://www.toplevelpodcast.com/" target="_blank">Top Level:</a>
+
+                    <p>
+                        More constructed deck talk with Hall of Fame player Patrick Chapin and
+                        strategy writer Michael Flores
+                    </p>
+
+                </td>
+            </tr>
+
+        </table>
+
+    </div>
+
+    <!--// Events //-->
+
+    <div id="event-links" ng-show="isActiveTab('sponsors')">
+
+        <table class="resource-table">
+
+            <tr>
+                <td>
+                    <a href="http://magic.wizards.com/en/content/all-events-schedule" target="_blank"><img src="/assets/supporters/wotc.png"></a>
+                </td>
+                <td>
+                    <a href="http://magic.wizards.com/en/content/all-events-schedule" target="_blank">WoTC Event Master Schedule:</a>
+
+                    <p>
+                        The Gathering events are held around the world every year. Find a location near you and see how
+                        you stack up against the best players in the world!
+                    </p>
+
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <a href="http://magic.wizards.com/en/protour/preliminaryqualifiers" target="_blank"><img src="/assets/supporters/wotc.png"></a>
+                </td>
+                <td>
+                    <a href="http://magic.wizards.com/en/protour/preliminaryqualifiers" target="_blank">PPTQ Schedule:</a>
+
+                    <p>
+                        Preliminary Pro Tour Qualifiers (PPTQs) are the first step for new players on their path to
+                        the Magic: The Gathering Pro Tour. By winning a Preliminary PTQ, you will qualify for that
+                        season’s Regional Pro Tour Qualifier (RPTQ).
+                    </p>
+
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <a href="http://magic.wizards.com/en/protour/regionalqualifiers" target="_blank"><img src="/assets/supporters/wotc.png"></a>
+                </td>
+                <td>
+                    <a href="http://magic.wizards.com/en/protour/regionalqualifiers" target="_blank">RPTQ Schedule:</a>
+
+                    <p>
+                        Regional Pro Tour Qualifiers (RPTQs) are your chance to play on the Magic: The Gathering Pro
+                        Tour! Top finishers at a Regional PTQ will receive an invitation – and airfare – to the Pro
+                        Tour that it qualifies for!
+                    </p>
+
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <a href="http://magic.wizards.com/en/content/grand-prix-event-types-events" target="_blank"><img src="/assets/supporters/wotc.png"></a>
+                </td>
+                <td>
+                    <a href="http://magic.wizards.com/en/content/grand-prix-event-types-events" target="_blank">Grand Prixs:</a>
+
+                    <p>
+                        Grand Prixs are the biggest non-invitational tournaments run by WOTC.  With 15 rounds over
+                        two days they offer Pro Points and invitations to the Pro Tour as well as cash prizes to
+                        roughly the top 64.
+                    </p>
+
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <a href="http://www.starcitygames.com/content/schedule" target="_blank"><img src="/assets/supporters/scg.png"></a>
+                </td>
+                <td>
+                    <a href="http://www.starcitygames.com/content/schedule" target="_blank">Star City Opens:</a>
+
+                    <p>
+                        Complete schedule for Star City Open tournaments.  They are a lot like Grand Prix's
+                        only they offer invitations to the Star City Invitational instead of the WoTC Pro Tour.
+                    </p>
+
+                </td>
+            </tr>
+
+        </table>
+
+    </div>
 
 </div>

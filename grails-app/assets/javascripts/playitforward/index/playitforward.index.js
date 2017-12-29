@@ -25,25 +25,13 @@ function config($stateProvider, $urlRouterProvider) {
             url: '/',
             templateUrl: '/playitforward/index/index.html'
         })
-        .state('contests', {
-            url: '/contests',
-            templateUrl: '/playitforward/index/contests.html'
-        })
         .state('supporters', {
             url: '/supporters',
             templateUrl: '/playitforward/index/supporters.html'
         })
-        .state('contribute', {
-            url: '/contribute',
-            templateUrl: '/playitforward/index/contribute.html'
-            })
         .state('resources', {
             url: '/resources',
             templateUrl: '/playitforward/index/resources.html'
-        })
-        .state('contact', {
-            url: '/contact',
-            templateUrl: '/playitforward/index/press.html'
         })
         .state('login', {
             url: '/login',

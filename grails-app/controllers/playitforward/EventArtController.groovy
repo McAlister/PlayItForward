@@ -11,7 +11,7 @@ class EventArtController {
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
     def index(Integer max) {
-        respond EventArt.list(params), model:[eventArtCount: EventArt.count()]
+        respond EventArt.list().sort{it.title}, model:[eventArtCount: EventArt.count()]
     }
 
     def show(EventArt eventArt) {

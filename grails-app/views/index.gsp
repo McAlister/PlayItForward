@@ -47,18 +47,8 @@
                         </a>
                     </li>
                     <li class="navigation-list-item">
-                        <a ui-sref="contests" class="navigation-link">
-                            Bounties
-                        </a>
-                    </li>
-                    <li class="navigation-list-item">
                         <a ui-sref="supporters" class="navigation-link">
-                            Sponsors
-                        </a>
-                    </li>
-                    <li class="navigation-list-item">
-                        <a ui-sref="contribute" class="navigation-link">
-                            Contribute
+                            Supporters
                         </a>
                     </li>
                     <li class="navigation-list-item">
@@ -74,11 +64,6 @@
                     <li class="navigation-list-item" ng-show="isAuthenticated()" ng-cloak>
                         <a ui-sref="logoff" class="navigation-link">
                             Logoff
-                        </a>
-                    </li>
-                    <li class="navigation-list-item">
-                        <a ui-sref="contact" class="navigation-link">
-                            Contact Us
                         </a>
                     </li>
                     <li class="navigation-list-item">
@@ -102,6 +87,29 @@
                         </a>
                     </li>
                 </ul>
+
+                <div class="navIconsDiv">
+
+                    <a target="_blank" href="https://www.facebook.com/mtgforward/">
+                        <img src="/assets/socialmedia/facebook.png" class="navLinkImage"/>
+                    </a>
+
+                    <a target="_blank" href="https://twitter.com/MTG_Forward">
+                        <img src="/assets/socialmedia/twitter.png" class="navLinkImage"/>
+                    </a>
+
+                    <a href="mailto:play_it_forward@outlook.com">
+                        <img src="/assets/socialmedia/mailme.png" class="navLinkImage"/>
+                    </a>
+
+                </div>
+
+                <form class="center" action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+                    <input type="hidden" name="cmd" value="_s-xclick">
+                    <input type="hidden" name="hosted_button_id" value="LVZKVTJS45LNA">
+                    <input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
+                    <img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">
+                </form>
 
             </div>
 

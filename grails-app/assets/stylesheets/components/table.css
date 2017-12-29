@@ -29,7 +29,7 @@ td, th {
 }
 
 .resource-table td {
-    /*border-width: 0;*/
+    border-width: 0;
 }
 
 .resource-table p {

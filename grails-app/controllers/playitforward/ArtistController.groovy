@@ -11,7 +11,7 @@ class ArtistController {
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
     def index(Integer max) {
-        respond Artist.list(), model:[artistCount: Artist.count()]
+        respond Artist.list().sort{it.name}, model:[artistCount: Artist.count()]
     }
 
     def show(Artist artist) {
