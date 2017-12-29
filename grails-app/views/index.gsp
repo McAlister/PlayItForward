@@ -99,7 +99,7 @@
                     </a>
 
                     <a href="mailto:play_it_forward@outlook.com">
-                        <img src="/assets/socialmedia/mailme.png" class="navLinkImage"/>
+                        <img src="/assets/socialmedia/mailMe.png" class="navLinkImage"/>
                     </a>
 
                 </div>
