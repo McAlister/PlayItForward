@@ -72,11 +72,6 @@
                         </a>
                     </li>
                     <li class="navigation-list-item">
-                        <a ui-sref="contact" class="navigation-link">
-                            Contact Us
-                        </a>
-                    </li>
-                    <li class="navigation-list-item">
                         <a ui-sref="index" class="navigation-link">
                             About Us
                         </a>
@@ -97,6 +92,22 @@
                         </a>
                     </li>
                 </ul>
+
+                <div class="navIconsDiv">
+
+                    <a target="_blank" href="https://www.facebook.com/mtgforward/">
+                        <img src="/assets/socialmedia/facebook.png" class="navLinkImage"/>
+                    </a>
+
+                    <a target="_blank" href="https://twitter.com/MTG_Forward">
+                        <img src="/assets/socialmedia/twitter.png" class="navLinkImage"/>
+                    </a>
+
+                    <a href="mailto:play_it_forward@outlook.com">
+                        <img src="/assets/socialmedia/mailme.png" class="navLinkImage"/>
+                    </a>
+
+                </div>
 
             </div>
 
