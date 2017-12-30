@@ -229,7 +229,7 @@ function GPController(contextPath, $scope, $http, $location) {
 
         if ($scope.GPs.currentEvent) {
             var currentBounties = $scope.getPrizeList();
-            return currentBounties.length > 0;
+            return currentBounties && currentBounties.length > 0;
         }
         
         return false;
