@@ -28,6 +28,8 @@
         </ul>
     </div>
 
+    <!--winner-->
+
     <div id="gp-summary" ng-show="isActiveTab('summary')">
 
         <div ng-show="isFutureGP()" >
@@ -59,6 +61,8 @@
         </div>
 
     </div>
+
+    <!--playmat-->
 
     <div id="gp-playmat" ng-show="isActiveTab('playmat')">
 
@@ -105,13 +109,15 @@
 
     </div>
 
+    <!--prizes-->
+
     <div id="gp-bounties" ng-show="isActiveTab('bounties')">
 
         <div ng-hide="bountiesExist()" >
 
             <a href="mailto:play_it_forward@outlook.com" class="navigation-link">
                 Contact Us
-            </a> about donating additional bounties.
+            </a> about donating additional prizes for this event.
 
         </div>
 
@@ -146,7 +152,7 @@
             </thead>
 
             <tbody>
-            <tr ng-repeat="bounty in bountyArray.bounties | orderBy:bountyArray.sortType:bountyArray.sortReverse | filter:GPs.currentEvent.name">
+            <tr ng-repeat="bounty in getPrizeList() | orderBy:bountyArray.sortType:bountyArray.sortReverse">
                 <td>{{ bounty.donor }}</td>
                 <td>{{ bounty.prize }}</td>
             </tr>
@@ -155,6 +161,8 @@
         </table>
 
     </div>
+
+    <!--horse race-->
 
     <div id="gp-race" ng-if="isActiveTab('race')">
 

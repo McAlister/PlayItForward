@@ -4,13 +4,10 @@ angular
     .module("playitforward.index")
     .controller("IndexController", IndexController);
 
-function IndexController(userPersistenceService, contextPath, $state, $scope, $http, $sce, $location) {
+function IndexController(userPersistenceService, contextPath, $scope, $http, $location) {
     
     var vm = this;
     vm.contextPath = contextPath;
-    vm.stateExists = function(name) {
-        return $state.get(name) != null;
-    };
 
     // /////////////////// //
     // User Authentication //
@@ -260,8 +257,6 @@ function IndexController(userPersistenceService, contextPath, $state, $scope, $h
         $http.get('/api/EventBounty').then(
 
             function successCallback(response) {
-
-                $scope.bountyArray.bounties = response.data;
 
                 for(var i = 0 ; i < response.data.length ; ++i) {
 

@@ -7,7 +7,6 @@ angular
 function GPController(contextPath, $scope, $http, $location) {
 
     var vm = this;
-
     vm.contextPath = contextPath;
 
     $scope.error = '';
@@ -195,7 +194,7 @@ function GPController(contextPath, $scope, $http, $location) {
     // ////////// //
 
     $scope.bountyArray = {
-        bounties: [],
+        bountyHash: {},
         errorMessage: '',
         sortType: 'event',
         sortReverse: false
@@ -203,14 +202,25 @@ function GPController(contextPath, $scope, $http, $location) {
 
     $scope.populateBounties = function() {
 
-        $http({
-            method: 'GET',
-            url: '/api/EventBounty'
-        }).then(function successCallback(response) {
-            $scope.bountyArray.bounties = response.data;
-        }, function errorCallback(response) {
-            $scope.bountyArray.errorMessage = 'ERROR: ' + response.data.message;
-        });
+        $http.get('/api/EventBounty').then(
+
+            function successCallback(response) {
+
+                for(var i = 0 ; i < response.data.length ; ++i) {
+
+                    var prize = response.data[i];
+                    if ( ! (prize.eventId in $scope.bountyArray.bountyHash)) {
+                        $scope.bountyArray.bountyHash[prize.eventId] = [];
+                    }
+
+                    $scope.bountyArray.bountyHash[prize.eventId].push(prize);
+                }
+
+            }, function errorCallback(response) {
+
+                $scope.bountyArray.errorMessage = 'ERROR: ' + response.data.message;
+            }
+        );
     };
 
     $scope.populateBounties();
@@ -218,14 +228,21 @@ function GPController(contextPath, $scope, $http, $location) {
     $scope.bountiesExist = function() {
 
         if ($scope.GPs.currentEvent) {
-            var currentBounties = $scope.bountyArray.bounties.filter(function (bounty) {
-                return bounty.eventId === $scope.GPs.currentEvent.id;
-            });
-
+            var currentBounties = $scope.getPrizeList();
             return currentBounties.length > 0;
         }
         
         return false;
+    };
+
+    $scope.getPrizeList = function() {
+
+        if ($scope.GPs.currentEvent) {
+
+            return $scope.bountyArray.bountyHash[$scope.GPs.currentEvent.id];
+        }
+
+        return [];
     };
 
     $scope.getHorseraceSrc = function() {
