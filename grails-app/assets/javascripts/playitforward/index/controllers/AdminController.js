@@ -157,40 +157,54 @@ function AdminController(contextPath, userPersistenceService, $scope, $http, $lo
     // ///////// //
     // Prize Tab //
     // ///////// //
-    
+
+    $scope.prizesLoaded = false;
     $scope.prizeData = {
 
         prizeError: '',
         prizeHash: {},
-        prizeList: [],
         newDonor: '',
-        newPrize: ''
+        newPrize: '',
+        allYears: [2017,2018],
+        currentYear: 2018
     };
 
     $scope.populateBounties = function() {
 
-        $http({
-            method: 'GET',
-            url: '/api/EventBounty'
-        }).then(function successCallback(response) {
+        $http.get('/api/EventBounty').then(
 
-            $scope.prizeData.prizeList = response.data;
-            $scope.prizeData.prizeHash = {};
-            
-            for (var i = 1; i < response.data.length; ++i) {
+            function successCallback(response) {
 
-                var prize = response.data[i];
-                if ( ! (prize.eventId in $scope.prizeData.prizeHash)) {
-                    $scope.prizeData.prizeHash[prize.eventId] = [];
+                // emptying it is needed after adding a bounty.
+                $scope.prizeData.prizeHash = {};
+
+                for (var i = 0 ; i < response.data.length ; ++i) {
+
+                    var prize = response.data[i];
+                    if ( ! (prize.eventId in $scope.prizeData.prizeHash)) {
+                        $scope.prizeData.prizeHash[prize.eventId] = [];
+                    }
+
+                    $scope.prizeData.prizeHash[prize.eventId].push(prize);
                 }
 
-                $scope.prizeData.prizeHash[prize.eventId].push(prize);
+                $scope.prizesLoaded = true;
+
+            }, function errorCallback(response) {
+
+                $scope.prizeData.prizeError = 'ERROR: ' + response.data.message;
             }
+        );
+    };
 
-        }, function errorCallback(response) {
+    $scope.getPrizeList = function() {
 
-            $scope.prizeData.prizeError = 'ERROR: ' + response.data.message;
-        });
+        if ($scope.currentEvent) {
+
+            return $scope.prizeData.prizeHash[$scope.currentEvent.id];
+        }
+
+        return [];
     };
 
     $scope.populateBounties();
@@ -243,11 +257,28 @@ function AdminController(contextPath, userPersistenceService, $scope, $http, $lo
             }
         );
     };
-    
+
+    $scope.selectYear = function() {
+
+        for (var i = 0 ; i < $scope.winnerData.eventList.length ; ++i) {
+
+            var event = $scope.winnerData.eventList[i];
+            if (event.startDate.getFullYear() === $scope.prizeData.currentYear) {
+
+                $scope.currentEvent = event;
+                $scope.selectEvent();
+                break;
+            }
+        }
+
+        // $scope.bountyArray.bounties = $scope.bountyArray.bountiesByYear[$scope.GPs.currentYear];
+    };
+
     // //////////////// //
     // Event Winner Tab //
     // //////////////// //
 
+    $scope.eventsLoaded = false;
     $scope.winnerData = {
 
         currentWinner: null,
@@ -276,13 +307,16 @@ function AdminController(contextPath, userPersistenceService, $scope, $http, $lo
                     }
                 }
 
+                $scope.prizeData.currentYear = $scope.currentEvent.startDate.getFullYear();
+                $scope.eventsLoaded = true;
                 $scope.selectEvent();
 
             }, function errorCallback(response) {
 
                 $scope.winnerData.winnerError = 'Error: Could not contact database: ' + response.data.message;
 
-            });
+            }
+        );
     };
 
     $scope.getWinners = function() {
@@ -311,12 +345,12 @@ function AdminController(contextPath, userPersistenceService, $scope, $http, $lo
     $scope.selectEvent = function() {
 
         var id = $scope.currentEvent.id;
-        
         if (id && $location.search().id !== id) {
             $location.search("event", id);
         }
 
         $scope.winnerData.currentWinner = $scope.winnerData.winnerHash[id];
+        $scope.prizeData.currentYear = $scope.currentEvent.startDate.getFullYear();
     };
 
     $scope.upsertWinner = function() {

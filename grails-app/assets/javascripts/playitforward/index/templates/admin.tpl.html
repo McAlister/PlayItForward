@@ -12,6 +12,8 @@
     </div>
 
 
+    <!--mail list-->
+
     <div id="admin-mail" ng-show="isActiveTab('mail')">
 
         <div class="alert alert-danger" ng-show="personData.personError">
@@ -139,6 +141,8 @@
 
     </div>
 
+    <!--prizes-->
+
     <div id="admin-prizes" ng-show="isActiveTab('prizes')">
 
         <div class="alert alert-danger" ng-show="prizeData.prizeError">
@@ -151,15 +155,22 @@
 
         </div>
 
-        <div ng-show="prizeData.prizeError==''">
+        <div ng-show="prizeData.prizeError == '' && prizesLoaded && eventsLoaded">
 
             <h1>Add/Edit:</h1>
 
             <div class="gp-dropdown">
                 <!--suppress HtmlFormInputWithoutLabel -->
                 <select name="prizeSelect" id="prizeSelect" ng-model="currentEvent"
-                        ng-options="event.name for event in winnerData.eventList track by event.id"
+                        ng-options="event.name for event in (winnerData.eventList | filter:prizeData.currentYear) track by event.id"
                         ng-change="selectEvent()">
+                </select>
+            </div>
+
+            <div class="gp-dropdown">
+                <select name="yearSelectPrize" id="yearSelectPrize" ng-model="prizeData.currentYear"
+                        ng-options="year for year in prizeData.allYears"
+                        ng-change="selectYear()" title="yearSelectPrizeTitle">
                 </select>
             </div>
 
@@ -211,7 +222,7 @@
                 </thead>
 
                 <tbody>
-                <tr ng-repeat="bounty in prizeData.prizeList | orderBy:bountyArray.sortType:bountyArray.sortReverse | filter:currentEvent.name">
+                <tr ng-repeat="bounty in getPrizeList() | orderBy:bountyArray.sortType:bountyArray.sortReverse | filter:currentEvent.name">
                     <td>{{ bounty.donor }}</td>
                     <td>{{ bounty.prize }}</td>
                     <td><button class="btn btn-primary center-block" type="submit" ng-click="deletePrize(bounty)">Delete</button></td>
@@ -223,6 +234,8 @@
         </div>
 
     </div>
+
+    <!--winners-->
 
     <div id="admin-winners" ng-show="isActiveTab('winners')">
 
@@ -236,15 +249,22 @@
 
         </div>
 
-        <div ng-show="winnerData.winnerError==''">
+        <div ng-show="winnerData.winnerError=='' && prizesLoaded && eventsLoaded">
 
             <h1>Add/Edit:</h1>
 
             <div class="gp-dropdown">
                 <!--suppress HtmlFormInputWithoutLabel -->
                 <select name="winnerSelect" id="winnerSelect" ng-model="currentEvent"
-                        ng-options="event.name for event in winnerData.eventList track by event.id"
+                        ng-options="event.name for event in (winnerData.eventList | filter:prizeData.currentYear) track by event.id"
                         ng-change="selectEvent()">
+                </select>
+            </div>
+
+            <div class="gp-dropdown">
+                <select name="yearSelectWinner" id="yearSelectWinner" ng-model="prizeData.currentYear"
+                        ng-options="year for year in prizeData.allYears"
+                        ng-change="selectYear()" title="yearSelectWinnerTitle">
                 </select>
             </div>
 
@@ -284,6 +304,8 @@
         </div>
 
     </div>
+
+    <!--players-->
 
     <div id="admin-players" ng-show="isActiveTab('players')">
 
@@ -419,6 +441,8 @@
         </div>
 
     </div>
+
+    <!--file upload-->
 
     <div id="admin-files" ng-show="isActiveTab('files')">
 
