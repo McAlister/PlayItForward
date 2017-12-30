@@ -222,7 +222,7 @@
                 </thead>
 
                 <tbody>
-                <tr ng-repeat="bounty in getPrizeList() | orderBy:bountyArray.sortType:bountyArray.sortReverse | filter:currentEvent.name">
+                <tr ng-repeat="bounty in getPrizeList() | orderBy:bountyArray.sortType:bountyArray.sortReverse">
                     <td>{{ bounty.donor }}</td>
                     <td>{{ bounty.prize }}</td>
                     <td><button class="btn btn-primary center-block" type="submit" ng-click="deletePrize(bounty)">Delete</button></td>

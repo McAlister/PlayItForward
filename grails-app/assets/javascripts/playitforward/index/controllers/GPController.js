@@ -194,8 +194,7 @@ function GPController(contextPath, $scope, $http, $location) {
     // ////////// //
 
     $scope.bountyArray = {
-        bounties: [],
-        bountiesByYear: {},
+        bountyHash: {},
         errorMessage: '',
         sortType: 'event',
         sortReverse: false
@@ -210,16 +209,12 @@ function GPController(contextPath, $scope, $http, $location) {
                 for(var i = 0 ; i < response.data.length ; ++i) {
 
                     var prize = response.data[i];
-                    var year = prize.startDate.getFullYear();
-
-                    if (! (year in $scope.bountyArray.bountiesByYear)) {
-                        $scope.bountyArray.bountiesByYear[year] = [];
+                    if ( ! (prize.eventId in $scope.bountyArray.bountyHash)) {
+                        $scope.bountyArray.bountyHash[prize.eventId] = [];
                     }
 
-                    $scope.bountyArray.bountiesByYear[year].push(prize);
+                    $scope.bountyArray.bountyHash[prize.eventId].push(prize);
                 }
-
-                $scope.bountyArray.bounties = $scope.bountyArray.bountiesByYear[$scope.GPs.currentYear];
 
             }, function errorCallback(response) {
 
@@ -233,14 +228,21 @@ function GPController(contextPath, $scope, $http, $location) {
     $scope.bountiesExist = function() {
 
         if ($scope.GPs.currentEvent) {
-            var currentBounties = $scope.bountyArray.bounties.filter(function (bounty) {
-                return bounty.eventId === $scope.GPs.currentEvent.id;
-            });
-
+            var currentBounties = $scope.getPrizeList();
             return currentBounties.length > 0;
         }
         
         return false;
+    };
+
+    $scope.getPrizeList = function() {
+
+        if ($scope.GPs.currentEvent) {
+
+            return $scope.bountyArray.bountyHash[$scope.GPs.currentEvent.id];
+        }
+
+        return [];
     };
 
     $scope.getHorseraceSrc = function() {
@@ -267,8 +269,6 @@ function GPController(contextPath, $scope, $http, $location) {
                 break;
             }
         }
-
-        $scope.bountyArray.bounties = $scope.bountyArray.bountiesByYear[$scope.GPs.currentYear];
     };
 
     $scope.selectEvent = function() {
