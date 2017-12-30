@@ -7,7 +7,6 @@ angular
 function GPController(contextPath, $scope, $http, $location) {
 
     var vm = this;
-
     vm.contextPath = contextPath;
 
     $scope.error = '';
@@ -196,6 +195,7 @@ function GPController(contextPath, $scope, $http, $location) {
 
     $scope.bountyArray = {
         bounties: [],
+        bountiesByYear: {},
         errorMessage: '',
         sortType: 'event',
         sortReverse: false
@@ -203,14 +203,29 @@ function GPController(contextPath, $scope, $http, $location) {
 
     $scope.populateBounties = function() {
 
-        $http({
-            method: 'GET',
-            url: '/api/EventBounty'
-        }).then(function successCallback(response) {
-            $scope.bountyArray.bounties = response.data;
-        }, function errorCallback(response) {
-            $scope.bountyArray.errorMessage = 'ERROR: ' + response.data.message;
-        });
+        $http.get('/api/EventBounty').then(
+
+            function successCallback(response) {
+
+                for(var i = 0 ; i < response.data.length ; ++i) {
+
+                    var prize = response.data[i];
+                    var year = prize.startDate.getFullYear();
+
+                    if (! (year in $scope.bountyArray.bountiesByYear)) {
+                        $scope.bountyArray.bountiesByYear[year] = [];
+                    }
+
+                    $scope.bountyArray.bountiesByYear[year].push(prize);
+                }
+
+                $scope.bountyArray.bounties = $scope.bountyArray.bountiesByYear[$scope.GPs.currentYear];
+
+            }, function errorCallback(response) {
+
+                $scope.bountyArray.errorMessage = 'ERROR: ' + response.data.message;
+            }
+        );
     };
 
     $scope.populateBounties();
@@ -252,6 +267,8 @@ function GPController(contextPath, $scope, $http, $location) {
                 break;
             }
         }
+
+        $scope.bountyArray.bounties = $scope.bountyArray.bountiesByYear[$scope.GPs.currentYear];
     };
 
     $scope.selectEvent = function() {
