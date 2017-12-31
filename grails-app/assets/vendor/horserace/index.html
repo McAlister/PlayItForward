@@ -2,7 +2,7 @@
 <html>
 <head>
 <title>Horse Race</title>
-<link href="horserace.css" rel="stylesheet">
+<link id="pagestyle" href="horserace.css" rel="stylesheet">
 <meta charset="utf-8">
 <style>
 body {
@@ -24,6 +24,11 @@ body {
     </div>
     <span id="horseround"></span>
 </div>
+<div style="position: fixed; bottom: 0; right: 0">
+    <img id="nyanTart" src="poptart.png" style="padding: 10px" onclick="HorseRace.flipNyan()">
+    <img id="horseTart" src="poptart2.png" style="padding: 10px" onclick="HorseRace.flipNyan()">
+</div>
+
 <div style="display: none">
     <div id="waveTemplate" class="wave">
         <div class="horsegroup">
