@@ -6,6 +6,7 @@ HorseRace = {};
             maxPoints: 45,
             OFFSET: 1,
             TROT_STEPS: 4,
+            nyanMode: false,
             roundDisplay: document.getElementById('horseround'),
             horserace: document.getElementById('horserace')};
 
@@ -132,6 +133,25 @@ HorseRace = {};
         return Math.max(1.2*Math.floor(glo.horserace.clientHeight/(getWaveCount()+glo.OFFSET)), 50);
     }
 
+    function addNyanTail () {
+        var existing = document.getElementById('leaderExtra'),
+            leaderGroup = glo.horserace.getElementsByClassName('leader')[0],
+            leader = leaderGroup && leaderGroup.getElementsByClassName('horse')[0],
+            extra;
+
+        if (!leader)
+            return;
+        if (existing)
+            existing.parentNode.removeChild(existing);
+        extra = document.createElement('img');
+        extra.id = 'leaderExtra';
+        extra.className = 'nyan-tail';
+        extra.src = 'nyan-tail.gif';
+        extra.height = Math.floor(0.7 * leader.height);
+        extra.style.paddingTop = Math.floor(0.15 * leader.height) + 'px';
+        leader.parentNode.appendChild(extra);
+    }
+
     function updateHorseScore (horse, horseInfo, round) {
         var pos = getPosition(0, (round === 0 ? 0 : horseInfo.score), round),
             horsegroup = horse.parentNode,
@@ -203,6 +223,10 @@ HorseRace = {};
             updateHorseScore(wave.getElementsByClassName('horse')[0], el, round);
         });
         calculatePositions(round);
+
+        // add nyan tail
+        if (glo.nyanMode)
+            addNyanTail();
     }
 
     function ajax(url, success) {
@@ -236,7 +260,22 @@ HorseRace = {};
         });
     }
 
+    function setNyanMode(val) {
+        var leaderExtra;
+
+        glo.nyanMode = !!val;
+        if (glo.nyanMode) {
+            glo.TROT_STEPS = 1;
+            document.getElementById('pagestyle').setAttribute('href', 'nyan.css');
+            addNyanTail();
+        } else {
+            glo.TROT_STEPS = 4;
+            document.getElementById('pagestyle').setAttribute('href', 'horserace.css');
+        }
+    };
+
     HorseRace.showRoundZero = function(event) {
+        setNyanMode(window.location.search.match(/[?&]nyan=1/));
         getRound(event, 0);
     };
 
@@ -327,7 +366,7 @@ HorseRace = {};
     HorseRace.konami = function() {
         ajax('konami-dance.json', function (json) {
             var data = json.dance;
-            glo.TROT_STEPS = 1;
+            setNyanMode(1);
             data.forEach(function(a){a.forEach(function(h){
                 h.key = h.key + 999999;
                 h.name = 'dancer';
@@ -342,7 +381,7 @@ HorseRace = {};
                     window.setTimeout(doChunk, 400);
                 } else {
                     window.setTimeout(HorseRace.play, 2000);
-                    glo.TROT_STEPS = 4;
+                    setNyanMode(0);
                 }
             });
         });
@@ -355,5 +394,9 @@ HorseRace = {};
     HorseRace.clearSelection = function() {
         var waves = glo.horserace.getElementsByClassName('wave');
         [].forEach.call(waves, function(el){el.classList.remove('clicked');});
+    };
+
+    HorseRace.flipNyan = function() {
+        setNyanMode(!glo.nyanMode);
     };
 }());
