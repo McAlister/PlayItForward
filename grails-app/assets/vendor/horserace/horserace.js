@@ -267,6 +267,7 @@ HorseRace = {};
         if (glo.nyanMode) {
             glo.TROT_STEPS = 1;
             document.getElementById('pagestyle').setAttribute('href', 'nyan.css');
+            addNyanTail();
         } else {
             glo.TROT_STEPS = 4;
             document.getElementById('pagestyle').setAttribute('href', 'horserace.css');
