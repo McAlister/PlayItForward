@@ -152,8 +152,8 @@ HorseRace = {};
         leader.parentNode.appendChild(extra);
     }
 
-    function updateHorseScore (horse, horseInfo, round) {
-        var pos = getPosition(0, (round === 0 ? 0 : horseInfo.score), round),
+    function updateHorseScore (waveNum, horse, horseInfo, round) {
+        var pos = getPosition(waveNum, (round === 0 ? 0 : horseInfo.score), round),
             horsegroup = horse.parentNode,
             stick = horse.parentNode.getElementsByClassName('stick')[0],
             tooltip = horse.parentNode.getElementsByClassName('tooltip')[0],
@@ -165,13 +165,20 @@ HorseRace = {};
         else
             horsegroup.classList.remove('leader');
         if (glo.horserace.clientWidth <= 480 ){
+            tooltip.style.position = 'fixed';
             tooltip.style.left = glo.horserace.clientWidth/2-tooltip.offsetWidth/2 + 'px';
+            tooltip.style.top = pos.top + 'px'
+            if (parseInt(tooltip.style.top, 10) > glo.horserace.clientHeight-100) {
+                tooltip.style.top = (glo.horserace.clientHeight-100)+'px';
+            }
         } else {
+            tooltip.style.position = 'absolute'; // from CSS
             if (pos.left < glo.horserace.clientWidth/2) {
                 tooltip.style.left = (horseWidth/2 + 10) + 'px';
             } else {
                 tooltip.style.left = (-1 * horseWidth/2 - 10 - tooltip.clientWidth) + 'px';
             }
+            tooltip.style.top = '-1.5em'; // from CSS
         }
         updateTooltip(horse, horseInfo);
     }
@@ -218,9 +225,9 @@ HorseRace = {};
         scorelist.forEach(function (el) { if (el.rank === lowestRank) el.leader = 1; });
 
         // update the horses
-        scorelist.forEach(function (el) {
+        scorelist.forEach(function (el, i) {
             var wave = document.getElementById('wave_' + el.key);
-            updateHorseScore(wave.getElementsByClassName('horse')[0], el, round);
+            updateHorseScore(i, wave.getElementsByClassName('horse')[0], el, round);
         });
         calculatePositions(round);
 
