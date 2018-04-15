@@ -74,10 +74,6 @@ class EventStandingController {
             }
         }
 
-        while (standingList.size() > 20) {
-            standingList.pop();
-        }
-
         standingList.sort { a, b ->
             a.player.id <=> b.player.id;
         }

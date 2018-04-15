@@ -175,6 +175,10 @@
         </div>
 
         <div ng-if="!isFutureGP()">
+            <iframe ng-if="!isFutureGP()" ng-src="{{getHorseraceSrc()}}" frameborder="0" width="100%" height="600px"></iframe>
+
+            <p class="text-right"><small><a href="{{getHorseraceSrc()}}">(full-screen)</a></small></p>
+
             <p>
 
                 This animation represents the standings of the women and
@@ -185,8 +189,6 @@
                 You can use your real name/picture or any pseudonym/avatar you desire.
 
             </p>
-
-            <iframe ng-if="!isFutureGP()" ng-src="{{getHorseraceSrc()}}" frameborder="0" width="100%" height="600px"></iframe>
         </div>
 
     </div>
