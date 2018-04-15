@@ -17,7 +17,7 @@ HorseRace = {};
             scoreZone = raceWidth - marginWidth - 20,
             waveHeight = Math.floor(raceHeight/(getWaveCount()+glo.OFFSET));
         return {
-            left: round < 9 ? Math.floor(marginWidth + (score/glo.scoreRange) * scoreZone)
+            left: round < 8 ? Math.floor(marginWidth + (score/glo.scoreRange) * scoreZone)
                             : Math.floor(marginWidth + ((score-18)/(glo.scoreRange-18)) * scoreZone),
             top: waveHeight*(waveNum+1)
         };
@@ -194,7 +194,7 @@ HorseRace = {};
 
         if (scorelist.length === 0) {
             glo.roundDisplay.innerHTML = 'No standings data yet';
-        } else if (round > 9) {
+        } else if (round > 8) {
             glo.roundDisplay.innerHTML = 'Day 2 Round ' + round;
         } else {
             glo.roundDisplay.innerHTML = 'Day 1 Round ' + round;
@@ -289,7 +289,7 @@ HorseRace = {};
     function replay(event, maxRounds) {
         var myTimer,
             fresh = window.location.search.match(/[?&]fresh/) ? 1 : 0,
-            round = (!fresh && maxRounds > 9) ? 9 : 0,
+            round = (!fresh && maxRounds > 8) ? 8 : 0,
             speed = window.location.search.match(/[?&]fast/) ? 300 : 1000,
             togglePlayPause = function(play) {
                 var c = glo.horserace.getElementsByClassName('controls')[0];
