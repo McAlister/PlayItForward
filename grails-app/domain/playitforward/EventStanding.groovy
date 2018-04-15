@@ -28,7 +28,14 @@ class EventStanding {
 
     public boolean canMakeDayTwo()
     {
-        if (round > 9) {
+        int cutRound = 8;
+        int lossLimit = 3;
+        if (event.startDate.before(new Date(118, 0, 1))) {
+            cutRound = 9;
+            lossLimit = 4
+        }
+
+        if (round >= cutRound) {
             return (points >= 18);
         }
 
@@ -36,6 +43,6 @@ class EventStanding {
         int draws = points % 3;
         int losses = round - wins - draws;
 
-        return (draws + losses < 4);
+        return (draws + losses < lossLimit);
     }
 }

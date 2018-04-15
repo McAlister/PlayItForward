@@ -32,7 +32,7 @@ class RawStandings {
 
     public boolean canMakeDayTwo()
     {
-        if (round > 9) {
+        if (round >= 8) {
             return (points >= 18);
         }
 
@@ -40,6 +40,6 @@ class RawStandings {
         int draws = points % 3;
         int losses = round - wins - draws;
 
-        return (draws + losses < 4);
+        return (draws + losses < 3);
     }
 }

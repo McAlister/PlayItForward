@@ -19,7 +19,7 @@ class RawStandingsSpec extends Specification {
 
         expect:"Hey!  She can totally make it!"
             RawStandings raw = new RawStandings();
-            raw.setRound(8);
+            raw.setRound(7);
             raw.setPoints(15);
             raw.canMakeDayTwo();
     }
@@ -42,11 +42,11 @@ class RawStandingsSpec extends Specification {
             raw.canMakeDayTwo();
     }
 
-    void "test X-3-1 didn't make day 2" () {
+    void "test X-2-1 didn't make day 2" () {
 
         expect:"Thinks she made it"
         RawStandings raw = new RawStandings();
-        raw.setRound(15);
+        raw.setRound(8);
         raw.setPoints(16);
         !raw.canMakeDayTwo();
     }
