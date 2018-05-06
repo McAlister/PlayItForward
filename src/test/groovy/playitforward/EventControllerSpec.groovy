@@ -48,8 +48,8 @@ class EventControllerSpec extends Specification {
             controller.index(null);
 
         then:"The response is correct"
-            response.text == '[{"id":1,"endDate":"3917-02-01T07:00:00Z","eventCode":"gp_test_17",' +
-                    '"name":"GP Test","organizer":{"id":1},"startDate":"3917-02-01T07:00:00Z","type":{"id":1}}]';
+            response.text == '[{"id":1,"endDate":"3917-02-01T06:00:00Z","eventCode":"gp_test_17",' +
+                    '"name":"GP Test","organizer":{"id":1},"startDate":"3917-02-01T06:00:00Z","type":{"id":1}}]';
     }
 
     void "Test the save action correctly persists an instance"() {
@@ -86,8 +86,8 @@ class EventControllerSpec extends Specification {
         then:"A redirect is issued to the show action"
             Event.count() == 1;
             response.status == CREATED.value();
-            response.json.toString() == '{"eventCode":"gp_test_17","endDate":"3917-02-01T07:00:00Z",' +
-                    '"organizer":{"id":1},"name":"GP Test","id":1,"type":{"id":1},"startDate":"3917-02-01T07:00:00Z"}';
+            response.json.toString() == '{"eventCode":"gp_test_17","endDate":"3917-02-01T06:00:00Z",' +
+                    '"organizer":{"id":1},"name":"GP Test","id":1,"type":{"id":1},"startDate":"3917-02-01T06:00:00Z"}';
     }
 
     void "Test that the show action returns the correct model"() {
@@ -110,8 +110,8 @@ class EventControllerSpec extends Specification {
         then:"A model is populated containing the domain instance"
             event!= null;
             response.status == OK.value();
-            response.json.toString() == '{"eventCode":"gp_test_17","endDate":"3917-02-01T07:00:00Z",' +
-                    '"organizer":{"id":1},"name":"GP Test","id":1,"type":{"id":1},"startDate":"3917-02-01T07:00:00Z"}';
+            response.json.toString() == '{"eventCode":"gp_test_17","endDate":"3917-02-01T06:00:00Z",' +
+                    '"organizer":{"id":1},"name":"GP Test","id":1,"type":{"id":1},"startDate":"3917-02-01T06:00:00Z"}';
     }
 
     void "Test the update action performs an update on a valid domain instance"() {
