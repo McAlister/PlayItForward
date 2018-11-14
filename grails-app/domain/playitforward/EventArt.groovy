@@ -5,12 +5,14 @@ class EventArt {
     Event event;
     Artist artist;
     String title;
+    String purchaseUrl;
 
     static constraints = {
 
         event nullable: false, unique: true;
         artist nullable: false;
         title nullable: false;
+        purchaseUrl nullable: true, column: "purchase_url";
     }
 
     static mapping = {

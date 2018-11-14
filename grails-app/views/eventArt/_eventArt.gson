@@ -16,5 +16,6 @@ json {
     event eventArt.event.name
     eventId eventArt.event.id
     blurb eventArt.artist.blurb
+    purchaseUrl eventArt.purchaseUrl
 }
 
