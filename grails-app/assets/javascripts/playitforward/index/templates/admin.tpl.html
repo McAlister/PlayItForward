@@ -3,6 +3,7 @@
 
     <div class="bounty-tabs">
         <ul>
+            <li ng-class="tabClass('artists')" ng-click="activate('artists')">Artists</li>
             <li ng-class="tabClass('events')" ng-click="activate('events')">Events</li>
             <li ng-class="tabClass('prizes')" ng-click="activate('prizes')" >Prizes</li>
             <li ng-class="tabClass('winners')" ng-click="activate('winners')">Winners</li>
@@ -355,75 +356,6 @@
 
         <img ng-show="showImage" ng-src="{{imageSrc}}" />
 
-        <h1>Artists:</h1>
-
-        <div class="alert alert-danger" ng-show="artistArray.artistError">
-
-            There was a problem retrieving the artist list.
-
-            <br />
-
-            {{artistArray.artistError}}
-
-        </div>
-
-        <div class="gp-dropdown">
-            <!--suppress HtmlFormInputWithoutLabel -->
-            <select name="artistSelect" id="artistSelect" ng-model="artistArray.currentArtist"
-                    ng-options="artist.name for artist in artistArray.artistList | orderBy: 'name' track by artist.id" >
-                <option value="" disabled selected hidden>Create New Artist ...</option>
-            </select>
-        </div>
-
-        <form ng-submit="upsertArtist()" class="form">
-
-            <div class="form-group">
-                <label for="inputArtistName" class="control-label">Name:</label>
-                <input type="text" id="inputArtistName" class="form-control"
-                       ng-model="artistArray.currentArtist.name" required>
-            </div>
-
-            <div class="form-group">
-                <label for="inputArtistBlurb" class="control-label">Blurb:</label>
-                <textarea cols="40" rows="5" id="inputArtistBlurb" class="form-control"
-                          ng-model="artistArray.currentArtist.blurb" required>
-                </textarea>
-            </div>
-
-            <div class="form-group">
-                <label for="inputArtistWebsite" class="control-label">Website:</label>
-                <input type="text" id="inputArtistWebsite" class="form-control"
-                       ng-model="artistArray.currentArtist.webSiteUrl" >
-            </div>
-
-            <div class="form-group">
-                <label for="inputArtistDeviant" class="control-label">Deviant Art:</label>
-                <input type="text" id="inputArtistDeviant" class="form-control"
-                       ng-model="artistArray.currentArtist.deviantArtUrl" >
-            </div>
-
-            <div class="form-group">
-                <label for="inputArtistFacebook" class="control-label">Facebook:</label>
-                <input type="text" id="inputArtistFacebook" class="form-control"
-                       ng-model="artistArray.currentArtist.facebookUrl" >
-            </div>
-
-            <div class="form-group">
-                <label for="inputArtistPatreon" class="control-label">Patreon:</label>
-                <input type="text" id="inputArtistPatreon" class="form-control"
-                       ng-model="artistArray.currentArtist.patreonUrl" >
-            </div>
-
-            <div class="text-center">
-                <button class="btn btn-primary" type="button" ng-click="addNewPlayerSetup()">Clear</button>
-                <button class="btn btn-primary" type="submit" ng-show="artistArray.currentArtist.id">Edit</button>
-                <button class="btn btn-primary" type="submit" ng-hide="artistArray.currentArtist.id">Add</button>
-            </div>
-
-        </form>
-
-        <br/>
-
     </div>
 
     <!--events-->
@@ -502,6 +434,81 @@
             </div>
 
         </form>
+
+    </div>
+
+    <!--artists -->
+
+    <div id="admin-artists" ng-show="isActiveTab('artists')">
+
+        <h1>Artists:</h1>
+
+        <div class="alert alert-danger" ng-show="artistArray.artistError">
+
+            There was a problem retrieving the artist list.
+
+            <br />
+
+            {{artistArray.artistError}}
+
+        </div>
+
+        <div class="gp-dropdown">
+            <!--suppress HtmlFormInputWithoutLabel -->
+            <select name="artistSelect" id="artistSelect" ng-model="artistArray.currentArtist"
+                    ng-options="artist.name for artist in artistArray.artistList | orderBy: 'name' track by artist.id" >
+                <option value="" disabled selected hidden>Create New Artist ...</option>
+            </select>
+        </div>
+
+        <form ng-submit="upsertArtist()" class="form">
+
+            <div class="form-group">
+                <label for="inputArtistName" class="control-label">Name:</label>
+                <input type="text" id="inputArtistName" class="form-control"
+                       ng-model="artistArray.currentArtist.name" required>
+            </div>
+
+            <div class="form-group">
+                <label for="inputArtistBlurb" class="control-label">Blurb:</label>
+                <textarea cols="40" rows="5" id="inputArtistBlurb" class="form-control"
+                          ng-model="artistArray.currentArtist.blurb" required>
+                </textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="inputArtistWebsite" class="control-label">Website:</label>
+                <input type="text" id="inputArtistWebsite" class="form-control"
+                       ng-model="artistArray.currentArtist.webSiteUrl" >
+            </div>
+
+            <div class="form-group">
+                <label for="inputArtistDeviant" class="control-label">Deviant Art:</label>
+                <input type="text" id="inputArtistDeviant" class="form-control"
+                       ng-model="artistArray.currentArtist.deviantArtUrl" >
+            </div>
+
+            <div class="form-group">
+                <label for="inputArtistFacebook" class="control-label">Facebook:</label>
+                <input type="text" id="inputArtistFacebook" class="form-control"
+                       ng-model="artistArray.currentArtist.facebookUrl" >
+            </div>
+
+            <div class="form-group">
+                <label for="inputArtistPatreon" class="control-label">Patreon:</label>
+                <input type="text" id="inputArtistPatreon" class="form-control"
+                       ng-model="artistArray.currentArtist.patreonUrl" >
+            </div>
+
+            <div class="text-center">
+                <button class="btn btn-primary" type="button" ng-click="addNewPlayerSetup()">Clear</button>
+                <button class="btn btn-primary" type="submit" ng-show="artistArray.currentArtist.id">Edit</button>
+                <button class="btn btn-primary" type="submit" ng-hide="artistArray.currentArtist.id">Add</button>
+            </div>
+
+        </form>
+
+        <br/>
 
     </div>
 
