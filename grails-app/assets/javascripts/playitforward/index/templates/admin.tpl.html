@@ -4,6 +4,7 @@
     <div class="bounty-tabs">
         <ul>
             <li ng-class="tabClass('mail')" ng-click="activate('mail')">Mail List</li>
+            <li ng-class="tabClass('events')" ng-click="activate('events')">Events</li>
             <li ng-class="tabClass('prizes')" ng-click="activate('prizes')" >Prizes</li>
             <li ng-class="tabClass('winners')" ng-click="activate('winners')">Winners</li>
             <li ng-class="tabClass('players')" ng-click="activate('players')">Players</li>
@@ -467,6 +468,7 @@
                     <option value="images/winners">winners</option>
                     <option value="images/race">race</option>
                     <option value="images/race/ovals">oval</option>
+                    <option value="images/playmatArt">playmat art</option>
                 </select>
             </div>
 
@@ -482,6 +484,154 @@
         <br/>
 
         <img ng-show="showImage" ng-src="{{imageSrc}}" />
+
+        <h1>Artists:</h1>
+
+        <div class="alert alert-danger" ng-show="artistArray.artistError">
+
+            There was a problem retrieving the artist list.
+
+            <br />
+
+            {{artistArray.artistError}}
+
+        </div>
+
+        <div class="gp-dropdown">
+            <!--suppress HtmlFormInputWithoutLabel -->
+            <select name="artistSelect" id="artistSelect" ng-model="artistArray.currentArtist"
+                    ng-options="artist.name for artist in artistArray.artistList | orderBy: 'name' track by artist.id" >
+                <option value="" disabled selected hidden>Create New Artist ...</option>
+            </select>
+        </div>
+
+        <form ng-submit="upsertArtist()" class="form">
+
+            <div class="form-group">
+                <label for="inputArtistName" class="control-label">Name:</label>
+                <input type="text" id="inputArtistName" class="form-control"
+                       ng-model="artistArray.currentArtist.name" required>
+            </div>
+
+            <div class="form-group">
+                <label for="inputArtistBlurb" class="control-label">Blurb:</label>
+                <textarea cols="40" rows="5" id="inputArtistBlurb" class="form-control"
+                          ng-model="artistArray.currentArtist.blurb" required>
+                </textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="inputArtistWebsite" class="control-label">Website:</label>
+                <input type="text" id="inputArtistWebsite" class="form-control"
+                       ng-model="artistArray.currentArtist.webSiteUrl" >
+            </div>
+
+            <div class="form-group">
+                <label for="inputArtistDeviant" class="control-label">Deviant Art:</label>
+                <input type="text" id="inputArtistDeviant" class="form-control"
+                       ng-model="artistArray.currentArtist.deviantArtUrl" >
+            </div>
+
+            <div class="form-group">
+                <label for="inputArtistFacebook" class="control-label">Facebook:</label>
+                <input type="text" id="inputArtistFacebook" class="form-control"
+                       ng-model="artistArray.currentArtist.facebookUrl" >
+            </div>
+
+            <div class="form-group">
+                <label for="inputArtistPatreon" class="control-label">Patreon:</label>
+                <input type="text" id="inputArtistPatreon" class="form-control"
+                       ng-model="artistArray.currentArtist.patreonUrl" >
+            </div>
+
+            <div class="text-center">
+                <button class="btn btn-primary" type="button" ng-click="addNewPlayerSetup()">Clear</button>
+                <button class="btn btn-primary" type="submit" ng-show="artistArray.currentArtist.id">Edit</button>
+                <button class="btn btn-primary" type="submit" ng-hide="artistArray.currentArtist.id">Add</button>
+            </div>
+
+        </form>
+
+        <br/>
+
+    </div>
+
+    <!--events-->
+
+    <div id="admin-events" ng-show="isActiveTab('events')">
+
+        <h1>Manage Events:</h1>
+
+        <div class="gp-dropdown">
+            <!--suppress HtmlFormInputWithoutLabel -->
+            <select name="eventSelect" id="eventSelect" ng-model="currentEvent"
+                    ng-options="event.name for event in (winnerData.eventList | filter:prizeData.currentYear) track by event.id"
+                    ng-change="selectEvent()">
+            </select>
+        </div>
+
+        <div class="gp-dropdown">
+            <select name="yearSelectEvent" id="yearSelect" ng-model="prizeData.currentYear"
+                    ng-options="year for year in prizeData.allYears"
+                    ng-change="selectYear()" title="yearSelectPrizeTitle">
+            </select>
+        </div>
+
+        <form ng-submit="upsertEvent()" class="form">
+
+            <div class="form-group">
+                <label for="inputEventName" class="control-label">Name:</label>
+                <input type="text" id="inputEventName" class="form-control"
+                       ng-model="currentEvent.name" required>
+            </div>
+
+            <div class="form-group">
+                <label for="inputEvenFormat" class="control-label">Format:</label>
+                <input type="text" id="inputEvenFormat" class="form-control"
+                       ng-model="currentEvent.eventFormat" required>
+            </div>
+
+            <div class="form-group">
+                <label for="inputEvenCode" class="control-label">Event Code:</label>
+                <input type="text" id="inputEvenCode" class="form-control"
+                       ng-model="currentEvent.eventCode" >
+            </div>
+
+            <div class="form-group">
+                <label for="inputEvenStart" class="control-label">Start Date:</label>
+                <input type="date" id="inputEvenStart" class="form-control"
+                       ng-model="currentEvent.startDate" required>
+            </div>
+
+            <div class="form-group">
+                <label for="inputEventEnd" class="control-label">End Date:</label>
+                <input type="date" id="inputEventEnd" class="form-control"
+                       ng-model="currentEvent.endDate" required>
+            </div>
+
+            <div class="form-group">
+                <label for="inputEventType" class="control-label">Type:</label>
+                <select name="inputEventType" id="inputEventType" ng-model="eventData.currentType"
+                        ng-options="type.description for type in eventData.types"
+                        class="form-control">
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="inputEventOrganizer" class="control-label">Organizer:</label>
+                <select name="inputEventType" id="inputEventOrganizer" ng-model="eventData.currentOrganizer"
+                        ng-options="org.name for org in eventData.organizers"
+                        class="form-control">
+                </select>
+            </div>
+
+            <div class="text-center">
+                <button class="btn btn-primary" type="button" ng-click="addNewEventSetup()">Clear</button>
+                <button class="btn btn-primary" type="submit" ng-show="currentEvent.id">Edit</button>
+                <button class="btn btn-primary" type="submit" ng-hide="currentEvent.id">Add</button>
+            </div>
+
+        </form>
 
     </div>
 

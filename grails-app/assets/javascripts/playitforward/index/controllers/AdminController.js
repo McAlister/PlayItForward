@@ -16,6 +16,15 @@ function AdminController(contextPath, userPersistenceService, $scope, $http, $lo
     
     $scope.currentEvent = null;
 
+    $scope.eventData = {
+
+        eventDataError: '',
+        currentOrganizer: null,
+        organizers: [],
+        currentType: null,
+        types: []
+    };
+
     $scope.header = 
 
     // /////////////// //
@@ -298,6 +307,13 @@ function AdminController(contextPath, userPersistenceService, $scope, $http, $lo
                 $scope.winnerData.currentWinner = 
                     $scope.winnerData.winnerHash[$scope.currentEvent.id];
 
+                var date = new Date();
+                var localOffset = date.getTimezoneOffset() * 60000;
+                for (var i = 0 ; i < $scope.winnerData.eventList.length ; ++i ) {
+                    $scope.winnerData.eventList[i].startDate = new Date($scope.winnerData.eventList[i].startDate.getTime() + localOffset);
+                    $scope.winnerData.eventList[i].endDate = new Date($scope.winnerData.eventList[i].endDate.getTime() + localOffset);
+                }
+
                 var eventId = $location.search().event;
                 if(eventId) {
 
@@ -351,6 +367,22 @@ function AdminController(contextPath, userPersistenceService, $scope, $http, $lo
 
         $scope.winnerData.currentWinner = $scope.winnerData.winnerHash[id];
         $scope.prizeData.currentYear = $scope.currentEvent.startDate.getFullYear();
+
+        var typeId = $scope.currentEvent.type.id;
+        for ( var i = 0 ; i < $scope.eventData.types.length ; i++ ) {
+            if ( typeId === $scope.eventData.types[i].id ) {
+                $scope.eventData.currentType = $scope.eventData.types[i];
+                break;
+            }
+        }
+
+        var orgId = $scope.currentEvent.organizer.id;
+        for ( var j = 0 ; j < $scope.eventData.organizers.length ; j++ ) {
+            if ( orgId === $scope.eventData.organizers[j].id ) {
+                $scope.eventData.currentOrganizer = $scope.eventData.organizers[j];
+                break;
+            }
+        }
     };
 
     $scope.upsertWinner = function() {
@@ -363,6 +395,7 @@ function AdminController(contextPath, userPersistenceService, $scope, $http, $lo
             ranking: winner.ranking,
             record: winner.record,
             blurb: winner.blurb,
+            imageName: winner.imageName,
             event: {
                 id: $scope.currentEvent.id
             }
@@ -377,7 +410,6 @@ function AdminController(contextPath, userPersistenceService, $scope, $http, $lo
         if('id' in winner && winner.id > 0) {
 
             data.id = winner.id;
-            data.imageName = winner.imageName;
 
             $http.put('/api/EventWinner/' + data.id, data, config).then(
                 function(){
@@ -391,8 +423,6 @@ function AdminController(contextPath, userPersistenceService, $scope, $http, $lo
         }
         else {
 
-            data.imageName = 'Unknown.jpg';
-            
             $http.post('/api/EventWinner', data, config).then(
                 function(){
                     $scope.getWinners();
@@ -628,6 +658,173 @@ function AdminController(contextPath, userPersistenceService, $scope, $http, $lo
                 window.alert("failed");
                 $scope.fileData.fileError = response.message;
             });
+    };
+
+    $scope.artistArray = {
+
+        currentArtist: null,
+        artistList: [],
+        artistError: ''
+    };
+
+    $scope.populateArtist = function() {
+
+        $http.get('/api/Artist').then(
+
+
+            function successCallback(response) {
+
+                $scope.artistArray.artistList = response.data;
+                $scope.artistArray.currentArtist = $scope.artistArray.artistList[0];
+
+            }, function errorCallback(response) {
+
+                $scope.artistArray.artistError = response.data;
+            }
+        );
+    };
+
+    $scope.populateArtist();
+
+    $scope.upsertArtist = function() {
+
+        var data = {
+
+            name: $scope.artistArray.currentArtist.name,
+            blurb: $scope.artistArray.currentArtist.blurb,
+            webSiteUrl: $scope.artistArray.currentArtist.webSiteUrl,
+            deviantArtUrl: $scope.artistArray.currentArtist.deviantArtUrl,
+            facebookUrl: $scope.artistArray.currentArtist.facebookUrl,
+            patreonUrl: $scope.artistArray.currentArtist.patreonUrl
+        };
+
+        var config = {
+            headers : {
+                'Content-Type': 'application/json;charset=utf-8;'
+            }
+        };
+
+        if('id' in $scope.artistArray.currentArtist && $scope.artistArray.currentArtist.id > 0) {
+
+            data.id = $scope.artistArray.currentArtist.id;
+
+            $http.put('/api/Artist/' + data.id, data, config).then(
+                function(){
+                    $scope.populateArtist();
+                    window.alert('Artist updated successfully.');
+                },
+                function(response){
+                    window.alert('Error: Failed to edit Artist! ' + response.data.message);
+                }
+            );
+        }
+        else {
+
+            $http.post('/api/Artist', data, config).then(
+                function(){
+                    $scope.populateArtist();
+                    window.alert('Artist added successfully.');
+                },
+                function(response){
+                    window.alert('Error: Failed to add Artist! ' + response.data.message);
+                }
+            );
+        }
+
+    };
+
+    // ///////// //
+    // Event Tab //
+    // ///////// //
+
+    $scope.populateEventProperties = function() {
+
+        $http.get('/api/EventOrganizer').then(
+
+
+            function successCallback(response) {
+
+                $scope.eventData.organizers = response.data;
+
+            }, function errorCallback(response) {
+
+                $scope.eventData.eventDataError = response.data;
+            }
+        );
+
+        $http.get('/api/EventType').then(
+
+
+            function successCallback(response) {
+
+                $scope.eventData.types = response.data;
+
+            }, function errorCallback(response) {
+
+                $scope.eventData.eventDataError = response.data;
+            }
+        );
+    };
+
+    $scope.populateEventProperties();
+
+    $scope.upsertEvent = function() {
+
+        var data = {
+
+            name: $scope.currentEvent.name,
+            eventCode: $scope.currentEvent.eventCode,
+            startDate: $filter('date')($scope.currentEvent.startDate, "yyyy-MM-dd"),
+            endDate: $filter('date')($scope.currentEvent.endDate, "yyyy-MM-dd"),
+            eventFormat: $scope.currentEvent.eventFormat,
+            organizer: {
+                id: $scope.eventData.currentOrganizer.id
+            },
+            type: {
+                id: $scope.eventData.currentType.id
+            }
+        };
+
+        var config = {
+            headers : {
+                'Content-Type': 'application/json;charset=utf-8;'
+            }
+        };
+
+        if('id' in $scope.currentEvent && $scope.currentEvent.id > 0) {
+
+            data.id = $scope.currentEvent.id;
+
+            $http.put('/api/Event/' + data.id, data, config).then(
+                function(){
+                    $scope.getEvents();
+                    window.alert('Event updated successfully.');
+                },
+                function(response){
+                    $scope.getEvents();
+                    window.alert('Error: Failed to edit Event! ' + response.data.message);
+                }
+            );
+        }
+        else {
+
+            $http.post('/api/Event', data, config).then(
+                function(){
+                    $scope.getEvents();
+                    window.alert('Event added successfully.');
+                },
+                function(response){
+                    $scope.getEvents();
+                    window.alert('Error: Failed to add Event! ' + response.data.message);
+                }
+            );
+        }
+
+    };
+
+    $scope.addNewEventSetup = function() {
+
+        $scope.currentEvent = null;
     };
 
 }

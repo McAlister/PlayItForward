@@ -51,12 +51,15 @@ grails:
             js: text/javascript
             rss: application/rss+xml
             text: text/plain
-            all: '*/*'            
+            all: '*/*'
     urlmapping:
         cache:
             maxsize: 1000
     controllers:
         defaultScope: singleton
+        upload:
+          maxFileSize: 300000
+          maxRequestSize: 300000
     converters:
         encoding: UTF-8
     plugin:

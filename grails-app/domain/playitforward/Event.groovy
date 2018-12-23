@@ -10,6 +10,7 @@ class Event {
     String eventCode;
     Date startDate;
     Date endDate;
+    String eventFormat;
 
     static constraints = {
 
@@ -19,6 +20,7 @@ class Event {
         eventCode nullable: true;
         startDate nullable: false;
         endDate nullable: false;
+        eventFormat nullable: true;
     }
 
     static mapping = {
@@ -27,6 +29,7 @@ class Event {
         eventCode column: 'event_code';
         startDate column: 'start_date', index: 'event_start_idx';
         endDate column: 'end_date';
+        eventFormat column: 'format', index: 'event_format_idx';
     }
 
     static belongsTo = [EventOrganizer, EventType];
