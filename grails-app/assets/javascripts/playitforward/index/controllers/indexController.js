@@ -21,52 +21,6 @@ function IndexController(userPersistenceService, contextPath, $scope, $http, $lo
         return userPersistenceService.getCookieData().role;
     };
 
-    /*
-        Email List Stuff
-     */
-
-    $scope.mailData = {
-        fName: '',
-        lName: '',
-        email: '',
-        types: [],
-        chosenType: null
-    };
-
-    $http.get('/api/PersonType').then(
-
-        function successCallback(response) {
-            $scope.mailData.types = response.data;
-        }, function errorCallback(response) {
-            alert ('Error: Could not contact database: ' + response.data.message);
-    });
-
-    $scope.signUpForMailList = function() {
-
-        var data = {
-            firstName: $scope.mailData.fName,
-            lastName: $scope.mailData.lName,
-            email: $scope.mailData.email,
-            personType: $scope.mailData.chosenType
-        };
-
-        var config = {
-            headers : {
-                'Content-Type': 'application/json;charset=utf-8;'
-            }
-        };
-
-        $http.post('/api/Person', data, config).then(
-            function(){
-                alert ('You were added successfully.');
-            },
-            function(response){
-                alert ('Error: Failed to add you to mailling list! ' + response.data.message);
-            }
-        );
-
-    };
-
     // /////////////// //
     // Active Tab Code //
     // /////////////// //

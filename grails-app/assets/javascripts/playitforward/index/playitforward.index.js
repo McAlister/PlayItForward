@@ -54,10 +54,6 @@ function config($stateProvider, $urlRouterProvider) {
             templateUrl: '/playitforward/index/gp.html',
             reloadOnSearch: false
         })
-        .state('mailingList', {
-            url: '/mailingList',
-            templateUrl: '/playitforward/index/mailList.html'
-        })
         .state('admin', {
             url: '/admin',
             controller: 'AdminController',
