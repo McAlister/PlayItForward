@@ -56,6 +56,11 @@
                             Resources
                         </a>
                     </li>
+                    <li class="navigation-list-item">
+                        <a ui-sref="about" class="navigation-link">
+                            About Us
+                        </a>
+                    </li>
                     <li class="navigation-list-item" ng-hide="isAuthenticated()">
                         <a ui-sref="login" class="navigation-link">
                             Login
@@ -64,11 +69,6 @@
                     <li class="navigation-list-item" ng-show="isAuthenticated()" ng-cloak>
                         <a ui-sref="logoff" class="navigation-link">
                             Logoff
-                        </a>
-                    </li>
-                    <li class="navigation-list-item">
-                        <a ui-sref="index" class="navigation-link">
-                            About Us
                         </a>
                     </li>
                     <li class="navigation-list-item" ng-if="getRole() === 'ROLE_ADMIN'" ng-cloak>

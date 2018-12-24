@@ -23,6 +23,12 @@ function config($stateProvider, $urlRouterProvider) {
     $stateProvider
         .state('index', {
             url: '/',
+            controller: 'GPController',
+            templateUrl: '/playitforward/index/gp.html',
+            reloadOnSearch: false
+        })
+        .state('about', {
+            url: '/about',
             templateUrl: '/playitforward/index/index.html'
         })
         .state('supporters', {
