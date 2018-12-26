@@ -1,5 +1,7 @@
 package playitforward
 
+import com.amazonaws.services.s3.model.ListObjectsRequest
+import com.amazonaws.services.s3.model.ObjectListing
 import com.amazonaws.services.s3.model.ObjectMetadata
 import com.amazonaws.services.s3.model.PutObjectRequest
 import grails.plugin.awssdk.s3.AmazonS3Service
@@ -49,6 +51,15 @@ class S3Service {
             log.warn 'An exception was caught while storing file', exception;
             throw exception;
         }
+    }
+
+    String getS3BaseUrl() {
+
+        def bucket = grailsApplication.config.getProperty('bucket') as String;
+        String result = amazonS3Service.client.getResourceUrl(bucket, 'images/');
+        println "URL is " + result;
+
+        return result;
     }
 
     File downloadFile(String path, File file) {

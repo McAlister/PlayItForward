@@ -9,6 +9,8 @@ class Artist {
     String facebookUrl;
     String webSiteUrl;
 
+    static hasMany = [artSet: Art];
+
     static constraints = {
 
         name nullable: false, unique: true;
@@ -27,5 +29,6 @@ class Artist {
         patreonUrl column: 'patreon_url';
         facebookUrl column: 'facebook_url';
         webSiteUrl column: 'website_url';
+        artSet lazy: false, fetch: 'join';
     }
 }

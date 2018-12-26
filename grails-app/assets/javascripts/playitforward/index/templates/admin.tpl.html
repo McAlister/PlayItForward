@@ -3,7 +3,7 @@
 
     <div class="bounty-tabs">
         <ul>
-            <li ng-class="tabClass('artists')" ng-click="activate('artists')">Artists</li>
+            <li ng-class="tabClass('art')" ng-click="activate('art')">Art</li>
             <li ng-class="tabClass('events')" ng-click="activate('events')">Events</li>
             <li ng-class="tabClass('prizes')" ng-click="activate('prizes')" >Prizes</li>
             <li ng-class="tabClass('winners')" ng-click="activate('winners')">Winners</li>
@@ -439,7 +439,72 @@
 
     <!--artists -->
 
-    <div id="admin-artists" ng-show="isActiveTab('artists')">
+    <div id="admin-artists" ng-show="isActiveTab('art')">
+
+
+        <h1>Art:</h1>
+
+        <div class="alert alert-danger" ng-show="artArray.artError">
+
+            There was a problem retrieving the art list.
+
+            <br />
+
+            {{artArray.artError}}
+
+        </div>
+
+        <div class="gp-dropdown">
+            <!--suppress HtmlFormInputWithoutLabel -->
+            <select name="artSelect" id="artSelect" ng-model="artArray.currentArt"
+                    ng-options="art.title for art in artArray.artList | orderBy: 'title' track by art.id"
+                    ng-change="selectArt()">
+                <option value="" disabled selected hidden>Create New Art ...</option>
+            </select>
+        </div>
+
+        <br/>
+
+        <img class="playmat-image" ng-src="{{artArray.previewUrl}}" on-error-src="assets/ComingSoon.jpg"/>
+
+        <form ng-submit="upsertArt()" class="form">
+
+            <div class="form-group">
+                <label for="inputArtURL" class="control-label">File Name:</label>
+                <input type="text" id="inputArtURL" class="form-control"
+                       ng-model="artArray.currentArt.fileName"
+                       ng-blur="getArtPath()" required>
+            </div>
+
+            <div class="form-group">
+                <label for="inputArtArtist" class="control-label">Artist:</label>
+                <select name="inputArtArtist" id="inputArtArtist" ng-model="artArray.chosenArtist"
+                        ng-options="artist.name for artist in artistArray.artistList"
+                        class="form-control">
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="inputArtTitle" class="control-label">Title:</label>
+                <input type="text" id="inputArtTitle" class="form-control"
+                       ng-model="artArray.currentArt.title" required>
+            </div>
+
+            <div class="form-group">
+                <label for="inputArtPurchase" class="control-label">Purchase Url:</label>
+                <input type="text" id="inputArtPurchase" class="form-control"
+                       ng-model="artArray.currentArt.purchaseUrl" >
+            </div>
+
+            <div class="text-center">
+                <button class="btn btn-primary" type="button" ng-click="addNewArtSetup()">Clear</button>
+                <button class="btn btn-primary" type="submit" ng-show="artArray.currentArt.id">Edit</button>
+                <button class="btn btn-primary" type="submit" ng-hide="artArray.currentArt.id">Add</button>
+            </div>
+
+        </form>
+
+        <br />
 
         <h1>Artists:</h1>
 
@@ -501,7 +566,7 @@
             </div>
 
             <div class="text-center">
-                <button class="btn btn-primary" type="button" ng-click="addNewPlayerSetup()">Clear</button>
+                <button class="btn btn-primary" type="button" ng-click="addNewArtistSetup()">Clear</button>
                 <button class="btn btn-primary" type="submit" ng-show="artistArray.currentArtist.id">Edit</button>
                 <button class="btn btn-primary" type="submit" ng-hide="artistArray.currentArtist.id">Add</button>
             </div>

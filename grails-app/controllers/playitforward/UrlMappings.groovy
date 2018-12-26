@@ -49,6 +49,10 @@ class UrlMappings {
                 controller: 'guild', action: 'getMyGuild'
         );
 
+        get "/api/Image/getImageBaseURL" (
+                controller: 'image', action: 'getImageBaseURL'
+        );
+
         delete "/api/$controller/$id(.$format)?"(action:"delete");
         get "/api/$controller(.$format)?"(action:"index");
         get "/api/$controller/$id(.$format)?"(action:"show");

@@ -53,8 +53,8 @@ function AdminController(contextPath, userPersistenceService, $scope, $http, $lo
             $location.search('tab', tabName);
         }
         else {
-            $scope.activeTab = 'mail';
-            $location.search('tab', 'mail');
+            $scope.activeTab = 'art';
+            $location.search('tab', 'art');
         }
     };
 
@@ -557,11 +557,132 @@ function AdminController(contextPath, userPersistenceService, $scope, $http, $lo
             });
     };
 
+    // /////// //
+    // Art Tab //
+    // /////// //
+
+    $scope.artArray = {
+
+        currentArt: {},
+        artList: [],
+        artError: '',
+        baseUrl: '',
+        previewUrl: '',
+        chosenArtist: null
+    };
+
+    $scope.populateArt = function() {
+
+        $http.get('/api/Art/').then(
+
+            function successCallback(response) {
+
+                $scope.artArray.artList = response.data;
+
+            }, function errorCallback(response) {
+
+                $scope.artArray.artError = response.data;
+            }
+        );
+    };
+
+    $scope.populateArt();
+
+    $scope.getBaseUrl = function() {
+
+        $http.get('/api/Image/getImageBaseURL').then(
+
+            function successCallback(response) {
+
+                $scope.artArray.baseUrl = response.data.url;
+
+            }, function errorCallback(response) {
+
+                $scope.artArray.artError = 'Failed to get Art URL: ' + response.data;
+            }
+        );
+    };
+
+    $scope.getBaseUrl();
+
+    $scope.getArtPath = function() {
+
+        $scope.artArray.previewUrl = $scope.artArray.baseUrl + 'playmatArt/' + $scope.artArray.currentArt.fileName;
+    };
+
+    $scope.getArtPath();
+
+    $scope.addNewArtSetup = function() {
+
+        $scope.artArray.currentArt = null;
+        $scope.artArray.previewUrl = 'assets/ComingSoon.jpg';
+    };
+
+    $scope.upsertArt = function() {
+
+        var data = {
+
+            title: $scope.artArray.currentArt.title,
+            fileName: $scope.artArray.currentArt.fileName,
+            purchaseUrl: $scope.artArray.currentArt.purchaseUrl,
+            artist: {
+                id: $scope.artArray.chosenArtist.id
+            }
+        };
+
+        var config = {
+            headers : {
+                'Content-Type': 'application/json;charset=utf-8;'
+            }
+        };
+
+        if( 'id' in $scope.artArray.currentArt && $scope.artArray.currentArt.id > 0) {
+
+            data.id = $scope.artArray.currentArt.id;
+
+            $http.put('/api/Art/' + data.id, data, config).then(
+
+                function(){
+                    $scope.populateArt();
+                    window.alert('Artist updated successfully.');
+                },
+                function(response){
+                    window.alert('Error: Failed to edit Art! ' + response.data.message);
+                }
+            );
+        }
+        else {
+
+            $http.post('/api/Art', data, config).then(
+                function(){
+                    $scope.populateArt();
+                    window.alert('Art added successfully.');
+                },
+                function(response){
+                    window.alert('Error: Failed to add Art! ' + response.data.message);
+                }
+            );
+        }
+    };
+
     $scope.artistArray = {
 
         currentArtist: null,
         artistList: [],
         artistError: ''
+    };
+
+    $scope.selectArt = function() {
+
+        $scope.getArtPath();
+
+        for (var i = 0 ; i < $scope.artistArray.artistList.length ; i++) {
+
+            if ( $scope.artArray.currentArt.artist.id ===  $scope.artistArray.artistList[i].id ) {
+                $scope.artArray.chosenArtist = $scope.artistArray.artistList[i];
+                break;
+            }
+        }
     };
 
     $scope.populateArtist = function() {
@@ -572,7 +693,6 @@ function AdminController(contextPath, userPersistenceService, $scope, $http, $lo
             function successCallback(response) {
 
                 $scope.artistArray.artistList = response.data;
-                $scope.artistArray.currentArtist = $scope.artistArray.artistList[0];
 
             }, function errorCallback(response) {
 
@@ -582,6 +702,11 @@ function AdminController(contextPath, userPersistenceService, $scope, $http, $lo
     };
 
     $scope.populateArtist();
+
+    $scope.addNewArtistSetup = function() {
+
+        $scope.artistArray.currentArtist = null;
+    };
 
     $scope.upsertArtist = function() {
 

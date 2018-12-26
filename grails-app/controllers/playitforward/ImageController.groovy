@@ -15,6 +15,15 @@ class ImageController {
         // Empty Block
     }
 
+    @Secured('permitAll')
+    def getImageBaseURL() {
+
+        Map<String, String> results = new HashMap<>();
+        results.put("url", s3Service.getS3BaseUrl());
+
+        respond results, model: [ImageCount: results.size()];
+    }
+
     @Secured(['permitAll'])
     def generateCameo() {
 

@@ -120,3 +120,7 @@ a.btn {
 input[type="file"] {
     line-height: 10px;
 }
+
+.playmat-image {
+    margin: 10px 0 10px 0;
+}
