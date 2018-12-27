@@ -46,136 +46,157 @@ function IndexController(userPersistenceService, contextPath, $scope, $http, $lo
         $location.search("tab", tabName);
     };
 
+
     // //////////// //
     // Art Tab Code //
     // //////////// //
 
-    $scope.artArray = {
+    $scope.artData = {
 
-        artError: '',
+        pathError: '',
         artistError: '',
+        artError: '',
         artLoaded: false,
         artistLoaded: false,
+        urlLoaded: false,
+        baseUrl: '',
         artists: [],
-        currentArtist: null,
+        currentArtist: {
+            artSet: []
+        },
         currIndex: 0,
-        artistSlides: {}  // artistID -> [eventArt]
+        artHash: {}
     };
 
-    $scope.getCurrentArtPath = function(title) {
+    $scope.selectArtist = function() {
 
-        var baseURL = 'https://s3-us-west-2.amazonaws.com/playitforward-magic/images/playmatArt/';
-        var name = title.replace(/\s/g, '');
-        return baseURL + name + '.jpg';
+        for (var i = 0 ; i < $scope.artData.currentArtist.artSet.length ; ++i) {
+
+            $scope.artData.currentArtist.artSet[i].active = (i === 0);
+        }
+
+        // Object.keys($scope.artArray.artistSlides).forEach(function (key) {
+        //
+        //     var slides = $scope.artArray.artistSlides[key];
+        //     for ( var i = 0 ; i < slides.length ; ++i ) {
+        //
+        //         slides[i].active = i === 0;
+        //     }
+        // });
+
+        $scope.artData.currIndex = 0;
+    };
+
+    $scope.getBaseUrl = function() {
+
+        $http.get('/api/Image/getImageBaseURL').then(
+
+            function successCallback(response) {
+
+                $scope.artData.baseUrl = response.data.url;
+
+                for (var i = 0 ; i < $scope.artData.artists.length ; ++i) {
+
+                    var artist = $scope.artData.artists[i];
+                    for (var j = 0 ; j < artist.artSet.length ; ++j) {
+                        var art = $scope.artData.artHash[artist.artSet[j].id];
+                        artist.artSet[j].title = art.title;
+                        artist.artSet[j].url = $scope.artData.baseUrl + 'playmatArt/' + art.fileName;
+                        artist.artSet[j].purchaseUrl = art.purchaseUrl;
+                        artist.artSet[j].active = 0;
+                        artist.artSet[j].index = j;
+                    }
+                }
+
+                $scope.selectArtist();
+
+                $scope.artData.urlLoaded = true;
+
+            }, function errorCallback(response) {
+
+                $scope.artData.pathError = 'Failed to base URL: ' + response.data;
+            }
+        );
     };
 
     $scope.populateArt = function() {
 
-        $http.get('/api/EventArt').then(
+        $http.get('/api/Art').then(
 
             function successCallback(response) {
 
                 for (var i = 0 ; i < response.data.length ; ++i) {
 
                     var art = response.data[i];
-                    art.image = $scope.getCurrentArtPath(art.title);
-                    if ( !(art.artistId in $scope.artArray.artistSlides) ) {
-                        art.active = true;
-                        $scope.artArray.artistSlides[art.artistId] = [art];
-                        art.id = 0;
-                    }
-                    else {
-
-                        art.active = false;
-                        var stuff = $scope.artArray.artistSlides[art.artistId];
-                        var exists = false;
-                        for (var j = 0; j < stuff.length; ++j) {
-
-                            if (art.title === stuff[j].title) {
-                                exists = true;
-                                break;
-                            }
-                        }
-
-                        if ( ! exists ) {
-                            art.id = stuff.length;
-                            stuff.push(art);
-                        }
-                    }
+                    $scope.artData.artHash[art.id] = art;
                 }
 
-                $scope.artArray.artLoaded = true;
+                $scope.artData.artLoaded = true;
+
+                $scope.getBaseUrl();
 
             }, function errorCallback(response) {
 
-                $scope.artArray.artError = response.data;
+                $scope.artData.artError = response.data;
             }
         );
+    };
+
+    $scope.populateArtist = function() {
 
         $http.get('/api/Artist').then(
 
-
             function successCallback(response) {
 
-                $scope.artArray.artists = response.data;
-                $scope.artArray.currentArtist = $scope.artArray.artists[0];
-                $scope.artArray.artistLoaded = true;
+                $scope.artData.artists = response.data;
+                $scope.artData.currentArtist = $scope.artData.artists[0];
+                $scope.artData.artistLoaded = true;
+
+                $scope.populateArt();
 
             }, function errorCallback(response) {
 
-                $scope.artArray.artError = response.data;
+                $scope.artData.artistError = response.data;
             }
         );
     };
 
-    $scope.populateArt();
+    $scope.populateArtist();
 
-    $scope.selectArtist = function() {
 
-        Object.keys($scope.artArray.artistSlides).forEach(function (key) {
-
-            var slides = $scope.artArray.artistSlides[key];
-            for ( var i = 0 ; i < slides.length ; ++i ) {
-
-                slides[i].active = i === 0;
-            }
-
-        });
-
-        $scope.artArray.currIndex = 0;
-    };
-
+    /* ********* */
     /* Slideshow */
+    /* ********* */
 
     $scope.getSlides = function() {
 
-        return $scope.artArray.artistSlides[$scope.artArray.currentArtist.id];
+        return $scope.artData.currentArtist.artSet;
     };
 
     $scope.forwardImage = function() {
 
         var slides = $scope.getSlides();
-        slides[$scope.artArray.currIndex].active = false;
-        $scope.artArray.currIndex++;
+        slides[$scope.artData.currIndex].active = false;
+        $scope.artData.currIndex++;
 
-        if ($scope.artArray.currIndex >= slides.length) {
-            $scope.artArray.currIndex = 0;
+        if ($scope.artData.currIndex >= slides.length) {
+            $scope.artData.currIndex = 0;
         }
 
-        slides[$scope.artArray.currIndex].active = true;
+        slides[$scope.artData.currIndex].active = true;
     };
 
     $scope.backImage = function() {
 
         var slides = $scope.getSlides();
-        slides[$scope.artArray.currIndex].active = false;
-        $scope.artArray.currIndex--;
+        slides[$scope.artData.currIndex].active = false;
+        $scope.artData.currIndex--;
 
-        if ($scope.artArray.currIndex < 0) {
-            $scope.artArray.currIndex = slides.length - 1;
+        if ($scope.artData.currIndex < 0) {
+            $scope.artData.currIndex = slides.length - 1;
         }
 
-        slides[$scope.artArray.currIndex].active = true;
+        slides[$scope.artData.currIndex].active = true;
     };
 
     $scope.goToSlide = function(index) {
@@ -185,9 +206,8 @@ function IndexController(userPersistenceService, contextPath, $scope, $http, $lo
             index = 0;
         }
 
-        slides[$scope.artArray.currIndex].active = false;
-        $scope.artArray.currIndex = index;
-        slides[$scope.artArray.currIndex].active = true;
+        slides[$scope.artData.currIndex].active = false;
+        $scope.artData.currIndex = index;
+        slides[$scope.artData.currIndex].active = true;
     };
-
 }
