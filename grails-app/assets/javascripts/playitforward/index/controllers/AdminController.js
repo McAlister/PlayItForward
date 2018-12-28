@@ -22,7 +22,9 @@ function AdminController(contextPath, userPersistenceService, $scope, $http, $lo
         currentOrganizer: null,
         organizers: [],
         currentType: null,
-        types: []
+        types: [],
+        art: [],
+        currentArt: null
     };
 
     $scope.header = 
@@ -279,6 +281,21 @@ function AdminController(contextPath, userPersistenceService, $scope, $http, $lo
                 $scope.eventData.currentOrganizer = $scope.eventData.organizers[j];
                 break;
             }
+        }
+
+        if ( $scope.currentEvent.art ) {
+
+            var artId = $scope.currentEvent.art.id;
+            for ( var k = 0 ; k < $scope.eventData.art.length ; k++ ) {
+                if ( artId === $scope.eventData.art[k].id ) {
+                    $scope.eventData.currentArt = $scope.eventData.art[k];
+                    break;
+                }
+            }
+        }
+        else {
+
+            $scope.eventData.currentArt = null;
         }
     };
 
@@ -578,6 +595,7 @@ function AdminController(contextPath, userPersistenceService, $scope, $http, $lo
             function successCallback(response) {
 
                 $scope.artArray.artList = response.data;
+                $scope.eventData.art = response.data;
 
             }, function errorCallback(response) {
 
@@ -759,6 +777,13 @@ function AdminController(contextPath, userPersistenceService, $scope, $http, $lo
     // Event Tab //
     // ///////// //
 
+    $scope.getEventPreview = function() {
+
+        if ( $scope.currentEvent ) {
+            return $scope.artArray.baseUrl + 'playmats/' + $scope.currentEvent.playmatFileName;
+        }
+    };
+
     $scope.populateEventProperties = function() {
 
         $http.get('/api/EventOrganizer').then(
@@ -796,14 +821,19 @@ function AdminController(contextPath, userPersistenceService, $scope, $http, $lo
 
             name: $scope.currentEvent.name,
             eventCode: $scope.currentEvent.eventCode,
+            coordinator: $scope.currentEvent.coordinator,
             startDate: $filter('date')($scope.currentEvent.startDate, "yyyy-MM-dd"),
             endDate: $filter('date')($scope.currentEvent.endDate, "yyyy-MM-dd"),
             eventFormat: $scope.currentEvent.eventFormat,
+            playmatFileName: $scope.currentEvent.playmatFileName,
             organizer: {
                 id: $scope.eventData.currentOrganizer.id
             },
             type: {
                 id: $scope.eventData.currentType.id
+            },
+            art: {
+                id: $scope.eventData.currentArt.id
             }
         };
 
