@@ -9,84 +9,7 @@ function GPController(contextPath, $scope, $http, $location) {
     var vm = this;
     vm.contextPath = contextPath;
 
-    $scope.error = '';
-    $scope.artError = '';
-    $scope.artLoaded = false;
-    $scope.GPs = {
-        lastRound: 0,
-        currentEvent: null,
-        allEvents: [],
-        eventWinners: {},
-        allYears: [2017, 2018],
-        currentYear: 2018,
-        eventArt: {}
-    };
 
-    $scope.loadEvent = function() {
-        $http.get('/api/Event').then(
-
-            function successCallback(response) {
-
-                $scope.GPs.allEvents = response.data;
-
-                var now = new Date();
-                var selected = Number($location.search().event);
-                if (selected) {
-                    $scope.GPs.currentEvent = response.data.find(function(el) { return el.id === selected });
-                } else {
-                    for (var i = 1; i < response.data.length; ++i) {
-
-                        var event = response.data[i];
-                        if (event.startDate > now) {
-
-                            $scope.GPs.currentEvent = response.data[i - 1];
-                            break;
-                        }
-                    }
-
-                    if ($scope.GPs.currentEvent === null) {
-                        $scope.GPs.currentEvent = response.data[response.data.length - 1];
-                    }
-                }
-
-                $scope.GPs.currentYear = $scope.GPs.currentEvent.startDate.getFullYear();
-
-            }, function errorCallback(response) {
-
-                $scope.error = response.data;
-            }
-        );
-    };
-    $scope.loadEvent();
-
-    $scope.$on('$locationChangeSuccess', function() {
-        // if event or tab changed, update
-        var searchId = Number($location.search().event);
-        var loadedEvent = $scope.GPs.currentEvent;
-        var searchTab = $location.search().tab;
-        if (searchId && loadedEvent && searchId !== loadedEvent.id) {
-            $scope.loadEvent();
-        }
-        if (searchTab && $scope.activeTab !== searchTab) {
-            $scope.activate(searchTab);
-        }
-    });
-
-    $scope.getImageName = function() {
-
-        if ($scope.GPs.currentEvent) {
-            
-            var name = $scope.GPs.currentEvent.name;
-            name = name.replace(/\s/g, "-").substring(3);
-            var baseString = "https://s3-us-west-2.amazonaws.com/playitforward-magic/images/playmats/";
-            var year = $scope.GPs.currentEvent.startDate.getFullYear() + "/";
-            return baseString + year + name + ".jpg";
-        }
-        
-        return '';
-    };
-
-   
     // /////////////// //
     // Active Tab Code //
     // /////////////// //
@@ -97,105 +20,329 @@ function GPController(contextPath, $scope, $http, $location) {
 
         return (tabName === $scope.activeTab);
     };
-    
+
     $scope.tabClass = function(tabName) {
-      
+
         if (tabName === $scope.activeTab) {
             return 'active';
         }
-        
+
         return '';
     };
-    
+
     $scope.activate = function(tabName) {
         $scope.activeTab = tabName;
         $location.search("tab", tabName);
     };
 
 
-    // //////////// //
-    // Overview Tab //
-    // //////////// //
+    // ///////////////// //
+    // Data Loading Code //
+    // ///////////////// //
+
+    $scope.eventError = '';
+    $scope.winnerError = '';
+    $scope.artError = '';
+    $scope.artistsError = '';
+    $scope.eventsLoaded = false;
+    $scope.artLoaded = false;
+    $scope.artistsLoaded = false;
+    $scope.winnersLoaded = false;
+
+    $scope.eventData = {
+
+        years: [],              // All the years for which we have events in order
+        currentYear: null,
+        events: [],             // All the Events, in Start Date order
+        currentEvent: null,
+        winners: {},            // Event_ID -> Winner Object
+        currentWinner: null,
+        art: {},                // Art_ID -> Art Object
+        currentArt: null,
+        artists: {},            // Artist_ID -> Artist Object
+        currentArtist: null,
+        baseUrl: null
+    };
+
+    $scope.loadWinners = function() {
+
+        $http.get('/api/EventWinner').then(
+
+            function successCallback(response) {
+
+                for (var i = 0 ; i < response.data.length ; ++i ) {
+
+                    var winner = response.data[i];
+                    $scope.eventData.winners[winner.event.id] = winner;
+                }
+
+                $scope.eventData.currentWinner = $scope.eventData.winners[$scope.eventData.currentEvent.id];
+                $scope.winnersLoaded = true;
+
+            }, function errorCallback(response) {
+
+                $scope.winnerError = response.data;
+            }
+        );
+    };
+
+    $scope.loadArtists = function() {
+
+        $http.get('/api/Artist').then(
+
+            function successCallback(response) {
+
+                for ( var i = 0 ; i < response.data.length ; ++i ) {
+
+                    var artist = response.data[i];
+                    $scope.eventData.artists[artist.id] = artist;
+                }
+
+                if( $scope.eventData.currentArt ) {
+                    $scope.eventData.currentArtist = $scope.eventData.artists[$scope.eventData.currentArt.artist.id];
+                }
+
+                $scope.artistsLoaded = true;
+
+            }, function errorCallback(response) {
+
+                $scope.artistsError = response.data;
+            }
+        );
+    };
+
+    $scope.loadArt = function() {
+
+        $http.get('/api/Art').then(
+
+            function successCallback(response) {
+
+                for ( var i = 0 ; i < response.data.length ; ++i ) {
+
+                    var art = response.data[i];
+                    $scope.eventData.art[art.id] = art;
+                }
+
+                if ($scope.eventData.currentEvent.art) {
+
+                    $scope.eventData.currentArt = $scope.eventData.art[$scope.eventData.currentEvent.art.id];
+                }
+
+                $scope.artLoaded = true;
+                $scope.loadArtists();
+
+            }, function errorCallback(response) {
+
+                $scope.artError = response.data;
+            }
+        );
+    };
+
+    $scope.getBaseUrl = function() {
+
+        $http.get('/api/Image/getImageBaseURL').then(
+
+            function successCallback(response) {
+
+                $scope.eventData.baseUrl = response.data.url;
+
+                for ( var i = 0 ; i < $scope.eventData.events.length ; i++ ) {
+
+                    var event = $scope.eventData.events[i];
+                    if (event.playmatFileName) {
+
+                        event.matUrl = $scope.eventData.baseUrl + "playmats/" + event.playmatFileName;
+                    }
+                    else {
+                        event.matUrl = "assets/ComingSoon.jpg";
+                    }
+                }
+
+            }, function errorCallback(response) {
+
+                $scope.artError += 'Failed to get Art URL: ' + response.data;
+            }
+        );
+    };
+
+    // Events come from the server ordered by Start Date
+    $scope.loadEvents = function() {
+
+        $http.get('/api/Event').then(
+
+            function successCallback(response) {
+
+                $scope.eventData.events = response.data;
+
+                var selected = Number($location.search().event);
+                if ( selected ) {
+
+                    $scope.eventData.currentEvent = response.data.find(function(el) { return el.id === selected });
+                }
+
+                if ( $scope.eventData.currentEvent === null ) {
+
+                    var now = new Date();
+                    for ( var i = 1 ; i < response.data.length; ++i ) {
+
+                        var event = response.data[i];
+                        if (event.startDate > now) {
+
+                            $scope.eventData.currentEvent = response.data[i - 1];
+                            break;
+                        }
+                    }
+                }
+
+                if ($scope.eventData.currentEvent === null) {
+
+                    $scope.eventData.currentEvent = response.data[response.data.length - 1];
+                }
+
+                var lastYear =  null;
+                for ( var j = 0 ; j < $scope.eventData.events.length ; ++j ) {
+
+                    var year = $scope.eventData.events[j].startDate.getFullYear();
+                    if ( year !== lastYear ) {
+                        $scope.eventData.years.push( year );
+                        lastYear = year;
+                    }
+                }
+                $scope.eventData.currentYear = $scope.eventData.currentEvent.startDate.getFullYear();
+                $scope.eventsLoaded = true;
+
+                $scope.loadArt();
+                $scope.loadWinners();
+                $scope.getBaseUrl();
+
+            }, function errorCallback(response) {
+
+                $scope.eventError = response.data;
+            }
+        );
+    };
+
+    $scope.loadEvents();
+
+
+    // //////////////////// //
+    // Event Selection Code //
+    // //////////////////// //
+
+    $scope.selectYear = function() {
+
+        for ( var i = 0 ; i < $scope.eventData.events.length ; ++i ) {
+
+            var event = $scope.eventData.events[i];
+            if (event.startDate.getFullYear() === $scope.eventData.currentYear) {
+
+                $scope.eventData.currentEvent = event;
+                $scope.selectEvent();
+                break;
+            }
+        }
+    };
+
+    $scope.selectEvent = function() {
+
+        if ($scope.eventData.currentEvent) {
+
+            $scope.eventData.currentYear = $scope.eventData.currentEvent.startDate.getFullYear();
+            $scope.eventData.currentWinner = $scope.eventData.winners[$scope.eventData.currentEvent.id];
+
+            if ( $scope.eventData.currentEvent.art ) {
+                $scope.eventData.currentArt = $scope.eventData.art[$scope.eventData.currentEvent.art.id];
+            }
+            else {
+                $scope.eventData.currentArt = null;
+            }
+
+            if ( $scope.eventData.currentArt ) {
+                $scope.eventData.currentArtist = $scope.eventData.artists[$scope.eventData.currentArt.artist.id];
+            }
+            else {
+                $scope.eventData.currentArtist = null;
+            }
+
+            $scope.setEventId();
+        }
+    };
+
+    $scope.setEventId = function() {
+
+        var id = $scope.eventData.currentEvent.id;
+        if (id && $location.search().id !== id) {
+            $location.search("event", id);
+        }
+    };
+
+    $scope.$on('$locationChangeSuccess', function() {
+
+        // if event or tab changed, update
+        var searchId = Number($location.search().event);
+        var loadedEvent = $scope.eventData.currentEvent;
+        var searchTab = $location.search().tab;
+
+        if (searchId && loadedEvent && searchId !== loadedEvent.id) {
+
+            $scope.selectEvent();
+        }
+
+        if (searchTab && $scope.activeTab !== searchTab) {
+
+            $scope.activate(searchTab);
+        }
+    });
+
+
+    // /////////////// //
+    // Winner Tab Code //
+    // /////////////// //
 
     $scope.isFutureGP = function() {
 
         var now = new Date();
-        //noinspection JSUnresolvedVariable
-        return !$scope.GPs.currentEvent || $scope.GPs.currentEvent.startDate > now;
+        return !$scope.eventData.currentEvent || $scope.eventData.currentEvent.startDate > now;
     };
-    
-    $scope.monthList = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September',
-                        'October', 'November', 'December'];
+
     $scope.gpStartDateString = function() {
 
-        if ($scope.GPs.currentEvent) {
-            var startDate = new Date($scope.GPs.currentEvent.startDate);
-            return $scope.monthList[startDate.getMonth()] + ' ' + ( startDate.getDate() + 1) + ', ' + startDate.getFullYear();
+        if ($scope.eventData.currentEvent) {
+
+            var date = new Date();
+            var localOffset = date.getTimezoneOffset() * 60000;
+            var startDate = new Date($scope.eventData.currentEvent.startDate.getTime() + localOffset);
+            var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+
+            return startDate.toLocaleDateString("en-US", options);
         }
-        
-        return "";
-    };
 
-    $http.get('/api/EventWinner').then(
-
-        function successCallback(response) {
-
-            for (var i = 0 ;i < response.data.length ; ++i) {
-
-                var winner = response.data[i];
-                $scope.GPs.eventWinners[winner.event.id] = winner;
-            }
-
-        }, function errorCallback(response) {
-
-            $scope.error = response.data;
-        }
-    );
-
-    $http.get('/api/EventArt').then(
-
-        function successCallback(response) {
-
-            for (var i = 0 ; i < response.data.length ; ++i) {
-
-                var art = response.data[i];
-                $scope.GPs.eventArt[art.eventId] = art;
-            }
-
-            $scope.artLoaded = true;
-
-        }, function errorCallback(response) {
-
-            $scope.artError = response.data;
-        }
-    );
-
-    $scope.getActiveArt = function() {
-
-        return $scope.GPs.eventArt[$scope.GPs.currentEvent.id];
+        return "[Error:  No Event Selected.]";
     };
 
     $scope.getWinnerImageName = function() {
 
-        if ($scope.GPs.currentEvent) {
+        if ($scope.eventData.currentEvent) {
 
-            var winner = $scope.GPs.eventWinners[$scope.GPs.currentEvent.id];
-            if (winner != null && winner.imageName != null) {
+            var winner = $scope.eventData.winners[$scope.eventData.currentEvent.id];
+            if (winner && winner.imageName ) {
 
-                return "https://s3-us-west-2.amazonaws.com/playitforward-magic/images/winners/" + winner.imageName;
+                return $scope.eventData.baseUrl + "winners/" + winner.imageName;
             }
         }
 
         return "/assets/winners/Unknown.jpg";
     };
 
+
     // ////////// //
     // Bounty Tab //
     // ////////// //
 
     $scope.bountyArray = {
+
         bountyHash: {},
-        errorMessage: '',
+        error: '',
         sortType: 'event',
         sortReverse: false
     };
@@ -218,7 +365,7 @@ function GPController(contextPath, $scope, $http, $location) {
 
             }, function errorCallback(response) {
 
-                $scope.bountyArray.errorMessage = 'ERROR: ' + response.data.message;
+                $scope.bountyArray.error = 'ERROR: ' + response.data.message;
             }
         );
     };
@@ -227,64 +374,39 @@ function GPController(contextPath, $scope, $http, $location) {
 
     $scope.bountiesExist = function() {
 
-        if ($scope.GPs.currentEvent) {
+        if ( $scope.eventData.currentEvent ) {
             var currentBounties = $scope.getPrizeList();
             return currentBounties && currentBounties.length > 0;
         }
-        
+
         return false;
     };
 
     $scope.getPrizeList = function() {
 
-        if ($scope.GPs.currentEvent) {
+        if ($scope.eventData.currentEvent) {
 
-            return $scope.bountyArray.bountyHash[$scope.GPs.currentEvent.id];
+            return $scope.bountyArray.bountyHash[$scope.eventData.currentEvent.id];
         }
 
         return [];
     };
 
-    $scope.getHorseraceSrc = function() {
 
-        if ($scope.GPs.currentEvent) {
+    // ////////////// //
+    // Horse race Tab //
+    // ////////////// //
 
-            return '/assets/horserace/index.html?race=' + $scope.GPs.currentEvent.id;
+    $scope.getHorseRaceSrc = function() {
+
+        if ($scope.eventData.currentEvent) {
+
+            return '/assets/horserace/index.html?race=' + $scope.eventData.currentEvent.id;
         }
         else {
-            
+
             return '/assets/horserace/notfound.html';
         }
     };
 
-    $scope.selectYear = function() {
-
-        for (var i = 0 ; i < $scope.GPs.allEvents.length ; ++i) {
-
-            var event = $scope.GPs.allEvents[i];
-            if (event.startDate.getFullYear() === $scope.GPs.currentYear) {
-
-                $scope.GPs.currentEvent = event;
-                $scope.setEventId();
-                break;
-            }
-        }
-    };
-
-    $scope.selectEvent = function() {
-
-        if ($scope.GPs.currentEvent) {
-
-            $scope.GPs.currentYear = $scope.GPs.currentEvent.startDate.getFullYear();
-            $scope.setEventId();
-        }
-    };
-
-    $scope.setEventId = function() {
-
-        var id = $scope.GPs.currentEvent.id;
-        if (id && $location.search().id !== id) {
-            $location.search("event", id);
-        }
-    };
 }

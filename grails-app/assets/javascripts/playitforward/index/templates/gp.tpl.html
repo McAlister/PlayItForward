@@ -4,16 +4,16 @@
 <div role="main">
 
     <div class="gp-dropdown">
-        <select name="eventSelect" id="eventSelect" ng-model="GPs.currentEvent"
-                ng-options="option.name for option in (GPs.allEvents | filter:GPs.currentYear) track by option.id"
+        <select name="eventSelect" id="eventSelect" ng-model="eventData.currentEvent"
+                ng-options="event.name for event in (eventData.events | filter:eventData.currentYear) track by event.id"
                 ng-change="selectEvent()" title="eventSelectTitle">
 
         </select>
     </div>
 
     <div class="gp-dropdown">
-        <select name="yearSelect" id="yearSelect" ng-model="GPs.currentYear"
-                ng-options="year for year in GPs.allYears"
+        <select name="yearSelect" id="yearSelect" ng-model="eventData.currentYear"
+                ng-options="year for year in eventData.years"
                 ng-change="selectYear()" title="yearSelectTitle">
         </select>
     </div>
@@ -22,40 +22,60 @@
         <ul>
             <li ng-class="tabClass('summary')" ng-click="activate('summary')">Winner</li>
             <li ng-class="tabClass('playmat')" ng-click="activate('playmat')" >Playmat</li>
-            <li ng-class="tabClass('bounties')" ng-click="activate('bounties')">Prizes</li>
             <li ng-class="tabClass('race')" ng-click="activate('race')"
-                ng-show="!isFutureGP()">Standings</li>
+                ng-show="!isFutureGP()">Standings
+            </li>
+            <li ng-class="tabClass('bounties')" ng-click="activate('bounties')">Organization Stuff</li>
         </ul>
+    </div>
+
+    <!--loading-->
+
+    <div id="gp-loading" ng-show="!eventsLoaded">
+
+        <p>Loading Event Data ...</p>
+
     </div>
 
     <!--winner-->
 
     <div id="gp-summary" ng-show="isActiveTab('summary')">
 
-        <div ng-show="isFutureGP()" >
+        <div class="alert alert-danger" ng-show="winnerError">
 
-            {{GPs.currentEvent.name}} will begin on {{gpStartDateString()}}.
+            There was a problem retrieving winner information.
 
-            <br/>
+            <br />
 
-            May the odds be ever in your favor.
+            {{winnerError}}
 
         </div>
 
-        <div ng-if="!isFutureGP()" >
+        <div ng-show="eventsLoaded && isFutureGP()" >
+
+            {{eventData.currentEvent.name}} will begin on {{gpStartDateString()}}.
+
+            <br/>
+
+            You got this.
+
+        </div>
+
+        <div ng-if="winnersLoaded && !isFutureGP()" >
 
             <div class="section">
-                <p><b>Name:</b> {{GPs.eventWinners[GPs.currentEvent.id].name}}</p>
-                <p><b>Rank:</b> {{GPs.eventWinners[GPs.currentEvent.id].ranking}}</p>
-                <p><b>Record:</b> {{GPs.eventWinners[GPs.currentEvent.id].record}}</p>
+                <p><b>Name:</b> {{eventData.currentWinner.name}}</p>
+                <p><b>Rank:</b> {{eventData.currentWinner.ranking}}</p>
+                <p><b>Record:</b> {{eventData.currentWinner.record}}</p>
             </div>
 
             <p>
-                <img class="winner-image" ng-src="{{getWinnerImageName()}}" />
+                <img class="winner-image" ng-src="{{getWinnerImageName()}}"
+                    on-error-src="assets/winners/Unknown.jpg"/>
             </p>
 
             <p class="blurb">
-                {{GPs.eventWinners[GPs.currentEvent.id].blurb}}
+                {{eventData.currentWinner.blurb}}
             </p>
 
         </div>
@@ -66,48 +86,63 @@
 
     <div id="gp-playmat" ng-show="isActiveTab('playmat')">
 
-        <div ng-if="artLoaded && GPs.currentEvent">
+        <div class="alert alert-danger" ng-show="artError || artistsError">
+
+            There was a problem retrieving art information
+
+            <br />
+
+            {{artistsError}}
+
+            {{artError}}
+
+        </div>
+
+        <div ng-if="artLoaded && artistsLoaded && eventData.currentEvent">
 
             <p>
-                <span class="artTitle">{{getActiveArt().title}}</span> by
-                <span class="artist">{{getActiveArt().artist}}</span>
+                <span class="artTitle">{{eventData.currentArt.title}}</span>
+                <span ng-show="eventData.currentArtist">by</span>
+                <span class="artist">{{eventData.currentArtist.name}}</span>
             </p>
 
             <p>
-                <img class="playmat-image" ng-src="{{getImageName()}}" />
+                <img class="playmat-image" ng-src="{{eventData.currentEvent.matUrl}}"
+                     on-error-src="assets/ComingSoon.jpg" />
             </p>
 
             <p>
-                {{getActiveArt().blurb}}
+                {{eventData.currentArtist.blurb}}
             </p>
 
             <div class="socialIconsDiv">
 
-                <a target="_blank" ng-show="getActiveArt().website" href="{{getActiveArt().website}}">
+                <a target="_blank" ng-show="eventData.currentArtist.webSiteUrl" href="{{eventData.currentArtist.webSiteUrl}}">
                     <img src="/assets/socialmedia/website.png" class="artistLinkImage"/>
                 </a>
 
-                <a target="_blank" ng-show="getActiveArt().patreon" href="{{getActiveArt().patreon}}">
-                    <img ng-show="getActiveArt().patreon" src="/assets/socialmedia/patreon.png" class="artistLinkImage"/>
+                <a target="_blank" ng-show="eventData.currentArtist.patreonUrl" href="{{eventData.currentArtist.patreonUrl}}">
+                    <img src="/assets/socialmedia/patreon.png" class="artistLinkImage"/>
                 </a>
 
-                <a target="_blank" ng-show="getActiveArt().deviant" href="{{getActiveArt().deviant}}">
-                    <img ng-show="getActiveArt().deviant" src="/assets/socialmedia/deviantart.png" class="artistLinkImage"/>
+                <a target="_blank" ng-show="eventData.currentArtist.deviantArtUrl" href="{{eventData.currentArtist.deviantArtUrl}}">
+                    <img src="/assets/socialmedia/deviantart.png" class="artistLinkImage"/>
                 </a>
 
-                <a target="_blank" ng-show="getActiveArt().facebook" href="{{getActiveArt().facebook}}">
-                    <img ng-show="getActiveArt().facebook" src="/assets/socialmedia/facebook.png" class="artistLinkImage"/>
+                <a target="_blank" ng-show="eventData.currentArtist.facebookUrl" href="{{eventData.currentArtist.facebookUrl}}">
+                    <img src="/assets/socialmedia/facebook.png" class="artistLinkImage"/>
                 </a>
 
             </div>
 
+            <br />
 
-            <p ng-show="getActiveArt().purchaseUrl" class="center">
-                Purchase a print of this art <a target="_blank" href="{{getActiveArt().purchaseUrl}}">here</a>.
+            <p ng-show="eventData.currentArt.purchaseUrl" class="center">
+                Purchase a print of this art <a target="_blank" href="{{eventData.currentArt.purchaseUrl}}">here</a>.
             </p>
 
             <p class="center">
-                Playmats provided by our heroes at <a href="http://gamermats.com/">GamerMats</a>.
+                Playmats provided by the heroes at <a href="http://gamermats.com/">GamerMats</a>.
             </p>
 
         </div>
@@ -118,22 +153,26 @@
 
     <div id="gp-bounties" ng-show="isActiveTab('bounties')">
 
-        <div ng-hide="bountiesExist()" >
+        <div class="alert alert-danger" ng-show="bountyArray.error">
 
-            <a href="mailto:play_it_forward@outlook.com" class="navigation-link">
-                Contact Us
-            </a> about donating additional prizes for this event.
+            There was a problem retrieving prize information
+
+            <br />
+
+            {{bountyArray.error}}
 
         </div>
+
+        <p>
+            <b>Event Coordinator</b>: {{eventData.currentEvent.coordinator}}
+        </p>
+
 
         <p ng-show="bountiesExist()">
             In addition to the Play It Forward playmat, members of the community have
-            donated the following prizes to the leading lady in day two:
+            donated the following prizes to the leading lady in day two.  Please work
+            with the event coordinator to deliver prizes:
         </p>
-
-        <div class='has-error' ng-show="bountyArray.errorMessage">
-            Error: Unable to load Bounties.
-        </div>
 
         <table class="table table-bordered table-striped" ng-show="bountiesExist()">
 
@@ -171,18 +210,11 @@
 
     <div id="gp-race" ng-if="isActiveTab('race')">
 
-        <div ng-if="isFutureGP()">
-            <p>
-
-                This event hasn't happened yet.
-
-            </p>
-        </div>
-
         <div ng-if="!isFutureGP()">
-            <iframe ng-if="!isFutureGP()" ng-src="{{getHorseraceSrc()}}" frameborder="0" width="100%" height="600px"></iframe>
 
-            <p class="text-right"><small><a href="{{getHorseraceSrc()}}">(full-screen)</a></small></p>
+            <iframe ng-if="!isFutureGP()" ng-src="{{getHorseRaceSrc()}}" frameborder="0" width="100%" height="600px"></iframe>
+
+            <p class="text-right"><small><a href="{{getHorseRaceSrc()}}">(full-screen)</a></small></p>
 
             <p>
 
@@ -194,6 +226,7 @@
                 You can use your real name/picture or any pseudonym/avatar you desire.
 
             </p>
+
         </div>
 
     </div>

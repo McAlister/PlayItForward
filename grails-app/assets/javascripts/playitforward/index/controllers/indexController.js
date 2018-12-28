@@ -42,6 +42,7 @@ function IndexController(userPersistenceService, contextPath, $scope, $http, $lo
     };
 
     $scope.activate = function(tabName) {
+
         $scope.activeTab = tabName;
         $location.search("tab", tabName);
     };

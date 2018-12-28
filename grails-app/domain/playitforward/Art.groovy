@@ -24,5 +24,5 @@ class Art {
         purchaseUrl column: 'purchase_url';
     }
 
-    static belongsTo = [Artist]
+    static belongsTo = [Artist];
 }
