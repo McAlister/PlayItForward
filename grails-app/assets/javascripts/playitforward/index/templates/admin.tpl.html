@@ -34,7 +34,7 @@
             <div class="gp-dropdown">
                 <!--suppress HtmlFormInputWithoutLabel -->
                 <select name="prizeSelect" id="prizeSelect" ng-model="currentEvent"
-                        ng-options="event.name for event in (winnerData.eventList | filter:prizeData.currentYear) track by event.id"
+                        ng-options="event.name + ' - ' + event.eventFormat for event in (winnerData.eventList | filter:prizeData.currentYear) track by event.id"
                         ng-change="selectEvent()">
                 </select>
             </div>
@@ -128,7 +128,7 @@
             <div class="gp-dropdown">
                 <!--suppress HtmlFormInputWithoutLabel -->
                 <select name="winnerSelect" id="winnerSelect" ng-model="currentEvent"
-                        ng-options="event.name for event in (winnerData.eventList | filter:prizeData.currentYear) track by event.id"
+                        ng-options="event.name + ' - ' + event.eventFormat for event in (winnerData.eventList | filter:prizeData.currentYear) track by event.id"
                         ng-change="selectEvent()">
                 </select>
             </div>
@@ -368,7 +368,7 @@
         <div class="gp-dropdown">
             <!--suppress HtmlFormInputWithoutLabel -->
             <select name="eventSelect" id="eventSelect" ng-model="currentEvent"
-                    ng-options="event.name for event in (winnerData.eventList | filter:prizeData.currentYear) track by event.id"
+                    ng-options="event.name + ' - ' + event.eventFormat for event in (winnerData.eventList | filter:prizeData.currentYear) track by event.id"
                     ng-change="selectEvent()">
             </select>
         </div>

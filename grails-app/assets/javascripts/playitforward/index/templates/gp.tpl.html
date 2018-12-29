@@ -5,7 +5,7 @@
 
     <div class="gp-dropdown">
         <select name="eventSelect" id="eventSelect" ng-model="eventData.currentEvent"
-                ng-options="event.name for event in (eventData.events | filter:eventData.currentYear) track by event.id"
+                ng-options="event.name + ' - ' + event.eventFormat for event in (eventData.events | filter:eventData.currentYear) track by event.id"
                 ng-change="selectEvent()" title="eventSelectTitle">
 
         </select>
