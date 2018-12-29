@@ -4,7 +4,8 @@ package playitforward
 class BootStrap
 {
     def springSecurityService;
-    String swVersionString = "2.0.0";
+    String swVersionString = "3.0.0";
+    String dbVersionString = "5.0.0";
 
     def init = { servletContext ->
 
@@ -14,6 +15,10 @@ class BootStrap
         if ( dbVersion == null) {
 
             new Sysconfig(key: 'DB Version', value: "1.0.0").save();
+        }
+        else {
+            dbVersion.setValue(dbVersionString);
+            dbVersion.save();
         }
 
         Sysconfig swVersion = Sysconfig.findByKey("DB Version");
