@@ -4,17 +4,17 @@
 <div role="main">
 
     <div class="gp-dropdown">
-        <select name="eventSelect" id="eventSelect" ng-model="eventData.currentEvent"
-                ng-options="event.name + ' - ' + event.eventFormat for event in (eventData.events | filter:eventData.currentYear) track by event.id"
-                ng-change="selectEvent()" title="eventSelectTitle">
+        <select name="eventSelect" id="eventSelect" ng-model="eventService.currentEvent"
+                ng-options="event.name + ' - ' + event.eventFormat for event in (eventService.events | filter:eventService.currentYear) track by event.id"
+                ng-change="eventService.selectedEvent()" title="eventSelectTitle">
 
         </select>
     </div>
 
     <div class="gp-dropdown">
-        <select name="yearSelect" id="yearSelect" ng-model="eventData.currentYear"
-                ng-options="year for year in eventData.years"
-                ng-change="selectYear()" title="yearSelectTitle">
+        <select name="yearSelect" id="yearSelect" ng-model="eventService.currentYear"
+                ng-options="year for year in eventService.years"
+                ng-change="eventService.selectedYear()" title="yearSelectTitle">
         </select>
     </div>
 
@@ -31,7 +31,7 @@
 
     <!--loading-->
 
-    <div id="gp-loading" ng-show="!eventsLoaded">
+    <div id="gp-loading" ng-show="!eventService.eventsLoaded">
 
         <p>Loading Event Data ...</p>
 
@@ -51,9 +51,9 @@
 
         </div>
 
-        <div ng-show="eventsLoaded && isFutureGP()" >
+        <div ng-show="eventService.eventsLoaded && isFutureGP()" >
 
-            {{eventData.currentEvent.name}} will begin on {{gpStartDateString()}}.
+            {{eventService.currentEvent.name}} will begin on {{gpStartDateString()}}.
 
             <br/>
 
@@ -64,9 +64,9 @@
         <div ng-if="winnersLoaded && !isFutureGP()" >
 
             <div class="section">
-                <p><b>Name:</b> {{eventData.currentWinner.name}}</p>
-                <p><b>Rank:</b> {{eventData.currentWinner.ranking}}</p>
-                <p><b>Record:</b> {{eventData.currentWinner.record}}</p>
+                <p><b>Name:</b> {{getCurrentWinner().name}}</p>
+                <p><b>Rank:</b> {{getCurrentWinner().ranking}}</p>
+                <p><b>Record:</b> {{getCurrentWinner().record}}</p>
             </div>
 
             <p>
@@ -75,7 +75,7 @@
             </p>
 
             <p class="blurb">
-                {{eventData.currentWinner.blurb}}
+                {{getCurrentWinner().blurb}}
             </p>
 
         </div>
@@ -98,38 +98,38 @@
 
         </div>
 
-        <div ng-if="artLoaded && artistsLoaded && eventData.currentEvent">
+        <div ng-if="artLoaded && artistsLoaded && eventService.eventsLoaded && eventService.currentEvent">
 
             <p>
-                <span class="artTitle">{{eventData.currentArt.title}}</span>
-                <span ng-show="eventData.currentArtist">by</span>
-                <span class="artist">{{eventData.currentArtist.name}}</span>
+                <span class="artTitle">{{getCurrentArt().title}}</span>
+                <span ng-show="getCurrentArtist()">by</span>
+                <span class="artist">{{getCurrentArtist().name}}</span>
             </p>
 
             <p>
-                <img class="playmat-image" ng-src="{{eventData.currentEvent.matUrl}}"
+                <img class="playmat-image" ng-src="{{eventService.currentEvent.matUrl}}"
                      on-error-src="assets/ComingSoon.jpg" />
             </p>
 
             <p>
-                {{eventData.currentArtist.blurb}}
+                {{etCurrentArtist().blurb}}
             </p>
 
             <div class="socialIconsDiv">
 
-                <a target="_blank" ng-show="eventData.currentArtist.webSiteUrl" href="{{eventData.currentArtist.webSiteUrl}}">
+                <a target="_blank" ng-show="getCurrentArtist().webSiteUrl" href="{{getCurrentArtist().webSiteUrl}}">
                     <img src="/assets/socialmedia/website.png" class="artistLinkImage"/>
                 </a>
 
-                <a target="_blank" ng-show="eventData.currentArtist.patreonUrl" href="{{eventData.currentArtist.patreonUrl}}">
+                <a target="_blank" ng-show="getCurrentArtist().patreonUrl" href="{{getCurrentArtist().patreonUrl}}">
                     <img src="/assets/socialmedia/patreon.png" class="artistLinkImage"/>
                 </a>
 
-                <a target="_blank" ng-show="eventData.currentArtist.deviantArtUrl" href="{{eventData.currentArtist.deviantArtUrl}}">
+                <a target="_blank" ng-show="getCurrentArtist().deviantArtUrl" href="{{getCurrentArtist().deviantArtUrl}}">
                     <img src="/assets/socialmedia/deviantart.png" class="artistLinkImage"/>
                 </a>
 
-                <a target="_blank" ng-show="eventData.currentArtist.facebookUrl" href="{{eventData.currentArtist.facebookUrl}}">
+                <a target="_blank" ng-show="getCurrentArtist().facebookUrl" href="{{getCurrentArtist().facebookUrl}}">
                     <img src="/assets/socialmedia/facebook.png" class="artistLinkImage"/>
                 </a>
 
@@ -137,8 +137,8 @@
 
             <br />
 
-            <p ng-show="eventData.currentArt.purchaseUrl" class="center">
-                Purchase a print of this art <a target="_blank" href="{{eventData.currentArt.purchaseUrl}}">here</a>.
+            <p ng-show="getCurrentArt().purchaseUrl" class="center">
+                Purchase a print of this art <a target="_blank" href="{{getCurrentArt().purchaseUrl}}">here</a>.
             </p>
 
             <p class="center">
@@ -164,7 +164,7 @@
         </div>
 
         <p>
-            <b>Event Coordinator</b>: {{eventData.currentEvent.coordinator}}
+            <b>Event Coordinator</b>: {{eventService.currentEvent.coordinator}}
         </p>
 
 

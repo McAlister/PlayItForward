@@ -4,18 +4,20 @@ angular
     .module("playitforward.index")
     .controller("AdminController", AdminController);
 
-function AdminController(contextPath, userPersistenceService, $scope, $http, $location, $filter, fileReader) {
+function AdminController(contextPath, userPersistenceService, $scope, $http, $location, $filter,
+                         fileReader, eventService) {
 
     var vm = this;
     vm.contextPath = contextPath;
+
+    $scope.eventService = eventService;
+    eventService.loadEvents();
 
     $scope.sessionData = userPersistenceService.getCookieData();
     $scope.authenticated = $scope.sessionData.authenticated;
     $scope.accessToken = $scope.sessionData.accessToken;
     $scope.role = $scope.sessionData.role;
     
-    $scope.currentEvent = null;
-
     $scope.eventData = {
 
         eventDataError: '',
@@ -72,9 +74,7 @@ function AdminController(contextPath, userPersistenceService, $scope, $http, $lo
         prizeError: '',
         prizeHash: {},
         newDonor: '',
-        newPrize: '',
-        allYears: [2017,2018],
-        currentYear: 2018
+        newPrize: ''
     };
 
     $scope.populateBounties = function() {
@@ -107,9 +107,9 @@ function AdminController(contextPath, userPersistenceService, $scope, $http, $lo
 
     $scope.getPrizeList = function() {
 
-        if ($scope.currentEvent) {
+        if (eventService.currentEvent) {
 
-            return $scope.prizeData.prizeHash[$scope.currentEvent.id];
+            return $scope.prizeData.prizeHash[eventService.currentEvent.id];
         }
 
         return [];
@@ -124,7 +124,7 @@ function AdminController(contextPath, userPersistenceService, $scope, $http, $lo
             donor: $scope.prizeData.newDonor,
             prize: $scope.prizeData.newPrize,
             event: {
-                id: $scope.currentEvent.id
+                id: eventService.currentEvent.id
             }
         };
 
@@ -166,72 +166,27 @@ function AdminController(contextPath, userPersistenceService, $scope, $http, $lo
         );
     };
 
-    $scope.selectYear = function() {
-
-        for (var i = 0 ; i < $scope.winnerData.eventList.length ; ++i) {
-
-            var event = $scope.winnerData.eventList[i];
-            if (event.startDate.getFullYear() === $scope.prizeData.currentYear) {
-
-                $scope.currentEvent = event;
-                $scope.selectEvent();
-                break;
-            }
-        }
-
-        // $scope.bountyArray.bounties = $scope.bountyArray.bountiesByYear[$scope.GPs.currentYear];
-    };
-
     // //////////////// //
     // Event Winner Tab //
     // //////////////// //
 
-    $scope.eventsLoaded = false;
+    $scope.eventsLoaded = true;
     $scope.winnerData = {
 
-        currentWinner: null,
+        newWinner: {},
         winnerError: '',
-        winnerHash: {},
-        eventList: []
+        winnerHash: {}
     };
 
-    $scope.getEvents = function() {
+    $scope.getCurrentWinner = function() {
 
-        $http.get('/api/Event').then(
+        var winner;
+        if( eventService.currentEvent ) {
 
-            function successCallback(response) {
+            winner = $scope.winnerData.winnerHash[eventService.currentEvent.id];
+        }
 
-                $scope.winnerData.eventList = response.data;
-                $scope.currentEvent = $scope.winnerData.eventList[0];
-                $scope.winnerData.currentWinner = 
-                    $scope.winnerData.winnerHash[$scope.currentEvent.id];
-
-                var date = new Date();
-                var localOffset = date.getTimezoneOffset() * 60000;
-                for (var i = 0 ; i < $scope.winnerData.eventList.length ; ++i ) {
-                    $scope.winnerData.eventList[i].startDate = new Date($scope.winnerData.eventList[i].startDate.getTime() + localOffset);
-                    $scope.winnerData.eventList[i].endDate = new Date($scope.winnerData.eventList[i].endDate.getTime() + localOffset);
-                }
-
-                var eventId = $location.search().event;
-                if(eventId) {
-
-                    var event = $filter('filter')($scope.winnerData.eventList, {id: eventId});
-                    if (event.length > 0) {
-                        $scope.currentEvent = event[0];
-                    }
-                }
-
-                $scope.prizeData.currentYear = $scope.currentEvent.startDate.getFullYear();
-                $scope.eventsLoaded = true;
-                $scope.selectEvent();
-
-            }, function errorCallback(response) {
-
-                $scope.winnerData.winnerError = 'Error: Could not contact database: ' + response.data.message;
-
-            }
-        );
+        return winner || $scope.winnerData.newWinner;
     };
 
     $scope.getWinners = function() {
@@ -246,8 +201,6 @@ function AdminController(contextPath, userPersistenceService, $scope, $http, $lo
                     $scope.winnerData.winnerHash[winner.event.id] = winner;
                 }
                 
-                $scope.getEvents();
-
             }, function errorCallback(response) {
 
                 $scope.winnerData.winnerError = 'Error: Could not contact database: ' + response.data.message;
@@ -257,51 +210,9 @@ function AdminController(contextPath, userPersistenceService, $scope, $http, $lo
     
     $scope.getWinners();
     
-    $scope.selectEvent = function() {
-
-        var id = $scope.currentEvent.id;
-        if (id && $location.search().id !== id) {
-            $location.search("event", id);
-        }
-
-        $scope.winnerData.currentWinner = $scope.winnerData.winnerHash[id];
-        $scope.prizeData.currentYear = $scope.currentEvent.startDate.getFullYear();
-
-        var typeId = $scope.currentEvent.type.id;
-        for ( var i = 0 ; i < $scope.eventData.types.length ; i++ ) {
-            if ( typeId === $scope.eventData.types[i].id ) {
-                $scope.eventData.currentType = $scope.eventData.types[i];
-                break;
-            }
-        }
-
-        var orgId = $scope.currentEvent.organizer.id;
-        for ( var j = 0 ; j < $scope.eventData.organizers.length ; j++ ) {
-            if ( orgId === $scope.eventData.organizers[j].id ) {
-                $scope.eventData.currentOrganizer = $scope.eventData.organizers[j];
-                break;
-            }
-        }
-
-        if ( $scope.currentEvent.art ) {
-
-            var artId = $scope.currentEvent.art.id;
-            for ( var k = 0 ; k < $scope.eventData.art.length ; k++ ) {
-                if ( artId === $scope.eventData.art[k].id ) {
-                    $scope.eventData.currentArt = $scope.eventData.art[k];
-                    break;
-                }
-            }
-        }
-        else {
-
-            $scope.eventData.currentArt = null;
-        }
-    };
-
     $scope.upsertWinner = function() {
 
-        var winner = $scope.winnerData.currentWinner;
+        var winner = $scope.getCurrentWinner();
         
         var data = {
             
@@ -311,7 +222,7 @@ function AdminController(contextPath, userPersistenceService, $scope, $http, $lo
             blurb: winner.blurb,
             imageName: winner.imageName,
             event: {
-                id: $scope.currentEvent.id
+                id: eventService.currentEvent.id
             }
         };
 
@@ -583,7 +494,6 @@ function AdminController(contextPath, userPersistenceService, $scope, $http, $lo
         currentArt: {},
         artList: [],
         artError: '',
-        baseUrl: '',
         previewUrl: '',
         chosenArtist: null
     };
@@ -606,26 +516,11 @@ function AdminController(contextPath, userPersistenceService, $scope, $http, $lo
 
     $scope.populateArt();
 
-    $scope.getBaseUrl = function() {
-
-        $http.get('/api/Image/getImageBaseURL').then(
-
-            function successCallback(response) {
-
-                $scope.artArray.baseUrl = response.data.url;
-
-            }, function errorCallback(response) {
-
-                $scope.artArray.artError = 'Failed to get Art URL: ' + response.data;
-            }
-        );
-    };
-
-    $scope.getBaseUrl();
-
     $scope.getArtPath = function() {
 
-        $scope.artArray.previewUrl = $scope.artArray.baseUrl + 'playmatArt/' + $scope.artArray.currentArt.fileName;
+        if ( eventService.baseUrl ) {
+            $scope.artArray.previewUrl = eventService.baseUrl + 'playmatArt/' + $scope.artArray.currentArt.fileName;
+        }
     };
 
     $scope.getArtPath();
@@ -779,8 +674,8 @@ function AdminController(contextPath, userPersistenceService, $scope, $http, $lo
 
     $scope.getEventPreview = function() {
 
-        if ( $scope.currentEvent ) {
-            return $scope.artArray.baseUrl + 'playmats/' + $scope.currentEvent.playmatFileName;
+        if ( eventService.currentEvent ) {
+            return eventService.baseUrl + 'playmats/' + eventService.currentEvent.playmatFileName;
         }
     };
 
@@ -815,68 +710,9 @@ function AdminController(contextPath, userPersistenceService, $scope, $http, $lo
 
     $scope.populateEventProperties();
 
-    $scope.upsertEvent = function() {
-
-        var data = {
-
-            name: $scope.currentEvent.name,
-            eventCode: $scope.currentEvent.eventCode,
-            coordinator: $scope.currentEvent.coordinator,
-            startDate: $filter('date')($scope.currentEvent.startDate, "yyyy-MM-dd"),
-            endDate: $filter('date')($scope.currentEvent.endDate, "yyyy-MM-dd"),
-            eventFormat: $scope.currentEvent.eventFormat,
-            playmatFileName: $scope.currentEvent.playmatFileName,
-            organizer: {
-                id: $scope.eventData.currentOrganizer.id
-            },
-            type: {
-                id: $scope.eventData.currentType.id
-            },
-            art: {
-                id: $scope.eventData.currentArt.id
-            }
-        };
-
-        var config = {
-            headers : {
-                'Content-Type': 'application/json;charset=utf-8;'
-            }
-        };
-
-        if('id' in $scope.currentEvent && $scope.currentEvent.id > 0) {
-
-            data.id = $scope.currentEvent.id;
-
-            $http.put('/api/Event/' + data.id, data, config).then(
-                function(){
-                    $scope.getEvents();
-                    window.alert('Event updated successfully.');
-                },
-                function(response){
-                    $scope.getEvents();
-                    window.alert('Error: Failed to edit Event! ' + response.data.message);
-                }
-            );
-        }
-        else {
-
-            $http.post('/api/Event', data, config).then(
-                function(){
-                    $scope.getEvents();
-                    window.alert('Event added successfully.');
-                },
-                function(response){
-                    $scope.getEvents();
-                    window.alert('Error: Failed to add Event! ' + response.data.message);
-                }
-            );
-        }
-
-    };
-
     $scope.addNewEventSetup = function() {
 
-        $scope.currentEvent = null;
+        eventService.currentEvent = {};
     };
 
 }
