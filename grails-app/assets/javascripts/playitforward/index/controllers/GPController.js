@@ -4,7 +4,7 @@ angular
     .module("playitforward.index")
     .controller("GPController", GPController);
 
-function GPController(contextPath, $scope, $http, $location, eventService) {
+function GPController(contextPath, $scope, $http, tabService, eventService) {
 
     var vm = this;
     vm.contextPath = contextPath;
@@ -12,31 +12,8 @@ function GPController(contextPath, $scope, $http, $location, eventService) {
     $scope.eventService = eventService;
     eventService.loadEvents();
 
-
-    // /////////////// //
-    // Active Tab Code //
-    // /////////////// //
-
-    $scope.activeTab = $location.search().tab || 'playmat';
-
-    $scope.isActiveTab = function(tabName) {
-
-        return (tabName === $scope.activeTab);
-    };
-
-    $scope.tabClass = function(tabName) {
-
-        if (tabName === $scope.activeTab) {
-            return 'active';
-        }
-
-        return '';
-    };
-
-    $scope.activate = function(tabName) {
-        $scope.activeTab = tabName;
-        $location.search("tab", tabName);
-    };
+    $scope.tabService = tabService;
+    tabService.registerTabList( "GPs", "playmat", ["winner", "playmat", "race", "org"] );
 
 
     // ///////////////// //
@@ -124,18 +101,6 @@ function GPController(contextPath, $scope, $http, $location, eventService) {
     $scope.loadArt();
     $scope.loadWinners();
     $scope.getBaseUrl();
-
-    $scope.$on('$locationChangeSuccess', function() {
-
-        // if event or tab changed, update
-        var searchTab = $location.search().tab;
-
-        if (searchTab && $scope.activeTab !== searchTab) {
-
-            $scope.activate(searchTab);
-        }
-    });
-
 
     $scope.getCurrentArt = function() {
 

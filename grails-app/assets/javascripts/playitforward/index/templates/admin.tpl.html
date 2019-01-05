@@ -3,19 +3,19 @@
 
     <div class="bounty-tabs">
         <ul>
-            <li ng-class="tabClass('art')" ng-click="activate('art')">Art</li>
-            <li ng-class="tabClass('events')" ng-click="activate('events')">Events</li>
-            <li ng-class="tabClass('prizes')" ng-click="activate('prizes')" >Prizes</li>
-            <li ng-class="tabClass('winners')" ng-click="activate('winners')">Winners</li>
-            <li ng-class="tabClass('players')" ng-click="activate('players')">Players</li>
-            <li ng-class="tabClass('files')" ng-click="activate('files')">Images</li>
+            <li ng-class="tabService.tabClass('Admin', 'art')" ng-click="tabService.activateTab('Admin', 'art')">Art</li>
+            <li ng-class="tabService.tabClass('Admin', 'events')" ng-click="tabService.activateTab('Admin', 'events')">Events</li>
+            <li ng-class="tabService.tabClass('Admin', 'prizes')" ng-click="tabService.activateTab('Admin', 'prizes')" >Prizes</li>
+            <li ng-class="tabService.tabClass('Admin', 'winners')" ng-click="tabService.activateTab('Admin', 'winners')">Winners</li>
+            <li ng-class="tabService.tabClass('Admin', 'players')" ng-click="tabService.activateTab('Admin', 'players')">Players</li>
+            <li ng-class="tabService.tabClass('Admin', 'files')" ng-click="tabService.activateTab('Admin', 'files')">Images</li>
         </ul>
     </div>
 
 
     <!--prizes-->
 
-    <div id="admin-prizes" ng-show="isActiveTab('prizes')">
+    <div id="admin-prizes" ng-show="tabService.isActiveTab('Admin', 'prizes')">
 
         <div class="alert alert-danger" ng-show="prizeData.prizeError">
 
@@ -109,7 +109,7 @@
 
     <!--winners-->
 
-    <div id="admin-winners" ng-show="isActiveTab('winners')">
+    <div id="admin-winners" ng-show="tabService.isActiveTab('Admin', 'winners')">
 
         <div class="alert alert-danger" ng-show="winnerData.winnerError">
 
@@ -179,7 +179,7 @@
 
     <!--players-->
 
-    <div id="admin-players" ng-show="isActiveTab('players')">
+    <div id="admin-players" ng-show="tabService.isActiveTab('Admin', 'players')">
 
         <h1>Leading Ladies:</h1>
 
@@ -316,7 +316,7 @@
 
     <!--file upload-->
 
-    <div id="admin-files" ng-show="isActiveTab('files')">
+    <div id="admin-files" ng-show="tabService.isActiveTab('Admin', 'files')">
 
         <h1>Manage Files:</h1>
 
@@ -361,7 +361,7 @@
 
     <!--events-->
 
-    <div id="admin-events" ng-show="isActiveTab('events')">
+    <div id="admin-events" ng-show="tabService.isActiveTab('Admin', 'events')">
 
         <h1>Manage Events:</h1>
 
@@ -464,7 +464,7 @@
 
     <!--artists -->
 
-    <div id="admin-artists" ng-show="isActiveTab('art')">
+    <div id="admin-artists" ng-show="tabService.isActiveTab('Admin', 'art')">
 
 
         <h1>Art:</h1>

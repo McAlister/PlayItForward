@@ -4,14 +4,17 @@ angular
     .module("playitforward.index")
     .controller("AdminController", AdminController);
 
-function AdminController(contextPath, userPersistenceService, $scope, $http, $location, $filter,
-                         fileReader, eventService) {
+function AdminController(contextPath, userPersistenceService, $scope, $http, $filter,
+                         fileReader, tabService, eventService) {
 
     var vm = this;
     vm.contextPath = contextPath;
 
     $scope.eventService = eventService;
     eventService.loadEvents();
+
+    $scope.tabService = tabService;
+    tabService.registerTabList( "Admin", "art", ["art", "events", "winners", "prizes", "players", "files"] );
 
     $scope.sessionData = userPersistenceService.getCookieData();
     $scope.authenticated = $scope.sessionData.authenticated;
@@ -28,41 +31,6 @@ function AdminController(contextPath, userPersistenceService, $scope, $http, $lo
         art: [],
         currentArt: null
     };
-
-    $scope.header = 
-
-    // /////////////// //
-    // Active Tab Code //
-    // /////////////// //
-
-    $scope.isActiveTab = function (tabName) {
-
-        return (tabName === $scope.activeTab);
-    };
-
-    $scope.tabClass = function (tabName) {
-
-        if (tabName === $scope.activeTab) {
-            return 'active';
-        }
-
-        return '';
-    };
-
-    $scope.activate = function (tabName) {
-        
-        if (tabName) {
-
-            $scope.activeTab = tabName;
-            $location.search('tab', tabName);
-        }
-        else {
-            $scope.activeTab = 'art';
-            $location.search('tab', 'art');
-        }
-    };
-
-    $scope.activate($location.search().tab);
 
     // ///////// //
     // Prize Tab //

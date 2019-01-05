@@ -20,12 +20,12 @@
 
     <div class="bounty-tabs">
         <ul>
-            <li ng-class="tabClass('summary')" ng-click="activate('summary')">Winner</li>
-            <li ng-class="tabClass('playmat')" ng-click="activate('playmat')" >Playmat</li>
-            <li ng-class="tabClass('race')" ng-click="activate('race')"
+            <li ng-class="tabService.tabClass('GPs', 'winner')" ng-click="tabService.activateTab('GPs', 'winner')">Winner</li>
+            <li ng-class="tabService.tabClass('GPs', 'playmat')" ng-click="tabService.activateTab('GPs', 'playmat')" >Playmat</li>
+            <li ng-class="tabService.tabClass('GPs', 'race')" ng-click="tabService.activateTab('GPs', 'race')"
                 ng-show="!isFutureGP()">Standings
             </li>
-            <li ng-class="tabClass('bounties')" ng-click="activate('bounties')">Organization Stuff</li>
+            <li ng-class="tabService.tabClass('GPs', 'org')" ng-click="tabService.activateTab('GPs', 'org')">Organization Stuff</li>
         </ul>
     </div>
 
@@ -39,7 +39,7 @@
 
     <!--winner-->
 
-    <div id="gp-summary" ng-show="isActiveTab('summary')">
+    <div id="gp-summary" ng-show="tabService.isActiveTab('GPs', 'winner')">
 
         <div class="alert alert-danger" ng-show="winnerError">
 
@@ -84,7 +84,7 @@
 
     <!--playmat-->
 
-    <div id="gp-playmat" ng-show="isActiveTab('playmat')">
+    <div id="gp-playmat" ng-show="tabService.isActiveTab('GPs', 'playmat')">
 
         <div class="alert alert-danger" ng-show="artError || artistsError">
 
@@ -151,7 +151,7 @@
 
     <!--prizes-->
 
-    <div id="gp-bounties" ng-show="isActiveTab('bounties')">
+    <div id="gp-bounties" ng-show="tabService.isActiveTab('GPs', 'org')">
 
         <div class="alert alert-danger" ng-show="bountyArray.error">
 
@@ -208,7 +208,7 @@
 
     <!--horse race-->
 
-    <div id="gp-race" ng-if="isActiveTab('race')">
+    <div id="gp-race" ng-if="tabService.isActiveTab('GPs', 'race')">
 
         <div ng-if="!isFutureGP()">
 

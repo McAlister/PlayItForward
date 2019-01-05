@@ -7,15 +7,15 @@
 
     <div class="bounty-tabs">
         <ul>
-            <li ng-class="tabClass('art')" ng-click="activate('art')">Community</li>
-            <li ng-class="tabClass('prizes')" ng-click="activate('prizes')">Strategy</li>
-            <li ng-class="tabClass('sponsors')" ng-click="activate('sponsors')" >Events</li>
+            <li ng-class="tabService.tabClass('Resources', 'community')" ng-click="tabService.activateTab('Resources', 'community')">Community</li>
+            <li ng-class="tabService.tabClass('Resources', 'strategy')" ng-click="tabService.activateTab('Resources', 'strategy')">Strategy</li>
+            <li ng-class="tabService.tabClass('Resources', 'events')" ng-click="tabService.activateTab('Resources', 'events')" >Events</li>
         </ul>
     </div>
 
     <!--// Community //-->
 
-    <div id="community-links" ng-show="isActiveTab('art')">
+    <div id="community-links" ng-show="tabService.isActiveTab('Resources', 'community')">
 
         <table class="resource-table">
 
@@ -103,7 +103,7 @@
 
     <!--// Strategy //-->
 
-    <div id="strategy-links" ng-show="isActiveTab('prizes')">
+    <div id="strategy-links" ng-show="tabService.isActiveTab('Resources', 'strategy')">
 
         <table class="resource-table">
 
@@ -202,7 +202,7 @@
 
     <!--// Events //-->
 
-    <div id="event-links" ng-show="isActiveTab('sponsors')">
+    <div id="event-links" ng-show="tabService.isActiveTab('Resources', 'events')">
 
         <table class="resource-table">
 

@@ -7,14 +7,14 @@
 
     <div class="bounty-tabs">
         <ul>
-            <li ng-class="tabClass('art')" ng-click="activate('art')">Playmat Artists</li>
-            <li ng-class="tabClass('sponsors')" ng-click="activate('sponsors')" >Corporate Sponsors</li>
+            <li ng-class="tabService.tabClass('Supporters', 'art')" ng-click="tabService.activateTab('Supporters', 'art')">Playmat Artists</li>
+            <li ng-class="tabService.tabClass('Supporters', 'sponsors')" ng-click="tabService.activateTab('Supporters', 'sponsors')" >Corporate Sponsors</li>
         </ul>
     </div>
 
     <!-- Art -->
 
-    <div id="donor-art" ng-show="isActiveTab('art')">
+    <div id="donor-art" ng-show="tabService.isActiveTab('Supporters', 'art')">
 
         <div class="alert alert-danger" ng-show="artData.pathError">
 
@@ -64,7 +64,7 @@
             <div id="carousel-example-generic" class="carousel slide" data-ride="carousel" data-interval="3000">
 
                 <!-- Wrapper for slides -->
-                <div class="carousel-inner" ng-repeat="slide in getSlides() track by slide.id" index="slide.id">
+                <div class="carousel-inner" ng-repeat="slide in getSlides() track by slide.id" >
 
                     <div ng-class="slide.active ? 'item active' : 'item'">
 
@@ -129,7 +129,7 @@
 
     <!-- Sponsors -->
 
-    <div id="donor-sponsors" ng-show="isActiveTab('sponsors')">
+    <div id="donor-sponsors" ng-show="tabService.isActiveTab('Supporters', 'sponsors')">
 
         <table class="resource-table">
 

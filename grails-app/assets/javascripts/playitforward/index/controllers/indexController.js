@@ -4,10 +4,14 @@ angular
     .module("playitforward.index")
     .controller("IndexController", IndexController);
 
-function IndexController(userPersistenceService, contextPath, $scope, $http, $location) {
+function IndexController(userPersistenceService, contextPath, $scope, $http, tabService) {
     
     var vm = this;
     vm.contextPath = contextPath;
+
+    $scope.tabService = tabService;
+    tabService.registerTabList( "Supporters", "art", ["art", "sponsors"] );
+    tabService.registerTabList( "Resources", "community", ["community", "strategy", "events"] );
 
     // /////////////////// //
     // User Authentication //
@@ -19,32 +23,6 @@ function IndexController(userPersistenceService, contextPath, $scope, $http, $lo
 
     $scope.getRole = function() {
         return userPersistenceService.getCookieData().role;
-    };
-
-    // /////////////// //
-    // Active Tab Code //
-    // /////////////// //
-
-    $scope.activeTab = $location.search().tab || 'art';
-
-    $scope.isActiveTab = function(tabName) {
-
-        return (tabName === $scope.activeTab);
-    };
-
-    $scope.tabClass = function(tabName) {
-
-        if (tabName === $scope.activeTab) {
-            return 'active';
-        }
-
-        return '';
-    };
-
-    $scope.activate = function(tabName) {
-
-        $scope.activeTab = tabName;
-        $location.search("tab", tabName);
     };
 
 
@@ -75,15 +53,6 @@ function IndexController(userPersistenceService, contextPath, $scope, $http, $lo
 
             $scope.artData.currentArtist.artSet[i].active = (i === 0);
         }
-
-        // Object.keys($scope.artArray.artistSlides).forEach(function (key) {
-        //
-        //     var slides = $scope.artArray.artistSlides[key];
-        //     for ( var i = 0 ; i < slides.length ; ++i ) {
-        //
-        //         slides[i].active = i === 0;
-        //     }
-        // });
 
         $scope.artData.currIndex = 0;
     };
