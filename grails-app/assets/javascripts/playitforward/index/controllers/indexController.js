@@ -79,7 +79,6 @@ function IndexController(userPersistenceService, contextPath, $scope, $http, tab
                 }
 
                 $scope.selectArtist();
-
                 $scope.artData.urlLoaded = true;
 
             }, function errorCallback(response) {
