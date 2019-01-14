@@ -86,19 +86,23 @@ function eventService($http, $location, $filter) {
             function successCallback(response) {
 
                 service.events = response.data;
-                populateCurrentEvent(service.events[0]);
 
                 var date = new Date();
                 var localOffset = date.getTimezoneOffset() * 60000;
-                for (var i = 0; i < service.events.length; ++i) {
+                var lastYear =  null;
+                for ( var i = 0; i < service.events.length; ++i ) {
 
-                    service.events[i].startDate = new Date(service.events[i].startDate.getTime() + localOffset);
-                    service.events[i].endDate = new Date(service.events[i].endDate.getTime() + localOffset);
-                }
+                    var event = service.events[i];
 
-                for ( var j = 0 ; j < service.events.length ; j++ ) {
+                    event.startDate = new Date(event.startDate.getTime() + localOffset);
+                    event.endDate = new Date(event.endDate.getTime() + localOffset);
 
-                    var event = service.events[j];
+                    var year = event.startDate.getFullYear();
+                    if ( year !== lastYear ) {
+                        service.years.push( year );
+                        lastYear = year;
+                    }
+
                     if (event.playmatFileName && service.baseUrl) {
 
                         event.matUrl = service.baseUrl + "playmats/" + event.playmatFileName;
@@ -111,21 +115,27 @@ function eventService($http, $location, $filter) {
                 var eventId = $location.search().event;
                 if (eventId) {
 
-                    var event = $filter('filter')(service.events, {id: eventId});
-                    if (event.length > 0) {
-                        populateCurrentEvent(event[0]);
+                    var eventList = $filter('filter')(service.events, {id: eventId});
+                    if (eventList.length > 0) {
+                        populateCurrentEvent(eventList[0]);
                     }
                 }
 
-                var lastYear =  null;
-                for ( var j = 0 ; j < service.events.length ; ++j ) {
+                if ( service.currentEvent === null ) {
 
-                    var year = service.events[j].startDate.getFullYear();
+                    for ( var j = 1 ; j < service.events.length ; ++j ) {
 
-                    if ( year !== lastYear ) {
-                        service.years.push( year );
-                        lastYear = year;
+                        if ( service.events[j].startDate > date ) {
+
+                            populateCurrentEvent( service.events[j-1] );
+                            break;
+                        }
                     }
+                }
+
+                if ( service.currentEvent === null ) {
+
+                    populateCurrentEvent( service.events[0] );
                 }
 
                 service.selectedEvent();

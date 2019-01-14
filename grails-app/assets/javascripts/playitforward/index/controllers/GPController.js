@@ -13,7 +13,7 @@ function GPController(contextPath, $scope, $http, tabService, eventService) {
     eventService.loadEvents();
 
     $scope.tabService = tabService;
-    tabService.registerTabList( "GPs", "race", ["winner", "playmat", "race", "org"] );
+    tabService.registerTabList( "GPs", "playmat", ["winner", "playmat", "race", "org"] );
 
 
     // ///////////////// //
