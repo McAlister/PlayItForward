@@ -62,7 +62,7 @@ function eventService($http, $location, $filter) {
 
             }, function errorCallback(response) {
 
-                service.error += '\nFailed to get Art URL: ' + response.data;
+                service.error += 'Failed to get Art URL: ' + response.data;
             }
         );
     };

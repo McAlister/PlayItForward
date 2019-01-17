@@ -4,7 +4,7 @@ angular
     .module("playitforward.index")
     .controller("GPController", GPController);
 
-function GPController(contextPath, $scope, $http, tabService, eventService) {
+function GPController(contextPath, $scope, $http, tabService, eventService, artService) {
 
     var vm = this;
     vm.contextPath = contextPath;
@@ -15,6 +15,8 @@ function GPController(contextPath, $scope, $http, tabService, eventService) {
     $scope.tabService = tabService;
     tabService.registerTabList( "GPs", "playmat", ["winner", "playmat", "race", "org"] );
 
+    $scope.artService = artService;
+    artService.loadArt();
 
     // ///////////////// //
     // Data Loading Code //
@@ -29,9 +31,7 @@ function GPController(contextPath, $scope, $http, tabService, eventService) {
 
     $scope.eventData = {
 
-        winners: {},            // Event_ID -> Winner Object
-        art: {},                // Art_ID -> Art Object
-        artists: {}             // Artist_ID -> Artist Object
+        winners: {}            // Event_ID -> Winner Object
     };
 
     $scope.loadWinners = function() {
@@ -55,58 +55,13 @@ function GPController(contextPath, $scope, $http, tabService, eventService) {
         );
     };
 
-    $scope.loadArtists = function() {
-
-        $http.get('/api/Artist').then(
-
-            function successCallback(response) {
-
-                for ( var i = 0 ; i < response.data.length ; ++i ) {
-
-                    var artist = response.data[i];
-                    $scope.eventData.artists[artist.id] = artist;
-                }
-
-                $scope.artistsLoaded = true;
-
-            }, function errorCallback(response) {
-
-                $scope.artistsError = response.data;
-            }
-        );
-    };
-
-    $scope.loadArt = function() {
-
-        $http.get('/api/Art').then(
-
-            function successCallback(response) {
-
-                for ( var i = 0 ; i < response.data.length ; ++i ) {
-
-                    var art = response.data[i];
-                    $scope.eventData.art[art.id] = art;
-                }
-
-                $scope.artLoaded = true;
-                $scope.loadArtists();
-
-            }, function errorCallback(response) {
-
-                $scope.artError = response.data;
-            }
-        );
-    };
-
-    $scope.loadArt();
     $scope.loadWinners();
-    $scope.getBaseUrl();
 
     $scope.getCurrentArt = function() {
 
         if (eventService.currentEvent && eventService.currentEvent.art) {
 
-            return $scope.eventData.art[eventService.currentEvent.art.id];
+            return artService.getArt(eventService.currentEvent.art.id);
         }
     };
 
@@ -114,7 +69,7 @@ function GPController(contextPath, $scope, $http, tabService, eventService) {
 
         if (eventService.currentEvent && eventService.currentEvent.art) {
 
-            return $scope.eventData.artists[$scope.getCurrentArt().artist.id];
+            return artService.getArtist(eventService.currentEvent.art.id);
         }
     };
 

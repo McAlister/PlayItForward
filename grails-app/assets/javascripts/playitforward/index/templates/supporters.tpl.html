@@ -16,45 +16,25 @@
 
     <div id="donor-art" ng-show="tabService.isActiveTab('Supporters', 'art')">
 
-        <div class="alert alert-danger" ng-show="artData.pathError">
+        <div class="alert alert-danger" ng-show="artService.error">
 
-            There was a problem finding the image folder.
-
-            <br />
-
-            {{artData.pathError}}
-
-        </div>
-
-        <div class="alert alert-danger" ng-show="artData.artistError">
-
-            There was a problem loading the artists.
+            There was a problem loading artist information.
 
             <br />
 
-            {{artData.artistError}}
+            {{artService.error}}
 
         </div>
 
-        <div class="alert alert-danger" ng-show="artData.artError">
-
-            There was a problem loading the art.
-
-            <br />
-
-            {{artData.artError}}
-
-        </div>
-
-        <div ng-if="artData.artLoaded && artData.artistLoaded && artData.urlLoaded">
+        <div ng-if="artService.ready">
 
             <div class="gp-dropdown">
 
                 <label>Artist: </label>
 
-                <select name="yearSelect" id="artistSelect" ng-model="artData.currentArtist"
-                        ng-options="artist.name for artist in artData.artists"
-                        ng-change="selectArtist()" title="artistSelectTitle">
+                <select name="yearSelect" id="artistSelect" ng-model="artService.currentArtist"
+                        ng-options="artist.name for artist in artService.artistsList"
+                        ng-change="artService.selectArtist()" title="artistSelectTitle">
                 </select>
 
             </div>
@@ -64,7 +44,7 @@
             <div id="carousel-example-generic" class="carousel slide" data-ride="carousel" data-interval="3000">
 
                 <!-- Wrapper for slides -->
-                <div class="carousel-inner" ng-repeat="slide in getSlides() track by slide.id" >
+                <div class="carousel-inner" ng-repeat="slide in artService.currentArtist.artSet track by slide.id" >
 
                     <div ng-class="slide.active ? 'item active' : 'item'">
 
@@ -75,52 +55,52 @@
                 </div>
 
                 <!-- Indicators -->
-                <ol class="carousel-indicators" ng-show="getSlides().length > 1">
-                    <li ng-repeat="slide in getSlides()" data-target="#carousel-example-generic"
-                        ng-click="goToSlide(slide.index)" ng-class="slide.active ? 'active' : ''">
+                <ol class="carousel-indicators" ng-show="artService.currentArtist.artSet.length > 1">
+                    <li ng-repeat="slide in artService.currentArtist.artSet" data-target="#carousel-example-generic"
+                        ng-click="artService.goToSlide(slide.index)" ng-class="slide.active ? 'active' : ''">
                     </li>
                 </ol>
 
                 <!-- Controls -->
-                <a class="left carousel-control" ng-click="backImage()" role="button" data-slide="prev"> </a>
-                <a class="right carousel-control" ng-click="forwardImage()" role="button" data-slide="next"> </a>
+                <a class="left carousel-control" ng-click="artService.backImage()" role="button" data-slide="prev"> </a>
+                <a class="right carousel-control" ng-click="artService.forwardImage()" role="button" data-slide="next"> </a>
 
             </div>
 
             <div class="center">
 
-                <h3>{{getSlides()[artData.currIndex].title}}</h3>
+                <h3>{{artService.currentArt.title}}</h3>
 
             </div>
 
             <p>
 
-                {{artData.currentArtist.blurb}}
+                {{artService.currentArtist.blurb}}
 
             </p>
 
             <div class="socialIconsDiv">
 
-                <a target="_blank" ng-show="artData.currentArtist.webSiteUrl" href="{{artData.currentArtist.webSiteUrl}}">
+                <a target="_blank" ng-show="artService.currentArtist.webSiteUrl" href="{{artService.currentArtist.webSiteUrl}}">
                     <img src="/assets/socialmedia/website.png" class="artistLinkImage"/>
                 </a>
 
-                <a target="_blank" ng-show="artData.currentArtist.patreonUrl" href="{{artData.currentArtist.patreonUrl}}">
+                <a target="_blank" ng-show="artService.currentArtist.patreonUrl" href="{{artService.currentArtist.patreonUrl}}">
                     <img src="/assets/socialmedia/patreon.png" class="artistLinkImage"/>
                 </a>
 
-                <a target="_blank" ng-show="artData.currentArtist.deviantArtUrl" href="{{artData.currentArtist.deviantArtUrl}}">
+                <a target="_blank" ng-show="artService.currentArtist.deviantArtUrl" href="{{artService.currentArtist.deviantArtUrl}}">
                     <img src="/assets/socialmedia/deviantart.png" class="artistLinkImage"/>
                 </a>
 
-                <a target="_blank" ng-show="artData.currentArtist.facebookUrl" href="{{artData.currentArtist.facebookUrl}}">
+                <a target="_blank" ng-show="artService.currentArtist.facebookUrl" href="{{artService.currentArtist.facebookUrl}}">
                     <img src="/assets/socialmedia/facebook.png" class="artistLinkImage"/>
                 </a>
 
             </div>
 
-            <p ng-show="getSlides()[artData.currIndex].purchaseUrl" class="center">
-                Purchase this <a target="_blank" href="{{getSlides()[artData.currIndex].purchaseUrl}}">here</a>.
+            <p ng-show="artService.currentArt.purchaseUrl" class="center">
+                Purchase this <a target="_blank" href="{{artService.currentArt.purchaseUrl}}">here</a>.
             </p>
 
         </div>

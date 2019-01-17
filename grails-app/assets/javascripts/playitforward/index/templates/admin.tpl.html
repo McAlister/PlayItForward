@@ -437,7 +437,7 @@
             <div class="form-group">
                 <label for="inputEventArt" class="control-label">Art:</label>
                 <select name="inputEventArt" id="inputEventArt" ng-model="eventService.currentEvent.art"
-                        ng-options="art.title for art in eventData.art track by art.id"
+                        ng-options="art.title for art in artService.artList track by art.id"
                         class="form-control">
                 </select>
             </div>
@@ -469,20 +469,20 @@
 
         <h1>Art:</h1>
 
-        <div class="alert alert-danger" ng-show="artArray.artError">
+        <div class="alert alert-danger" ng-show="artService.error">
 
-            There was a problem retrieving the art list.
+            There was a problem retrieving the art and artist Info.
 
             <br />
 
-            {{artArray.artError}}
+            {{artService.error}}
 
         </div>
 
         <div class="gp-dropdown">
             <!--suppress HtmlFormInputWithoutLabel -->
-            <select name="artSelect" id="artSelect" ng-model="artArray.currentArt"
-                    ng-options="art.title for art in artArray.artList | orderBy: 'title' track by art.id"
+            <select name="artSelect" id="artSelect" ng-model="artService.artModel"
+                    ng-options="art.title for art in artService.artList | orderBy: 'title' track by art.id"
                     ng-change="selectArt()">
                 <option value="" disabled selected hidden>Create New Art ...</option>
             </select>
@@ -490,21 +490,21 @@
 
         <br/>
 
-        <img class="playmat-image" ng-src="{{artArray.previewUrl}}" on-error-src="assets/ComingSoon.jpg"/>
+        <img class="playmat-image" ng-src="{{artService.previewUrl}}" on-error-src="assets/ComingSoon.jpg"/>
 
-        <form ng-submit="upsertArt()" class="form">
+        <form ng-submit="artService.upsertArt()" class="form">
 
             <div class="form-group">
                 <label for="inputArtURL" class="control-label">File Name:</label>
                 <input type="text" id="inputArtURL" class="form-control"
-                       ng-model="artArray.currentArt.fileName"
-                       ng-blur="getArtPath()" required>
+                       ng-model="artService.artModel.fileName"
+                       ng-blur="artService.setPreview()" required>
             </div>
 
             <div class="form-group">
                 <label for="inputArtArtist" class="control-label">Artist:</label>
-                <select name="inputArtArtist" id="inputArtArtist" ng-model="artArray.chosenArtist"
-                        ng-options="artist.name for artist in artistArray.artistList"
+                <select name="inputArtArtist" id="inputArtArtist" ng-model="artService.currentArtist"
+                        ng-options="artist.name for artist in artService.artistsList"
                         class="form-control">
                 </select>
             </div>
@@ -512,19 +512,19 @@
             <div class="form-group">
                 <label for="inputArtTitle" class="control-label">Title:</label>
                 <input type="text" id="inputArtTitle" class="form-control"
-                       ng-model="artArray.currentArt.title" required>
+                       ng-model="artService.artModel.title" required>
             </div>
 
             <div class="form-group">
                 <label for="inputArtPurchase" class="control-label">Purchase Url:</label>
                 <input type="text" id="inputArtPurchase" class="form-control"
-                       ng-model="artArray.currentArt.purchaseUrl" >
+                       ng-model="artService.artModel.purchaseUrl" >
             </div>
 
             <div class="text-center">
-                <button class="btn btn-primary" type="button" ng-click="addNewArtSetup()">Clear</button>
-                <button class="btn btn-primary" type="submit" ng-show="artArray.currentArt.id">Edit</button>
-                <button class="btn btn-primary" type="submit" ng-hide="artArray.currentArt.id">Add</button>
+                <button class="btn btn-primary" type="button" ng-click="artService.clearArt()">Clear</button>
+                <button class="btn btn-primary" type="submit" ng-show="artService.artModel.id">Edit</button>
+                <button class="btn btn-primary" type="submit" ng-hide="artService.artModel.id">Add</button>
             </div>
 
         </form>
@@ -533,67 +533,57 @@
 
         <h1>Artists:</h1>
 
-        <div class="alert alert-danger" ng-show="artistArray.artistError">
-
-            There was a problem retrieving the artist list.
-
-            <br />
-
-            {{artistArray.artistError}}
-
-        </div>
-
         <div class="gp-dropdown">
             <!--suppress HtmlFormInputWithoutLabel -->
-            <select name="artistSelect" id="artistSelect" ng-model="artistArray.currentArtist"
-                    ng-options="artist.name for artist in artistArray.artistList | orderBy: 'name' track by artist.id" >
+            <select name="artistSelect" id="artistSelect" ng-model="artService.artistModel"
+                    ng-options="artist.name for artist in artService.artistsList | orderBy: 'name' track by artist.id">
                 <option value="" disabled selected hidden>Create New Artist ...</option>
             </select>
         </div>
 
-        <form ng-submit="upsertArtist()" class="form">
+        <form ng-submit="artService.upsertArtist()" class="form">
 
             <div class="form-group">
                 <label for="inputArtistName" class="control-label">Name:</label>
                 <input type="text" id="inputArtistName" class="form-control"
-                       ng-model="artistArray.currentArtist.name" required>
+                       ng-model="artService.artistModel.name" required>
             </div>
 
             <div class="form-group">
                 <label for="inputArtistBlurb" class="control-label">Blurb:</label>
                 <textarea cols="40" rows="5" id="inputArtistBlurb" class="form-control"
-                          ng-model="artistArray.currentArtist.blurb" required>
+                          ng-model="artService.artistModel.blurb" required>
                 </textarea>
             </div>
 
             <div class="form-group">
                 <label for="inputArtistWebsite" class="control-label">Website:</label>
                 <input type="text" id="inputArtistWebsite" class="form-control"
-                       ng-model="artistArray.currentArtist.webSiteUrl" >
+                       ng-model="artService.artistModel.webSiteUrl" >
             </div>
 
             <div class="form-group">
                 <label for="inputArtistDeviant" class="control-label">Deviant Art:</label>
                 <input type="text" id="inputArtistDeviant" class="form-control"
-                       ng-model="artistArray.currentArtist.deviantArtUrl" >
+                       ng-model="artService.artistModel.deviantArtUrl" >
             </div>
 
             <div class="form-group">
                 <label for="inputArtistFacebook" class="control-label">Facebook:</label>
                 <input type="text" id="inputArtistFacebook" class="form-control"
-                       ng-model="artistArray.currentArtist.facebookUrl" >
+                       ng-model="artService.artistModel.facebookUrl" >
             </div>
 
             <div class="form-group">
                 <label for="inputArtistPatreon" class="control-label">Patreon:</label>
                 <input type="text" id="inputArtistPatreon" class="form-control"
-                       ng-model="artistArray.currentArtist.patreonUrl" >
+                       ng-model="artService.artistModel.patreonUrl" >
             </div>
 
             <div class="text-center">
-                <button class="btn btn-primary" type="button" ng-click="addNewArtistSetup()">Clear</button>
-                <button class="btn btn-primary" type="submit" ng-show="artistArray.currentArtist.id">Edit</button>
-                <button class="btn btn-primary" type="submit" ng-hide="artistArray.currentArtist.id">Add</button>
+                <button class="btn btn-primary" type="button" ng-click="artService.clearArtist()">Clear</button>
+                <button class="btn btn-primary" type="submit" ng-show="artService.artistModel.id">Edit</button>
+                <button class="btn btn-primary" type="submit" ng-hide="artService.artistModel.id">Add</button>
             </div>
 
         </form>

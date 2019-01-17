@@ -5,7 +5,7 @@ angular
     .controller("AdminController", AdminController);
 
 function AdminController(contextPath, userPersistenceService, $scope, $http, $filter,
-                         fileReader, tabService, eventService) {
+                         fileReader, tabService, eventService, artService) {
 
     var vm = this;
     vm.contextPath = contextPath;
@@ -15,6 +15,9 @@ function AdminController(contextPath, userPersistenceService, $scope, $http, $fi
 
     $scope.tabService = tabService;
     tabService.registerTabList( "Admin", "art", ["art", "events", "winners", "prizes", "players", "files"] );
+
+    $scope.artService = artService;
+    artService.loadArt();
 
     $scope.sessionData = userPersistenceService.getCookieData();
     $scope.authenticated = $scope.sessionData.authenticated;
@@ -27,9 +30,7 @@ function AdminController(contextPath, userPersistenceService, $scope, $http, $fi
         currentOrganizer: null,
         organizers: [],
         currentType: null,
-        types: [],
-        art: [],
-        currentArt: null
+        types: []
     };
 
     // ///////// //
@@ -457,183 +458,19 @@ function AdminController(contextPath, userPersistenceService, $scope, $http, $fi
     // Art Tab //
     // /////// //
 
-    $scope.artArray = {
-
-        currentArt: {},
-        artList: [],
-        artError: '',
-        previewUrl: '',
-        chosenArtist: null
-    };
-
-    $scope.populateArt = function() {
-
-        $http.get('/api/Art/').then(
-
-            function successCallback(response) {
-
-                $scope.artArray.artList = response.data;
-                $scope.eventData.art = response.data;
-
-            }, function errorCallback(response) {
-
-                $scope.artArray.artError = response.data;
-            }
-        );
-    };
-
-    $scope.populateArt();
-
-    $scope.getArtPath = function() {
-
-        if ( eventService.baseUrl ) {
-            $scope.artArray.previewUrl = eventService.baseUrl + 'playmatArt/' + $scope.artArray.currentArt.fileName;
-        }
-    };
-
-    $scope.getArtPath();
-
-    $scope.addNewArtSetup = function() {
-
-        $scope.artArray.currentArt = null;
-        $scope.artArray.previewUrl = 'assets/ComingSoon.jpg';
-    };
-
-    $scope.upsertArt = function() {
-
-        var data = {
-
-            title: $scope.artArray.currentArt.title,
-            fileName: $scope.artArray.currentArt.fileName,
-            purchaseUrl: $scope.artArray.currentArt.purchaseUrl,
-            artist: {
-                id: $scope.artArray.chosenArtist.id
-            }
-        };
-
-        var config = {
-            headers : {
-                'Content-Type': 'application/json;charset=utf-8;'
-            }
-        };
-
-        if( 'id' in $scope.artArray.currentArt && $scope.artArray.currentArt.id > 0) {
-
-            data.id = $scope.artArray.currentArt.id;
-
-            $http.put('/api/Art/' + data.id, data, config).then(
-
-                function(){
-                    $scope.populateArt();
-                    window.alert('Artist updated successfully.');
-                },
-                function(response){
-                    window.alert('Error: Failed to edit Art! ' + response.data.message);
-                }
-            );
-        }
-        else {
-
-            $http.post('/api/Art', data, config).then(
-                function(){
-                    $scope.populateArt();
-                    window.alert('Art added successfully.');
-                },
-                function(response){
-                    window.alert('Error: Failed to add Art! ' + response.data.message);
-                }
-            );
-        }
-    };
-
-    $scope.artistArray = {
-
-        currentArtist: null,
-        artistList: [],
-        artistError: ''
-    };
 
     $scope.selectArt = function() {
 
-        $scope.getArtPath();
+        artService.setPreview();
 
-        for (var i = 0 ; i < $scope.artistArray.artistList.length ; i++) {
+        for ( var i = 0 ; i < artService.artistsList.length ; i++ ) {
 
-            if ( $scope.artArray.currentArt.artist.id ===  $scope.artistArray.artistList[i].id ) {
-                $scope.artArray.chosenArtist = $scope.artistArray.artistList[i];
+            if ( artService.artModel.artist.id === artService.artistsList[i].id ) {
+
+                artService.currentArtist = artService.artistsList[i];
                 break;
             }
         }
-    };
-
-    $scope.populateArtist = function() {
-
-        $http.get('/api/Artist').then(
-
-
-            function successCallback(response) {
-
-                $scope.artistArray.artistList = response.data;
-
-            }, function errorCallback(response) {
-
-                $scope.artistArray.artistError = response.data;
-            }
-        );
-    };
-
-    $scope.populateArtist();
-
-    $scope.addNewArtistSetup = function() {
-
-        $scope.artistArray.currentArtist = null;
-    };
-
-    $scope.upsertArtist = function() {
-
-        var data = {
-
-            name: $scope.artistArray.currentArtist.name,
-            blurb: $scope.artistArray.currentArtist.blurb,
-            webSiteUrl: $scope.artistArray.currentArtist.webSiteUrl,
-            deviantArtUrl: $scope.artistArray.currentArtist.deviantArtUrl,
-            facebookUrl: $scope.artistArray.currentArtist.facebookUrl,
-            patreonUrl: $scope.artistArray.currentArtist.patreonUrl
-        };
-
-        var config = {
-            headers : {
-                'Content-Type': 'application/json;charset=utf-8;'
-            }
-        };
-
-        if('id' in $scope.artistArray.currentArtist && $scope.artistArray.currentArtist.id > 0) {
-
-            data.id = $scope.artistArray.currentArtist.id;
-
-            $http.put('/api/Artist/' + data.id, data, config).then(
-                function(){
-                    $scope.populateArtist();
-                    window.alert('Artist updated successfully.');
-                },
-                function(response){
-                    window.alert('Error: Failed to edit Artist! ' + response.data.message);
-                }
-            );
-        }
-        else {
-
-            $http.post('/api/Artist', data, config).then(
-                function(){
-                    $scope.populateArtist();
-                    window.alert('Artist added successfully.');
-                },
-                function(response){
-                    window.alert('Error: Failed to add Artist! ' + response.data.message);
-                }
-            );
-        }
-
     };
 
     // ///////// //

@@ -31,7 +31,7 @@
 
     <!--loading-->
 
-    <div id="gp-loading" ng-show="!eventService.eventsLoaded">
+    <div id="gp-loading" ng-if="!eventService.eventsLoaded">
 
         <p>Loading Event Data ...</p>
 
@@ -51,7 +51,7 @@
 
         </div>
 
-        <div ng-show="eventService.eventsLoaded && isFutureGP()" >
+        <div ng-if="eventService.eventsLoaded && isFutureGP()" >
 
             {{eventService.currentEvent.name}} will begin on {{gpStartDateString()}}.
 
@@ -86,19 +86,17 @@
 
     <div id="gp-playmat" ng-show="tabService.isActiveTab('GPs', 'playmat')">
 
-        <div class="alert alert-danger" ng-show="artError || artistsError">
+        <div class="alert alert-danger" ng-show="artService.error">
 
             There was a problem retrieving art information
 
             <br />
 
-            {{artistsError}}
-
-            {{artError}}
+            {{artService.error}}
 
         </div>
 
-        <div ng-if="artLoaded && artistsLoaded && eventService.eventsLoaded && eventService.currentEvent">
+        <div ng-if="artService.ready && eventService.eventsLoaded && eventService.currentEvent">
 
             <p>
                 <span class="artTitle">{{getCurrentArt().title}}</span>
@@ -109,10 +107,6 @@
             <p>
                 <img class="playmat-image" ng-src="{{eventService.currentEvent.matUrl}}"
                      on-error-src="assets/ComingSoon.jpg" />
-            </p>
-
-            <p>
-                {{etCurrentArtist().blurb}}
             </p>
 
             <div class="socialIconsDiv">
@@ -168,13 +162,13 @@
         </p>
 
 
-        <p ng-show="bountiesExist()">
+        <p ng-if="bountiesExist()">
             In addition to the Play It Forward playmat, members of the community have
             donated the following prizes to the leading lady in day two.  Please work
             with the event coordinator to deliver prizes:
         </p>
 
-        <table class="table table-bordered table-striped" ng-show="bountiesExist()">
+        <table class="table table-bordered table-striped" ng-if="bountiesExist()">
 
             <thead>
             <tr>
