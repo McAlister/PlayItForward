@@ -4,8 +4,8 @@ package playitforward
 class BootStrap
 {
     def springSecurityService;
-    String swVersionString = "3.0.0";
-    String dbVersionString = "5.0.0";
+    String swVersionString = "4.0.0";
+    String dbVersionString = "6.0.0";
 
     def init = { servletContext ->
 
@@ -14,14 +14,14 @@ class BootStrap
         Sysconfig dbVersion = Sysconfig.findByKey("DB Version");
         if ( dbVersion == null) {
 
-            new Sysconfig(key: 'DB Version', value: "1.0.0").save();
+            new Sysconfig(key: 'DB Version', value: dbVersionString).save();
         }
         else {
             dbVersion.setValue(dbVersionString);
             dbVersion.save();
         }
 
-        Sysconfig swVersion = Sysconfig.findByKey("DB Version");
+        Sysconfig swVersion = Sysconfig.findByKey("SW Version");
         if ( swVersion == null ) {
 
             new Sysconfig(key: 'SW Version', value: swVersionString).save();
@@ -42,19 +42,6 @@ class BootStrap
 
                 it.flush()
                 it.clear()
-            }
-        }
-
-        role = Role.findByAuthority('ROLE_GROUP_LEADER');
-        if (role == null) {
-
-            role = new Role( authority: 'ROLE_GROUP_LEADER').save();
-            User user = new User( 'saiken@ulfheim.net',  'Bring1tLadies!').save();
-            UserRole.create(user, role);
-            UserRole.withSession {
-
-                it.flush();
-                it.clear();
             }
         }
 

@@ -1,7 +1,0 @@
-import playitforward.GuildLeader
-
-model {
-	GuildLeader guildLeader
-}
-
-json tmpl.guildLeader(guildLeader)

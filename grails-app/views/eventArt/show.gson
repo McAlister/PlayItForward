@@ -1,7 +1,0 @@
-import playitforward.EventArt
-
-model {
-	EventArt eventArt
-}
-
-json tmpl.eventArt(eventArt)

@@ -1,8 +1,0 @@
-import playitforward.GuildLeader
-
-model {
-	Iterable<GuildLeader> guildLeaderList
-}
-
-json tmpl.guildLeader(guildLeaderList ?: [])
-

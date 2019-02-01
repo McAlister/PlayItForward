@@ -45,10 +45,6 @@ class UrlMappings {
                 controller: 'image', action: 'generateCameo'
         )
 
-        get "/api/Guild/getMyGuild/$username" (
-                controller: 'guild', action: 'getMyGuild'
-        );
-
         get "/api/Image/getImageBaseURL" (
                 controller: 'image', action: 'getImageBaseURL'
         );
