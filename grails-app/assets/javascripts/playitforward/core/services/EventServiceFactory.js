@@ -30,6 +30,7 @@ function eventService($http, $location, $filter) {
             eventFormat: event.eventFormat,
             playmatFileName: event.playmatFileName,
             matUrl: event.matUrl,
+            cfbEventNum: event.cfbEventNum,
 
             organizer: {
                 id: event.organizer.id
@@ -184,6 +185,7 @@ function eventService($http, $location, $filter) {
             endDate: $filter('date')(service.currentEvent.endDate, "yyyy-MM-dd"),
             eventFormat: service.currentEvent.eventFormat,
             playmatFileName: service.currentEvent.playmatFileName,
+            cfbEventNum: service.currentEvent.cfbEventNum,
 
             organizer: {
                 id: service.currentEvent.organizer.id

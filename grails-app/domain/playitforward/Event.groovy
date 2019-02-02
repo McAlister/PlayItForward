@@ -14,6 +14,7 @@ class Event {
     Art art;
     String coordinator;
     String playmatFileName;
+    Integer cfbEventNum;
 
     static constraints = {
 
@@ -27,6 +28,7 @@ class Event {
         art nullable: true;
         coordinator nullable: true;
         playmatFileName nullable: true;
+        cfbEventNum nullable: true;
     }
 
     static mapping = {
@@ -37,6 +39,7 @@ class Event {
         endDate column: 'end_date';
         eventFormat column: 'format', index: 'event_format_idx';
         playmatFileName column: 'playmat_file_name';
+        cfbEventNum column: 'cfb_event_key';
     }
 
     static belongsTo = [EventOrganizer, EventType, Art];
