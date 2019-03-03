@@ -23,51 +23,73 @@
 	my @incompleteEvents;
 	&populateIncompleteEvents();
 
-    my $masterPageContent;
-    foreach my $event ( @incompleteEvents ) {
+    while ( 1 ) {
 
-        my $eventID = $event->{id};
-        my $eventCode = $event->{event_code};
-        my $startDate = $event->{start_date};
-        my $endDate = $event->{end_date};
-        my $maxRound = $event->{max};
-        my $format = $event->{format};
-        my $cfbKey = $event->{cfb_event_key};
-        my $name = $event->{name};
+        my $masterPageContent;
+        my $inProgress = 0;
+        foreach my $event ( @incompleteEvents ) {
 
-        &log( "Processing $name ..." );
+            my $eventID = $event->{id};
+            my $eventCode = $event->{event_code};
+            my $startDate = $event->{start_date};
+            my $endDate = $event->{end_date};
+            my $maxRound = $event->{max};
+            my $format = $event->{format};
+            my $cfbKey = $event->{cfb_event_key};
+            my $name = $event->{name};
 
-		my $round = 1;
-		if ( defined $maxRound ) {
-			$round = $maxRound + 1;
-		}
+            &log( "Processing $name ..." );
 
-        $masterPageContent = `curl http://coverage.channelfireball.com/event/$cfbKey`;
-        $masterPageContent =~ s/.*Standings//;
-        $masterPageContent =~ s/<\/tbody>.*//;
+    		my $round = 1;
+		    if ( defined $maxRound ) {
+	    		$round = $maxRound + 1;
+    		}
 
-        my $rc = 0;
-		while ( $round <= $rounds && !$rc ) {
+            $masterPageContent = `curl http://coverage.channelfireball.com/event/$cfbKey`;
+            $masterPageContent =~ s/.*Standings//;
+            $masterPageContent =~ s/<\/tbody>.*//;
+
+            my $rc = 0;
+    		while ( $round <= $rounds && !$rc ) {
     
-            my $url = '';
-            my $count = 0;
-            while ( $masterPageContent =~ /<a href="(.*?)" target="_blank">$round<\/a>/g ) {
+                my $url = '';
+                my $count = 0;
+                while ( $masterPageContent =~ /<a href="(.*?)" target="_blank">$round<\/a>/g ) {
+    
+                    $url = $1;  #Should be 3 hits and the last is Standings.
+                    $count++;
+                }
 
-                $url = $1;  #Should be 3 hits and the last is Standings.
-                $count++;
-            }
+                if ( $count == 3 &&  $url ne '' ) {        
 
-            if ( $count == 3 &&  $url ne '' ) {        
-
-                &log( "\tRound $round $url" ); 
-				$rc = &updateRound($eventID, $round, $url );
-
-                $round++;
-            }
-            else {
-                $rc = 1;
+                    &log( "\tRound $round $url" ); 
+	    			$rc = &updateRound($eventID, $round, $url );
+                    if ( $rc == 2 ) {
+                        $inProgress = 1;
+                    }
+                    else {
+                        $round++;
+                    }
+                }
+                else {
+                    $inProgress = 1;
+                    $rc = 1;
+                }
             }
         }
+
+        $dbh->disconnect();
+
+        if ( $inProgress ) {
+            sleep ( 600 );    # 5 min
+        }
+        else {
+            &log ( "No events in progress.  Checking in tomorrow." );
+            sleep ( 86400 );    # 1 day
+        }
+
+        $dbh = DBI->connect($dbHost, $dbUser, $dbPass) or &exitError( "Can't connect to DB $!\n", 1 );
+        &populateIncompleteEvents();
     }
 
 	$dbh->disconnect();
@@ -126,7 +148,7 @@ sub updateRound() {
         my $omw = $4;
 
         $name =~ s/^\s+|\s+$//g;
-		print "$rank, $name, $points, $omw\n";
+		#print "$rank, $name, $points, $omw\n";
 
 		push( @nameList, $name );
 		$pointHash{$name} = $points;
