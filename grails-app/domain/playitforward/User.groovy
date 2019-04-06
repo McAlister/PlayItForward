@@ -8,60 +8,71 @@ import groovy.transform.ToString
 @ToString(includes='username', includeNames=true, includePackage=false)
 class User implements Serializable {
 
-    private static final long serialVersionUID = 1
+    private static final long serialVersionUID = 1;
 
-    transient springSecurityService
+    transient springSecurityService;
 
-    String username
-    String password
-    boolean enabled = true
-    boolean accountExpired
-    boolean accountLocked
-    boolean passwordExpired
-    String resetKey
+    String username;
+    String password;
+    boolean enabled = true;
+    boolean accountExpired;
+    boolean accountLocked;
+    boolean passwordExpired;
+    String resetKey;
 
     User(String username, String password) {
-        this()
-        this.username = username
-        this.password = password
+
+        this();
+        this.username = username;
+        this.password = password;
     }
 
     Set<Role> getAuthorities() {
-        UserRole.findAllByUser(this)*.role
+
+        UserRole.findAllByUser(this)*.role;
     }
 
     def beforeInsert() {
-        encodePassword()
+
+        encodePassword();
     }
 
     def beforeUpdate() {
+
         if (isDirty('password')) {
-            encodePassword()
+
+            encodePassword();
         }
     }
 
     protected void encodePassword() {
-        password = springSecurityService?.passwordEncoder ? springSecurityService.encodePassword(password) : password
+
+        password = springSecurityService?.passwordEncoder ? springSecurityService.encodePassword(password) : password;
     }
 
     def makeResetKey() {
-        def random = new Random()
-        String charset = (('A'..'F') + ('0'..'9')).join('')
+
+        def random = new Random();
+        String charset = (('A'..'F') + ('0'..'9')).join('');
+
         resetKey = (1..20).collect {
             charset[random.nextInt(charset.length())]
-        }.join('')
+        }.join('');
     }
 
-    static transients = ['springSecurityService']
+    static transients = ['springSecurityService'];
 
     static constraints = {
-        username blank: false, unique: true
-        password blank: false
-        resetKey nullable: true
+
+        username blank: false, unique: true;
+        password blank: false;
+        resetKey nullable: true;
     }
 
     static mapping = {
-        password column: '`password`'
-        table 'app_user'
+
+        table 'app_user';
+        id generator: 'native', params: [sequence: 'app_user_seq'];
+        password column: '`password`';
     }
 }

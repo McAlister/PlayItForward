@@ -23,6 +23,7 @@ class RawStandings {
     static mapping = {
 
         table 'raw_standings';
+        id generator: 'native', params: [sequence: 'raw_standings_seq'];
         event index: 'raw_standings_event_idx', fetch: 'join', lazy: false;
         round index: 'raw_standings_event_idx';
         rank index: 'raw_standings_event_idx';

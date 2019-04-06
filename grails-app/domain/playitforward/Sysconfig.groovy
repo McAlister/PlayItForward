@@ -12,8 +12,9 @@ class Sysconfig {
     }
 
     static mapping = {
+
         table 'sysconfig';
+        id generator: 'native', params: [sequence: 'sysconfig_seq'];
         key index: 'sysconfig_idx';
-        id generator: 'native', params: [sequence: 'sysconfig_seq']
     }
 }

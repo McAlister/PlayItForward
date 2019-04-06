@@ -17,6 +17,7 @@ class Art {
     }
 
     static mapping = {
+
         id generator: 'native', params: [sequence: 'art_seq'];
         artist index: 'art_artist_idx', fetch: 'join', lazy: true;
         title index: 'art_artist_idx';

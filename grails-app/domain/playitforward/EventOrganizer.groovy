@@ -14,5 +14,6 @@ class EventOrganizer {
     static mapping = {
 
         table 'event_organizer';
+        id generator: 'native', params: [sequence: 'event_organizer_seq'];
     }
 }

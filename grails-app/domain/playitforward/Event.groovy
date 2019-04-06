@@ -33,6 +33,7 @@ class Event {
 
     static mapping = {
 
+        id generator: 'native', params: [sequence: 'event_seq'];
         organizer index: 'event_organizer_idx';
         eventCode column: 'event_code';
         startDate column: 'start_date', index: 'event_start_idx';

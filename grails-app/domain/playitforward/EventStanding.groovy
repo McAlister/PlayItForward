@@ -20,6 +20,7 @@ class EventStanding {
     static mapping = {
 
         table 'event_standing';
+        id generator: 'native', params: [sequence: 'event_standing_seq'];
         player index: 'event_standing_player_idx', fetch: 'join', lazy: false;
         event index: 'event_standing_event_idx', fetch: 'join', lazy: false;
         round index: 'event_standing_event_idx';

@@ -18,6 +18,7 @@ class Player {
     static mapping = {
 
         table 'player';
+        id generator: 'native', params: [sequence: 'player_seq'];
         name index: 'player_idx';
     }
 }

@@ -14,5 +14,6 @@ class PersonType
     static mapping = {
 
         table 'person_type';
+        id generator: 'native', params: [sequence: 'person_type_seq'];
     }
 }

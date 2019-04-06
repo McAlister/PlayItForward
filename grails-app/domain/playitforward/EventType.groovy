@@ -14,5 +14,6 @@ class EventType {
     static mapping = {
 
         table 'event_type';
+        id generator: 'native', params: [sequence: 'event_type_seq'];
     }
 }
