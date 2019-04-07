@@ -117,7 +117,8 @@ environments:
             phone: '17207533049'
         dataSource:
             dbCreate: update
-            url: jdbc:postgresql://magicmom.c00icap1mfll.us-west-2.rds.amazonaws.com:5432/magicmom
+            url: jdbc:postgresql://localhost:5432/magicmom
+#            url: jdbc:postgresql://magicmom.c00icap1mfll.us-west-2.rds.amazonaws.com:5432/magicmom
             password: grinder1!
             properties:
                 jmxEnabled: true
