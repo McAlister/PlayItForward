@@ -63,7 +63,7 @@
             my $sql = "Insert Into raw_standings \n"
                 . "(id, version, event_id, name, opponent_match_win, points, rank, round, is_woman)"
                 . "VALUES \n"
-                . "(nextval('hibernate_sequence'), 0, ?, ?, ?, ?, ?, ?, false);";
+                . "(nextval('raw_standings_seq'), 0, ?, ?, ?, ?, ?, ?, false);";
 
             #print "SQL:\n\n$sql\n\n $eventID, $name, $omw, $points, $rank, $round";
 

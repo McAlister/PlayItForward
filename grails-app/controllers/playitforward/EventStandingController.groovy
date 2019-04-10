@@ -31,7 +31,7 @@ class EventStandingController {
 
         final session = sessionFactory.currentSession;
         final String sql = "Insert Into event_standing (id, version, event_id, player_id, points, round, rank )\n" +
-                "Select nextval('hibernate_sequence'), 0, r.event_id, p.id, r.points, r.round, r.rank\n" +
+                "Select nextval('event_standing_seq'), 0, r.event_id, p.id, r.points, r.round, r.rank\n" +
                 "From Player p inner join raw_standings r On (p.name = r.name OR (substring(p.name, 0, length(p.name) - 4 )  = r.name))\n" +
                 "Where r.event_id = " + eventId + "\n" +
                 "And r.round = " + roundNum + "\n" +

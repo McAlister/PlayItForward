@@ -162,7 +162,7 @@ sub updateRound() {
     my $sql = "Insert Into raw_standings \n"
         . "(id, version, event_id, name, opponent_match_win, points, rank, round, is_woman)"
         . "VALUES \n"
-        . "(nextval('hibernate_sequence'), 0, ?, ?, ?, ?, ?, ?, false);";
+        . "(nextval('raw_standings_seq'), 0, ?, ?, ?, ?, ?, ?, false);";
     my $qh = $dbh->prepare($sql) or return 1;
 
     foreach my $name ( @nameList ) {
