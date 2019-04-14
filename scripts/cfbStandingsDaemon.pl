@@ -46,6 +46,7 @@
             }
 
             $masterPageContent = `curl http://coverage.channelfireball.com/event/$cfbKey`;
+            $masterPageContent =~ s/\n//g;
             $masterPageContent =~ s/.*Standings//;
             $masterPageContent =~ s/<\/tbody>.*//;
 
