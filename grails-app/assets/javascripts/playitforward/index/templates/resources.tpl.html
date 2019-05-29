@@ -3,13 +3,11 @@
 <!--suppress HtmlUnknownTarget -->
 <div role="main">
 
-    <h1>Fight Like a Girl.</h1>
-
     <div class="bounty-tabs">
         <ul>
+            <li ng-class="tabService.tabClass('Resources', 'events')" ng-click="tabService.activateTab('Resources', 'events')" >Events</li>
             <li ng-class="tabService.tabClass('Resources', 'community')" ng-click="tabService.activateTab('Resources', 'community')">Community</li>
             <li ng-class="tabService.tabClass('Resources', 'strategy')" ng-click="tabService.activateTab('Resources', 'strategy')">Strategy</li>
-            <li ng-class="tabService.tabClass('Resources', 'events')" ng-click="tabService.activateTab('Resources', 'events')" >Events</li>
         </ul>
     </div>
 
@@ -17,87 +15,7 @@
 
     <div id="community-links" ng-show="tabService.isActiveTab('Resources', 'community')">
 
-        <table class="resource-table">
-
-            <tr>
-                <td>
-                    <a href="https://www.facebook.com/groups/1651467591795832/" target="_blank"><img src="/assets/supporters/lotg.png"></a>
-                </td>
-                <td>
-                    <a href="https://www.facebook.com/groups/1651467591795832/" target="_blank">Ladies On the Grind:</a>
-
-                    <p>
-                        LoTG is a facebook group for women who aspire to Magic greatness.  Share tips, triumphs
-                        and travel costs as you pursue the elusive top 8 finish.
-                    </p>
-
-                </td>
-            </tr>
-
-            <tr>
-                <td>
-                    <a href="http://ladyplaneswalkers.weebly.com/" target="_blank"><img src="/assets/supporters/lps.png"></a>
-                </td>
-                <td>
-                    <a href="http://ladyplaneswalkers.weebly.com/" target="_blank">Lady Planeswalker Society:</a>
-
-                    <p>
-                        Breaking down the barriers of entry into Magic is the number one goal of the group, but we also
-                        aim to provide a stepping-stone into tournament play.
-
-                        With over 100 chapters in the world, this group has been very successful and continues to grow.
-                        The group teaches Magic at many conventions with a large, dedicated staff of experienced teachers.
-                    </p>
-
-                </td>
-            </tr>
-
-            <tr>
-                <td>
-                    <a href="http://www.mtgdiversity.org/" target="_blank"><img src="/assets/supporters/pfd.png"></a>
-                </td>
-                <td>
-                    <a href="http://www.mtgdiversity.org/" target="_blank">Planeswalkers For Diversity:</a>
-
-                    <p>
-                        Our main focus has been on facilitating the creation of real life playgroups that
-                        emphasize a welcoming atmosphere for players of all kinds.
-                    </p>
-
-                </td>
-            </tr>
-
-            <tr>
-                <td>
-                    <a href="https://www.facebook.com/groups/CollectedCompany/" target="_blank"><img src="/assets/supporters/cc.png"></a>
-                </td>
-                <td>
-                    <a href="https://www.facebook.com/groups/CollectedCompany/" target="_blank">Collected Company:</a>
-
-                    <p>
-                        The mission of the Collected Company project is to empower women to take on new challenges
-                        and realize their full potential within the Judge Program.
-                    </p>
-
-                </td>
-            </tr>
-
-            <tr>
-                <td>
-                    <a href="http://garotasmagicasbr.wixsite.com/site/magic--the-gathering" target="_blank"><img src="/assets/supporters/lgm.png"></a>
-                </td>
-                <td>
-                    <a href="http://garotasmagicasbr.wixsite.com/site/magic--the-gathering" target="_blank">Liga das Garotas Mágicas:</a>
-
-                    <p>
-                        The League of Magical Girls is the Brazilian version of Ladies on the Grind.  If you are a
-                        woman who loves magic and speaks portuguese check them out.
-                    </p>
-
-                </td>
-            </tr>
-
-        </table>
+        <ng-include src="'/playitforward/index/resourcesCommunityTab.html'"></ng-include>
 
     </div>
 
@@ -105,98 +23,7 @@
 
     <div id="strategy-links" ng-show="tabService.isActiveTab('Resources', 'strategy')">
 
-        <table class="resource-table">
-
-            <tr>
-                <td>
-                    <a href="https://provencombatants.com/" target="_blank"><img src="/assets/supporters/pc.png"></a>
-                </td>
-                <td>
-                    <a href="https://provencombatants.com/" target="_blank">Proven Combatants:</a>
-
-                    <p>
-                        Constructed analysis and event prep with the CATS - Chantelle Campbell, Autumn Burchett,
-                        Teresa Pho, and Sarah Zyla.  Learn about the Pro tour from women who have been there.
-                    </p>
-
-                </td>
-            </tr>
-
-            <tr>
-                <td>
-                    <a href="https://itunes.apple.com/us/podcast/limited-resources/id385051731?mt=2" target="_blank"><img src="/assets/supporters/lr.png"></a>
-                </td>
-                <td>
-                    <a href="https://itunes.apple.com/us/podcast/limited-resources/id385051731?mt=2" target="_blank">Limited Resources:</a>
-
-                    <p>
-                        A weekly podcast dedicated to improving your play at Magic: The Gathering with an
-                        emphasis on Limited play.
-                    </p>
-
-                </td>
-            </tr>
-
-            <tr>
-                <td>
-                    <a href="https://www.stitcher.com/podcast/limited-resources/constructed-resources" target="_blank"><img src="/assets/supporters/cr.png"></a>
-                </td>
-                <td>
-                    <a href="https://www.stitcher.com/podcast/limited-resources/constructed-resources" target="_blank">Constructed Resources:</a>
-
-                    <p>
-                        A much less frequent podcast Where you come to improve at Magic: the Gathering,
-                        with a focus on Constructed play.
-                    </p>
-
-                </td>
-            </tr>
-
-            <tr>
-                <td>
-                    <a href="https://alliedstrategiespodcast.wordpress.com/" target="_blank"><img src="/assets/supporters/as.png"></a>
-                </td>
-                <td>
-                    <a href="https://alliedstrategiespodcast.wordpress.com/s" target="_blank">Allied Strategies:</a>
-
-                    <p>
-                        Another podcast about constructed Magic.
-                    </p>
-
-                </td>
-            </tr>
-
-            <tr>
-                <td>
-                    <a href="http://www.mtgprotutor.com/" target="_blank"><img src="/assets/supporters/mpt.png"></a>
-                </td>
-                <td>
-                    <a href="http://www.mtgprotutor.com/" target="_blank">MTG Pro Tutor:</a>
-
-                    <p>
-                        MTG Pro Tutor is dedicated to increasing the skill of Magic players everywhere by
-                        delving into the minds of our community’s greatest players.
-                    </p>
-
-                </td>
-            </tr>
-
-            <tr>
-                <td>
-                    <a href="http://www.toplevelpodcast.com/" target="_blank"><img src="/assets/supporters/tl.png"></a>
-                </td>
-                <td>
-                    <a href="http://www.toplevelpodcast.com/" target="_blank">Top Level:</a>
-
-                    <p>
-                        More constructed deck talk with Hall of Fame player Patrick Chapin and
-                        strategy writer Michael Flores
-                    </p>
-
-                </td>
-            </tr>
-
-        </table>
+        <ng-include src="'/playitforward/index/resourcesStrategyTab.html'"></ng-include>
 
     </div>
 
@@ -204,55 +31,7 @@
 
     <div id="event-links" ng-show="tabService.isActiveTab('Resources', 'events')">
 
-        <table class="resource-table">
-
-            <tr>
-                <td>
-                    <a href="https://www.cfbevents.com/2019" target="_blank"><img src="/assets/supporters/cfb.png"></a>
-                </td>
-                <td>
-                    <a href="https://www.cfbevents.com/2019" target="_blank">Grand Prixs (MagicFests):</a>
-
-                    <p>
-                        Grand Prixs are the biggest non-invitational tournaments run by WOTC.  With 15 rounds over
-                        two days they offer Pro Points and invitations to the Pro Tour as well as cash prizes to
-                        roughly the top 64.
-                    </p>
-
-                </td>
-            </tr>
-
-            <tr>
-                <td>
-                    <a href="http://www.starcitygames.com/content/schedule" target="_blank"><img src="/assets/supporters/scg.png"></a>
-                </td>
-                <td>
-                    <a href="http://www.starcitygames.com/content/schedule" target="_blank">Star City Opens:</a>
-
-                    <p>
-                        Complete schedule for Star City Open tournaments.  They are a lot like Grand Prix's
-                        only they offer invitations to the Star City Invitational instead of the WoTC Pro Tour.
-                    </p>
-
-                </td>
-            </tr>
-
-            <tr>
-                <td>
-                    <a href="https://magic.wizards.com/en/content/magic-online-mythic-championship-qualifiers" target="_blank"><img src="/assets/supporters/wotc.png"></a>
-                </td>
-                <td>
-                    <a href="https://magic.wizards.com/en/content/magic-online-mythic-championship-qualifiers" target="_blank">Magic Online Pro Tour Qualifiers:</a>
-
-                    <p>
-                        Can't fly somewhere?  Compete for entry to the pro tour from your very own living room with
-                        Magic Online Mythic Qualifier events.
-                    </p>
-
-                </td>
-            </tr>
-
-        </table>
+        <ng-include src="'/playitforward/index/resourcesEventsTab.html'"></ng-include>
 
     </div>
 
