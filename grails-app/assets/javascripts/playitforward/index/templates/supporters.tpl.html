@@ -3,148 +3,94 @@
 <!--suppress HtmlUnknownTarget -->
 <div role="main">
 
-    <h1>Thank You All!</h1>
-
-    <div class="bounty-tabs">
-        <ul>
-            <li ng-class="tabService.tabClass('Supporters', 'art')" ng-click="tabService.activateTab('Supporters', 'art')">Playmat Artists</li>
-            <li ng-class="tabService.tabClass('Supporters', 'sponsors')" ng-click="tabService.activateTab('Supporters', 'sponsors')" >Corporate Sponsors</li>
-        </ul>
-    </div>
-
     <!-- Art -->
 
-    <div id="donor-art" ng-show="tabService.isActiveTab('Supporters', 'art')">
+    <div class="alert alert-danger" ng-show="artService.error">
 
-        <div class="alert alert-danger" ng-show="artService.error">
+        There was a problem loading artist information.
 
-            There was a problem loading artist information.
+        <br />
 
-            <br />
+        {{artService.error}}
 
-            {{artService.error}}
+    </div>
+
+    <div ng-if="artService.ready">
+
+        <div class="gp-dropdown">
+
+            <label>Artist: </label>
+
+            <select name="yearSelect" id="artistSelect" ng-model="artService.currentArtist"
+                    ng-options="artist.name for artist in artService.artistsList"
+                    ng-change="artService.selectArtist()" title="artistSelectTitle">
+            </select>
 
         </div>
 
-        <div ng-if="artService.ready">
+        <br/><br/>
 
-            <div class="gp-dropdown">
+        <div id="carousel-example-generic" class="carousel slide" data-ride="carousel" data-interval="3000">
 
-                <label>Artist: </label>
+            <!-- Wrapper for slides -->
+            <div class="carousel-inner" ng-repeat="slide in artService.currentArtist.artSet track by slide.id" >
 
-                <select name="yearSelect" id="artistSelect" ng-model="artService.currentArtist"
-                        ng-options="artist.name for artist in artService.artistsList"
-                        ng-change="artService.selectArtist()" title="artistSelectTitle">
-                </select>
+                <div ng-class="slide.active ? 'item active' : 'item'">
 
-            </div>
-
-            <br/><br/>
-
-            <div id="carousel-example-generic" class="carousel slide" data-ride="carousel" data-interval="3000">
-
-                <!-- Wrapper for slides -->
-                <div class="carousel-inner" ng-repeat="slide in artService.currentArtist.artSet track by slide.id" >
-
-                    <div ng-class="slide.active ? 'item active' : 'item'">
-
-                        <img ng-src="{{slide.url}}" alt="...">
-
-                    </div>
+                    <img ng-src="{{slide.url}}" alt="...">
 
                 </div>
 
-                <!-- Indicators -->
-                <ol class="carousel-indicators" ng-show="artService.currentArtist.artSet.length > 1">
-                    <li ng-repeat="slide in artService.currentArtist.artSet" data-target="#carousel-example-generic"
-                        ng-click="artService.goToSlide(slide.index)" ng-class="slide.active ? 'active' : ''">
-                    </li>
-                </ol>
-
-                <!-- Controls -->
-                <a class="left carousel-control" ng-click="artService.backImage()" role="button" data-slide="prev"> </a>
-                <a class="right carousel-control" ng-click="artService.forwardImage()" role="button" data-slide="next"> </a>
-
             </div>
 
-            <div class="center">
+            <!-- Indicators -->
+            <ol class="carousel-indicators" ng-show="artService.currentArtist.artSet.length > 1">
+                <li ng-repeat="slide in artService.currentArtist.artSet" data-target="#carousel-example-generic"
+                    ng-click="artService.goToSlide(slide.index)" ng-class="slide.active ? 'active' : ''">
+                </li>
+            </ol>
 
-                <h3>{{artService.currentArt.title}}</h3>
-
-            </div>
-
-            <p>
-
-                {{artService.currentArtist.blurb}}
-
-            </p>
-
-            <div class="socialIconsDiv">
-
-                <a target="_blank" ng-show="artService.currentArtist.webSiteUrl" href="{{artService.currentArtist.webSiteUrl}}">
-                    <img src="/assets/socialmedia/website.png" class="artistLinkImage"/>
-                </a>
-
-                <a target="_blank" ng-show="artService.currentArtist.patreonUrl" href="{{artService.currentArtist.patreonUrl}}">
-                    <img src="/assets/socialmedia/patreon.png" class="artistLinkImage"/>
-                </a>
-
-                <a target="_blank" ng-show="artService.currentArtist.deviantArtUrl" href="{{artService.currentArtist.deviantArtUrl}}">
-                    <img src="/assets/socialmedia/deviantart.png" class="artistLinkImage"/>
-                </a>
-
-                <a target="_blank" ng-show="artService.currentArtist.facebookUrl" href="{{artService.currentArtist.facebookUrl}}">
-                    <img src="/assets/socialmedia/facebook.png" class="artistLinkImage"/>
-                </a>
-
-            </div>
-
-            <p ng-show="artService.currentArt.purchaseUrl" class="center">
-                Purchase this <a target="_blank" href="{{artService.currentArt.purchaseUrl}}">here</a>.
-            </p>
+            <!-- Controls -->
+            <a class="left carousel-control" ng-click="artService.backImage()" role="button" data-slide="prev"> </a>
+            <a class="right carousel-control" ng-click="artService.forwardImage()" role="button" data-slide="next"> </a>
 
         </div>
 
-    </div>
+        <div class="center">
 
-    <!-- Sponsors -->
+            <h3>{{artService.currentArt.title}}</h3>
 
-    <div id="donor-sponsors" ng-show="tabService.isActiveTab('Supporters', 'sponsors')">
+        </div>
 
-        <table class="resource-table">
+        <p>
 
-            <tr>
-                <td>
-                    <a href="http://store.channelfireball.com/landing" target="_blank"><img src="/assets/supporters/cfb.png"></a>
-                </td>
-                <td>
-                    <a href="http://store.channelfireball.com/landing" target="_blank">Channel Fireball:</a>
+            {{artService.currentArtist.blurb}}
 
-                    <p>
-                        Channel Fireball is getting on the Play It Forward train in 2018!
-                        The Regional Coordinator for North America has pledged a golden ticket
-                        to each PiF winner in his domain.
-                    </p>
+        </p>
 
-                </td>
-            </tr>
+        <div class="socialIconsDiv">
 
-            <tr>
-                <td>
-                    <a href="http://gamermats.com/custom/" target="_blank"><img src="/assets/supporters/gm.png"></a>
-                </td>
-                <td>
-                    <a href="http://gamermats.com/custom/" target="_blank">Gamermats:</a>
+            <a target="_blank" ng-show="artService.currentArtist.webSiteUrl" href="{{artService.currentArtist.webSiteUrl}}">
+                <img src="/assets/socialmedia/website.png" class="artistLinkImage"/>
+            </a>
 
-                    <p>
-                        If you can't find the perfect playmat, GamerMats can make you a mat with your artwork and have
-                        it in your hands in about a week. They are where our gorgeous prize playmats come from.
-                    </p>
+            <a target="_blank" ng-show="artService.currentArtist.patreonUrl" href="{{artService.currentArtist.patreonUrl}}">
+                <img src="/assets/socialmedia/patreon.png" class="artistLinkImage"/>
+            </a>
 
-                </td>
-            </tr>
+            <a target="_blank" ng-show="artService.currentArtist.deviantArtUrl" href="{{artService.currentArtist.deviantArtUrl}}">
+                <img src="/assets/socialmedia/deviantart.png" class="artistLinkImage"/>
+            </a>
 
-        </table>
+            <a target="_blank" ng-show="artService.currentArtist.facebookUrl" href="{{artService.currentArtist.facebookUrl}}">
+                <img src="/assets/socialmedia/facebook.png" class="artistLinkImage"/>
+            </a>
+
+        </div>
+
+        <p ng-show="artService.currentArt.purchaseUrl" class="center">
+            Purchase a print <a target="_blank" href="{{artService.currentArt.purchaseUrl}}">here</a>.
+        </p>
 
     </div>
 

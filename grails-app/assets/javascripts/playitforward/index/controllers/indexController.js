@@ -10,7 +10,6 @@ function IndexController(userPersistenceService, contextPath, $scope, artService
     vm.contextPath = contextPath;
 
     $scope.tabService = tabService;
-    tabService.registerTabList( "Supporters", "art", ["art", "sponsors"] );
     tabService.registerTabList( "Resources", "community", ["community", "strategy", "events"] );
 
     $scope.artService = artService;
