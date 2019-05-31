@@ -9,60 +9,44 @@
         Get more women on the Pro Tour
     </h1>
 
-    <p>
-        Play It Forward was inspired by
-        <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2679077/" target="_blank">
-            a study
-        </a> showing that the rarity of women chess grandmasters
-        was driven almost entirely (96%) by participation rates. Populations perform
-        on a Bell curve with fewer and fewer at either extreme. Only 1 in 16 chess players
-        are women so you see very few women players among the very best/worst chess players. The problem
-        is much worse in Magic where fewer than 1 in 50 GP players are women. Play It
-        Forward seeks to address the participation gap by focusing on player retention.
-    </p>
+    <div class="bounty-tabs">
+        <ul>
+            <li ng-class="tabService.tabClass('About', 'inspire')" ng-click="tabService.activateTab('About', 'inspire')" >Inspiration</li>
+            <li ng-class="tabService.tabClass('About', 'program')" ng-click="tabService.activateTab('About', 'program')">Programs</li>
+            <li ng-class="tabService.tabClass('About', 'progress')" ng-click="tabService.activateTab('About', 'progress')">Progress</li>
+            <li ng-class="tabService.tabClass('About', 'press')" ng-click="tabService.activateTab('About', 'press')">Press</li>
+            <li ng-class="tabService.tabClass('About', 'faq')" ng-click="tabService.activateTab('About', 'faq')">FAQ</li>
+        </ul>
+    </div>
 
-    <br />
+    <div ng-show="tabService.isActiveTab('About', 'inspire')">
 
-    <p>
-        People leave competitive play when the downsides outweigh the upsides. When you are part
-        of a marginalized group you have more downsides and fewer upsides so that point comes sooner.
-        The PiF initiative seeks to maximize upsides and minimize downsides through competition based
-        community building. During large events we offer a unique playmat and recognition to the
-        highest placing woman or non-binary player who makes day 2. We also invite them to a private social
-        network.
-    </p>
+        <ng-include src="'/playitforward/index/indexInspireTab.html'"></ng-include>
 
-    <br/>
+    </div>
 
-    <p>
-        The existence of the competition creates an awareness in each individual that they are not
-        alone. This helps participants shed the burden of what Chantelle Campbell dubbed
-        <a href="https://blog.cardkingdom.com/casting-off-mantle-female-friendships-competitive-magic/" target="_blank">
-        The Mantle
-        </a>. The Mantle is knowing that
-        <a href="https://xkcd.com/385/" target="_blank">other members of your group will be held
-        accountable for your mistakes.</a> Academia refers to it as "stereotype threat" and it is a negative
-        stresser that non-trivially degrades both performance and enjoyment.  The social network
-        creates upsides - close friends that one can only see by continuing to participate in high level
-        competitive play. It is also a resource for room sharing and logistic support.  LoTG is
-        450 members strong and growing.
-    </p>
+    <div ng-show="tabService.isActiveTab('About', 'program')">
 
-    <br />
+        <ng-include src="'/playitforward/index/indexProgramTab.html'"></ng-include>
 
-    <p>
-        When we started in 2016 women were a little over half a percent of players at a typical GP.
-        Participation rates have nearly doubled with a high point of 2.83% at GP Vegas.
-        Women who get involved with PiF play more GP's per year than they previously
-        did, place higher, and are less likely to leave competitive play. Non-binary players
-        report significant improvements in quality of event experience.  I would like to thank
-        all the volunteers and donors who have made PiF possible.
-    </p>
+    </div>
 
-    <br />
+    <div ng-show="tabService.isActiveTab('About', 'progress')">
 
-    <p>
-        Play It Forward is gamer run and is not affiliated with WoTC or tournament organizers.
-    </p>
+        <ng-include src="'/playitforward/index/indexProgressTab.html'"></ng-include>
+
+    </div>
+
+    <div ng-show="tabService.isActiveTab('About', 'press')">
+
+        <ng-include src="'/playitforward/index/indexPressTab.html'"></ng-include>
+
+    </div>
+
+    <div ng-show="tabService.isActiveTab('About', 'faq')">
+
+        <ng-include src="'/playitforward/index/indexFaqTab.html'"></ng-include>
+
+    </div>
 
 </div>
