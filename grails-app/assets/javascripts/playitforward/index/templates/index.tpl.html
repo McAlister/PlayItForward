@@ -11,10 +11,8 @@
 
     <div class="bounty-tabs">
         <ul>
-            <li ng-class="tabService.tabClass('About', 'inspire')" ng-click="tabService.activateTab('About', 'inspire')" >Inspiration</li>
             <li ng-class="tabService.tabClass('About', 'program')" ng-click="tabService.activateTab('About', 'program')">Programs</li>
-            <li ng-class="tabService.tabClass('About', 'progress')" ng-click="tabService.activateTab('About', 'progress')">Progress</li>
-            <li ng-class="tabService.tabClass('About', 'press')" ng-click="tabService.activateTab('About', 'press')">Press</li>
+            <li ng-class="tabService.tabClass('About', 'inspire')" ng-click="tabService.activateTab('About', 'inspire')" >Inspiration</li>
             <li ng-class="tabService.tabClass('About', 'faq')" ng-click="tabService.activateTab('About', 'faq')">FAQ</li>
         </ul>
     </div>
@@ -28,18 +26,6 @@
     <div ng-show="tabService.isActiveTab('About', 'program')">
 
         <ng-include src="'/playitforward/index/indexProgramTab.html'"></ng-include>
-
-    </div>
-
-    <div ng-show="tabService.isActiveTab('About', 'progress')">
-
-        <ng-include src="'/playitforward/index/indexProgressTab.html'"></ng-include>
-
-    </div>
-
-    <div ng-show="tabService.isActiveTab('About', 'press')">
-
-        <ng-include src="'/playitforward/index/indexPressTab.html'"></ng-include>
 
     </div>
 
