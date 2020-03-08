@@ -58,7 +58,7 @@
                     </li>
                     <li class="navigation-list-item">
                         <a ui-sref="about" class="navigation-link">
-                            About Us
+                            About
                         </a>
                     </li>
                     <li class="navigation-list-item" ng-hide="isAuthenticated()">
