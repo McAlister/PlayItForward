@@ -11,7 +11,7 @@ function IndexController(userPersistenceService, contextPath, $scope, artService
 
     $scope.tabService = tabService;
     tabService.registerTabList( "Resources", "community", ["community", "strategy", "events"] );
-    tabService.registerTabList( "About", "program", ["inspire", "program", "faq"] );
+    tabService.registerTabList( "About", "inspire", ["achieve", "inspire", "program", "faq"] );
 
     $scope.artService = artService;
     artService.loadArt();

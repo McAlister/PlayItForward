@@ -26,6 +26,13 @@
     height: 30px;
 }
 
+.achieve {
+    margin-bottom: 30px;
+    line-height: 1.2em;
+    font-style: italic;
+    text-align: center;
+}
+
 @media screen and (max-width: 480px) {
     .page {
         width: 100%;

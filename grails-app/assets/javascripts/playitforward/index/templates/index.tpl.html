@@ -2,17 +2,14 @@
 <div role="main">
 
     <h1>
-        We are a non-profit with one goal:
-    </h1>
 
-    <h1 class="shoutout">
-        Get more women on the Pro Tour
     </h1>
 
     <div class="bounty-tabs">
         <ul>
-            <li ng-class="tabService.tabClass('About', 'program')" ng-click="tabService.activateTab('About', 'program')">Programs</li>
             <li ng-class="tabService.tabClass('About', 'inspire')" ng-click="tabService.activateTab('About', 'inspire')" >Inspiration</li>
+            <li ng-class="tabService.tabClass('About', 'program')" ng-click="tabService.activateTab('About', 'program')">Playmat Program</li>
+            <li ng-class="tabService.tabClass('About', 'achieve')" ng-click="tabService.activateTab('About', 'achieve')">Achievements</li>
             <li ng-class="tabService.tabClass('About', 'faq')" ng-click="tabService.activateTab('About', 'faq')">FAQ</li>
         </ul>
     </div>
@@ -29,10 +26,21 @@
 
     </div>
 
+    <div ng-show="tabService.isActiveTab('About', 'achieve')">
+
+        <ng-include src="'/playitforward/index/indexAchieveTab.html'"></ng-include>
+
+    </div>
+
     <div ng-show="tabService.isActiveTab('About', 'faq')">
 
         <ng-include src="'/playitforward/index/indexFaqTab.html'"></ng-include>
 
     </div>
+
+
+    <br/>
+    <br/>
+    <br/>
 
 </div>

@@ -13,7 +13,7 @@ html, body {
     padding: 0;
     margin: 0;
     color: #ffffff;
-    line-height: 2em;
+    line-height: 1.5em;
     font-weight: normal;
     font-size: 16px;
     overflow: auto;
@@ -56,15 +56,18 @@ p {
 
 a {
     text-decoration: underline;
+    color: gold;
 }
 
 a:hover, a:active {
     outline: none; /* prevents outline in webkit on active links but retains it for tab focus */
     text-decoration: none;
+    color: gold;
 }
 
 a:hover {
-    text-decoration: none
+    text-decoration: none;
+    color: gold;
 }
 
 ul {
