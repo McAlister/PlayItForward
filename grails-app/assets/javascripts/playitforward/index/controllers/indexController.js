@@ -4,7 +4,7 @@ angular
     .module("playitforward.index")
     .controller("IndexController", IndexController);
 
-function IndexController(userPersistenceService, contextPath, $scope, artService, tabService) {
+function IndexController(userPersistenceService, contextPath, $scope, $http, artService, tabService) {
     
     var vm = this;
     vm.contextPath = contextPath;
@@ -39,19 +39,36 @@ function IndexController(userPersistenceService, contextPath, $scope, artService
         email: null,
         contest: null,
         text: null,
-        error: '' 
+        error: ''
     };
 
     $scope.claimPrize = function() {
 
-        tabService.activateTab('Claim', 'sent')
+        $http.post('/api/Claim/submit', {
+
+            name: $scope.claimEmail.name,
+            email: $scope.claimEmail.email,
+            contest: $scope.claimEmail.contest,
+            text: $scope.claimEmail.text
+
+        }).then(
+
+            function success() {
+
+                tabService.activateTab('Claim', 'sent');
+                $scope.claimEmail.error = '';
+            },
+            function error(response) {
+                $scope.claimEmail.error += response.data.error + ": " + response.data.message + "\n";
+            }
+       );
     };
 
     $scope.newClaim = function() {
 
         $scope.claimEmail.name = null;
         $scope.claimEmail.email = null;
-        $scope.claimEmail.contrest = null;
+        $scope.claimEmail.contest = null;
         $scope.claimEmail.text = null;
         $scope.claimEmail.error = '';
         tabService.activateTab('Claim', 'input');

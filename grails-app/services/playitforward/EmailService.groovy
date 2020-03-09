@@ -7,10 +7,11 @@ import grails.util.Environment
 @Transactional
 class EmailService {
 
-    AmazonSESService amazonSESService
-    static sender = 'playitforward@playitforward-magic.org'
+    AmazonSESService amazonSESService;
+    static sender = 'playitforward@playitforward-magic.org';
 
     def sendPasswordReset(User user) {
+
         def to = user.username
         def subject = 'Set or change your playitforward password'
         def host = Environment.current == Environment.PRODUCTION ? 'www.playitforward-magic.org' : 'localhost:8080'
@@ -24,5 +25,22 @@ class EmailService {
             throw new RuntimeException("Unable to send mail to ${to}, result: ${result}")
         }
         System.console().println("Sent password reset email to ${to} with key ${user.resetKey}")
+    }
+
+    def sendClaimEmail(String name, String email, String contest, String body) {
+
+        body = body.replaceAll("(\r\n|\n)", "<br />");
+        body = "<div>" + body
+        body += "<br /><br /><p>From: " + name + "</p>";
+        body += "<p>Email: " + email + "</p></div>";
+
+        int result = amazonSESService.send("play_it_forward@outlook.com", contest, body, sender);
+
+        if (result != 1) {
+            throw new RuntimeException("Unable to send mail from ${name}, ${email}, ${contest}, ${body} result: ${result}");
+        }
+
+        System.console().println("Sent prize claim email for ${name} at ${email}.");
+
     }
 }

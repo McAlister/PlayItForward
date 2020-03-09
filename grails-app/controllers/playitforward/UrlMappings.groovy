@@ -49,6 +49,10 @@ class UrlMappings {
                 controller: 'image', action: 'getImageBaseURL'
         );
 
+        post "/api/Claim/submit" (
+                controller: 'claim', action: 'claimPrize'
+        );
+
         delete "/api/$controller/$id(.$format)?"(action:"delete");
         get "/api/$controller(.$format)?"(action:"index");
         get "/api/$controller/$id(.$format)?"(action:"show");
