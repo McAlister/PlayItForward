@@ -1,0 +1,97 @@
+
+<h2 class="shoutout">Donated Art</h2>
+
+<p>
+    PiF was given a limited number of printings for these works.
+    I want to thank the art donors as they got us through the first
+    three years.
+</p>
+
+<div class="alert alert-danger" ng-show="artService.error">
+
+    There was a problem loading artist information.  Please refresh.
+
+    <br />
+
+    {{artService.error}}
+
+</div>
+
+<div ng-if="artService.ready">
+
+    <div class="gp-dropdown">
+
+        <label>Artist: </label>
+
+        <select name="yearSelect" id="artistSelect" ng-model="artService.currentDonorArtist"
+                ng-options="artist.name for artist in artService.donorArtistList"
+                ng-change="artService.selectArtist(false)" title="artistSelectTitle">
+        </select>
+
+    </div>
+
+    <br/><br/>
+
+    <div id="carousel-example-generic" class="carousel slide" data-ride="carousel" data-interval="3000">
+
+        <!-- Wrapper for slides -->
+        <div class="carousel-inner" ng-repeat="slide in artService.currentDonorArtist.artSet track by slide.id" >
+
+            <div ng-class="slide.active ? 'item active' : 'item'">
+
+                <img ng-src="{{slide.url}}" alt="...">
+
+            </div>
+
+        </div>
+
+        <!-- Indicators -->
+        <ol class="carousel-indicators" ng-show="artService.currentDonorArtist.artSet.length > 1">
+            <li ng-repeat="slide in artService.currentDonorArtist.artSet" data-target="#carousel-example-generic"
+                ng-click="artService.goToSlide(slide.index, artService.currentDonorArtist)" ng-class="slide.active ? 'active' : ''">
+            </li>
+        </ol>
+
+        <!-- Controls -->
+        <a class="left carousel-control" ng-click="artService.backImage(artService.currentDonorArtist)" role="button" data-slide="prev"> </a>
+        <a class="right carousel-control" ng-click="artService.forwardImage(artService.currentDonorArtist)" role="button" data-slide="next"> </a>
+
+    </div>
+
+    <div class="center">
+
+        <h3>{{artService.currentDonatedArt.title}}</h3>
+
+    </div>
+
+    <p>
+
+        {{artService.currentDonorArtist.blurb}}
+
+    </p>
+
+    <div class="socialIconsDiv">
+
+        <a target="_blank" ng-show="artService.currentDonorArtist.webSiteUrl" href="{{artService.currentDonorArtist.webSiteUrl}}">
+            <img src="/assets/socialmedia/website.png" class="artistLinkImage"/>
+        </a>
+
+        <a target="_blank" ng-show="artService.currentDonorArtist.patreonUrl" href="{{artService.currentDonorArtist.patreonUrl}}">
+            <img src="/assets/socialmedia/patreon.png" class="artistLinkImage"/>
+        </a>
+
+        <a target="_blank" ng-show="artService.currentDonorArtist.deviantArtUrl" href="{{artService.currentDonorArtist.deviantArtUrl}}">
+            <img src="/assets/socialmedia/deviantart.png" class="artistLinkImage"/>
+        </a>
+
+        <a target="_blank" ng-show="artService.currentDonorArtist.facebookUrl" href="{{artService.currentDonorArtist.facebookUrl}}">
+            <img src="/assets/socialmedia/facebook.png" class="artistLinkImage"/>
+        </a>
+
+    </div>
+
+    <p ng-show="artService.currentDonatedArt.purchaseUrl" class="center">
+        Purchase a print <a target="_blank" href="{{artService.currentDonatedArt.purchaseUrl}}">here</a>.
+    </p>
+
+</div>

@@ -35,9 +35,9 @@ function config($stateProvider, $urlRouterProvider) {
             url: '/about',
             templateUrl: '/playitforward/index/index.html'
         })
-        .state('supporters', {
-            url: '/supporters',
-            templateUrl: '/playitforward/index/supporters.html'
+        .state('art', {
+            url: '/art',
+            templateUrl: '/playitforward/index/art.html'
         })
         .state('resources', {
             url: '/resources',

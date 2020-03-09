@@ -1,0 +1,99 @@
+
+<h2 class="shoutout">Commissioned Art</h2>
+
+<p>
+    These pieces were commissioned by PiF and are available
+    for for all prize mats.  Additional commissioned pieces
+    will be added over time.
+</p>
+
+<div class="alert alert-danger" ng-show="artService.error">
+
+    There was a problem loading artist information.  Please refresh.
+
+    <br />
+
+    {{artService.error}}
+
+</div>
+
+<div ng-if="artService.ready">
+
+
+
+    <div class="gp-dropdown">
+
+        <label>Artist: </label>
+
+        <select name="yearSelect" id="artistSelect" ng-model="artService.currentCommissionedArtist"
+                ng-options="artist.name for artist in artService.commissionedArtistList"
+                ng-change="artService.selectArtist(true)" title="artistSelectTitle">
+        </select>
+
+    </div>
+
+    <br/><br/>
+
+    <div id="carousel-example-generic" class="carousel slide" data-ride="carousel" data-interval="3000">
+
+        <!-- Wrapper for slides -->
+        <div class="carousel-inner" ng-repeat="slide in artService.currentCommissionedArtist.artSet track by slide.id" >
+
+            <div ng-class="slide.active ? 'item active' : 'item'">
+
+                <img ng-src="{{slide.url}}" alt="...">
+
+            </div>
+
+        </div>
+
+        <!-- Indicators -->
+        <ol class="carousel-indicators" ng-show="artService.currentCommissionedArtist.artSet.length > 1">
+            <li ng-repeat="slide in artService.currentCommissionedArtist.artSet" data-target="#carousel-example-generic"
+                ng-click="artService.goToSlide(slide.index, artService.currentCommissionedArtist)" ng-class="slide.active ? 'active' : ''">
+            </li>
+        </ol>
+
+        <!-- Controls -->
+        <a class="left carousel-control" ng-click="artService.backImage(artService.currentCommissionedArtist)" role="button" data-slide="prev"> </a>
+        <a class="right carousel-control" ng-click="artService.forwardImage(artService.currentCommissionedArtist)" role="button" data-slide="next"> </a>
+
+    </div>
+
+    <div class="center">
+
+        <h3>{{artService.currentCommissionedArt.title}}</h3>
+
+    </div>
+
+    <p>
+
+        {{artService.currentCommissionedArtist.blurb}}
+
+    </p>
+
+    <div class="socialIconsDiv">
+
+        <a target="_blank" ng-show="artService.currentCommissionedArtist.webSiteUrl" href="{{artService.currentCommissionedArtist.webSiteUrl}}">
+            <img src="/assets/socialmedia/website.png" class="artistLinkImage"/>
+        </a>
+
+        <a target="_blank" ng-show="artService.currentCommissionedArtist.patreonUrl" href="{{artService.currentCommissionedArtist.patreonUrl}}">
+            <img src="/assets/socialmedia/patreon.png" class="artistLinkImage"/>
+        </a>
+
+        <a target="_blank" ng-show="artService.currentCommissionedArtist.deviantArtUrl" href="{{artService.currentCommissionedArtist.deviantArtUrl}}">
+            <img src="/assets/socialmedia/deviantart.png" class="artistLinkImage"/>
+        </a>
+
+        <a target="_blank" ng-show="artService.currentCommissionedArtist.facebookUrl" href="{{artService.currentCommissionedArtist.facebookUrl}}">
+            <img src="/assets/socialmedia/facebook.png" class="artistLinkImage"/>
+        </a>
+
+    </div>
+
+    <p ng-show="artService.currentCommissionedArt.purchaseUrl" class="center">
+        Purchase a print <a target="_blank" href="{{artService.currentCommissionedArt.purchaseUrl}}">here</a>.
+    </p>
+
+</div>

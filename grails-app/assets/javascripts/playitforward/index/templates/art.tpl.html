@@ -1,0 +1,31 @@
+
+
+<!--suppress HtmlUnknownTarget -->
+<div role="main">
+
+    <div class="bounty-tabs">
+        <ul>
+            <li ng-class="tabService.tabClass('Art', 'commissioned')" ng-click="tabService.activateTab('Art', 'commissioned')" >Commissioned</li>
+            <li ng-class="tabService.tabClass('Art', 'donated')" ng-click="tabService.activateTab('Art', 'donated')">Donated</li>
+        </ul>
+    </div>
+
+    <div ng-show="tabService.isActiveTab('Art', 'commissioned')">
+
+        <ng-include src="'/playitforward/index/artCommissionTab.html'"></ng-include>
+
+    </div>
+
+    <div ng-show="tabService.isActiveTab('Art', 'donated')">
+
+        <ng-include src="'/playitforward/index/artDonorTab.html'"></ng-include>
+
+    </div>
+
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+
+</div>
