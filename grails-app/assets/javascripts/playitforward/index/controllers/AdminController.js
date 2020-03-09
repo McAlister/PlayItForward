@@ -407,9 +407,9 @@ function AdminController(contextPath, userPersistenceService, $scope, $http, $fi
         $scope.imageSrc = null;
         $scope.showImage = false;
 
-        if ($scope.file) {
+        if (this.file) {
 
-            fileReader.readAsDataUrl($scope.file, $scope)
+            fileReader.readAsDataUrl(this.file, $scope)
                 .then(function (result) {
                     $scope.showImage = true;
                     $scope.imageSrc = result;
@@ -429,7 +429,7 @@ function AdminController(contextPath, userPersistenceService, $scope, $http, $fi
         var formData = new FormData();
         //formData.append("file", $scope.file);
         formData.append("file", $scope.imageSrc);
-        formData.append("name", $scope.file.name);
+        formData.append("name", this.file.name);
         formData.append("path", $scope.fileData.path);
 
         var config = {

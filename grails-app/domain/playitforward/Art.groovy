@@ -6,7 +6,7 @@ class Art {
     Artist artist;
     String fileName;
     String purchaseUrl;
-    boolean isCommissioned;
+    Boolean isCommissioned;
 
 
     static constraints = {
