@@ -23,40 +23,44 @@ class ArtController {
     @Secured('ROLE_ADMIN')
     @Transactional
     def save(Art art) {
+
         if (art == null) {
-            transactionStatus.setRollbackOnly()
-            render status: NOT_FOUND
-            return
+
+            transactionStatus.setRollbackOnly();
+            render status: NOT_FOUND;
+            return;
         }
 
         if (art.hasErrors()) {
-            transactionStatus.setRollbackOnly()
-            respond art.errors, view:'create'
-            return
+
+            transactionStatus.setRollbackOnly();
+            respond art.errors, view:'create';
+            return;
         }
 
-        art.save flush:true
-
-        respond art, [status: CREATED, view:"show"]
+        art.save flush:true;
+        respond art, [status: CREATED, view:"show"];
     }
 
     @Secured('ROLE_ADMIN')
     @Transactional
     def update(Art art) {
+
         if (art == null) {
-            transactionStatus.setRollbackOnly()
-            render status: NOT_FOUND
-            return
+
+            transactionStatus.setRollbackOnly();
+            render status: NOT_FOUND;
+            return;
         }
 
         if (art.hasErrors()) {
-            transactionStatus.setRollbackOnly()
-            respond art.errors, view:'edit'
-            return
+
+            transactionStatus.setRollbackOnly();
+            respond art.errors, view:'edit';
+            return;
         }
 
-        art.save flush:true
-
-        respond art, [status: OK, view:"show"]
+        art.save flush:true;
+        respond art, [status: OK, view:"show"];
     }
 }

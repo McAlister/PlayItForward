@@ -73,6 +73,7 @@ function artService($http) {
                             target.url = service.baseUrl + 'playmatArt/' + source.fileName;
                             target.purchaseUrl = source.purchaseUrl;
                             target.index = k;
+                            target.isCommissioned = source.isCommissioned;
                             target.active = 0;
                         }
                     }
@@ -216,6 +217,7 @@ function artService($http) {
             title: service.artModel.title,
             fileName: service.artModel.fileName,
             purchaseUrl: service.artModel.purchaseUrl,
+            isCommissioned: service.artModel.isCommissioned,
             artist: {
                 id: service.currentArtist.id
             }

@@ -54,6 +54,12 @@
                ng-model="artService.artModel.purchaseUrl" >
     </div>
 
+    <div class="form-group">
+        <label>Is Commissioned: <input type="checkbox" ng-model="artService.artModel.isCommissioned"
+                                ng-true-value="true" ng-false-value="false" checked="checked">
+        </label>
+    </div>
+
     <div class="text-center">
         <button class="btn btn-primary" type="button" ng-click="artService.clearArt()">Clear</button>
         <button class="btn btn-primary" type="submit" ng-show="artService.artModel.id">Edit</button>
