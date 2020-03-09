@@ -1,0 +1,76 @@
+
+<div role="main">
+
+    <h2 class="shoutout">Claim Prize</h2>
+
+    <div ng-show="tabService.isActiveTab('Claim', 'sent')" >
+
+        <p class="claimHeading">
+            Claim Submitted
+        </p>
+
+        <p class="claimText">
+            Prize claim mailbox will be checked twice monthly
+        </p>
+
+        <form ng-submit="newClaim()" class="form">
+
+            <button class="btn btn-primary center-block" type="submit">New Claim</button>
+
+        </form>
+
+    </div>
+
+    <div ng-show="tabService.isActiveTab('Claim', 'input')" >
+
+    <form ng-submit="claimPrize()" class="form">
+
+        <div class="form-group">
+            <label for="claimName" class="control-label">Full Name:</label>
+            <input type="text" id="claimName" class="form-control" ng-model="claimEmail.name" required>
+        </div>
+
+        <div class="form-group">
+            <label for="claimEmail" class="control-label">Email:</label>
+            <input type="text" id="claimEmail" class="form-control" ng-model="claimEmail.email" required>
+        </div>
+
+        <div class="form-group">
+            <label for="claimContest" class="control-label">Contest:</label><br/>
+            <!--suppress HtmlFormInputWithoutLabel -->
+            <select name="claimContest" id="claimContest" ng-model="claimEmail.contest" >
+
+                <option value="Playmat">GP/SCO Playmat</option>
+                <option value="Inferno">Awakened Inferno</option>
+                <option value="Got There">Got There</option>
+                <option value="Inspiration">Inspiration</option>
+                <option value="Unstoppable">Unstoppable</option>
+                <option value="Other">Other</option>
+
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="claimText" class="control-label">Details:</label>
+            <textarea cols="40" rows="5" id="claimText" class="form-control"
+                      ng-model="claimEmail.text" required>
+                </textarea>
+        </div>
+
+        <span class="errors">
+            {{claimEmail.error}}
+        </span>
+
+        <button class="btn btn-primary center-block" type="submit">Claim</button>
+
+    </form>
+
+    </div>
+
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+
+</div>

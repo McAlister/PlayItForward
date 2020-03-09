@@ -41,6 +41,11 @@
             <div class="navigation">
 
                 <ul class="navigation-list">
+                    <li class="navigation-list-item" >
+                        <a ui-sref="claim" class="navigation-link">
+                            Claim Prize
+                        </a>
+                    </li>
                     <li class="navigation-list-item">
                         <a ui-sref="currentGP" class="navigation-link">
                             GP Coverage
@@ -61,16 +66,6 @@
                             About
                         </a>
                     </li>
-                    <li class="navigation-list-item" ng-hide="isAuthenticated()">
-                        <a ui-sref="login" class="navigation-link">
-                            Login
-                        </a>
-                    </li>
-                    <li class="navigation-list-item" ng-show="isAuthenticated()" ng-cloak>
-                        <a ui-sref="logoff" class="navigation-link">
-                            Logoff
-                        </a>
-                    </li>
                     <li class="navigation-list-item" ng-if="getRole() === 'ROLE_ADMIN'" ng-cloak>
                         <a ui-sref="admin" class="navigation-link">
                             Administration
@@ -87,14 +82,6 @@
                         </a>
                     </li>
                 </ul>
-
-                <div class="navIconsDiv">
-
-                    <a href="mailto:play_it_forward@outlook.com">
-                        <img src="/assets/socialmedia/mailMe.png" class="navLinkImage"/>
-                    </a>
-
-                </div>
 
             </div>
 

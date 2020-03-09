@@ -33,6 +33,27 @@
     text-align: center;
 }
 
+.claimHeading, .claimText {
+
+    text-align: center;
+    line-height: 3em;
+}
+
+.claimHeading {
+    font-weight: bold;
+    color: gold;
+}
+
+.errors {
+    margin: 15px auto 15px auto;
+    width: 100%;
+    display: block;
+    color: black;
+    background: pink;
+    padding-left: 10px;
+    border-left: 3px red solid;
+}
+
 @media screen and (max-width: 480px) {
     .page {
         width: 100%;
