@@ -1,0 +1,39 @@
+
+<h1>Manage Files:</h1>
+
+<div class="alert alert-danger" ng-show="fileData.fileError">
+
+    There was a problem uploading the file.
+
+    <br />
+
+    {{fileData.fileError}}
+
+</div>
+
+
+<form ng-submit="uploadFile()" class="form">
+
+    <div class="form-group">
+        <label for="inputPath" class="control-label">Path:</label><br/>
+        <select name="inputPath" id="inputPath" ng-model="fileData.path" >
+            <option value="images/winners">winners</option>
+            <option value="images/race">race</option>
+            <option value="images/race/ovals">oval</option>
+            <option value="images/playmatArt">playmat art</option>
+            <option value="images/playmats">event playmat art</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="inputFile" class="control-label">Image:</label>
+        <input id="inputFile" type="file" ng-file-select="onFileSelect($files)">
+    </div>
+
+    <button class="btn btn-primary center-block" type="submit">Upload</button>
+
+</form>
+
+<br/>
+
+<img ng-show="showImage" alt="Image Preview" ng-src="{{imageSrc}}" />
