@@ -27,6 +27,10 @@ function config($stateProvider, $urlRouterProvider) {
             templateUrl: '/playitforward/index/gp.html',
             reloadOnSearch: false
         })
+        .state('claim', {
+            url: '/claim',
+            templateUrl: '/playitforward/index/claim.html'
+        })
         .state('about', {
             url: '/about',
             templateUrl: '/playitforward/index/index.html'
