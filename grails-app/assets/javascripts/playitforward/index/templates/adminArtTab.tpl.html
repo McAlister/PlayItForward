@@ -1,0 +1,128 @@
+
+
+<h1>Art:</h1>
+
+<div class="alert alert-danger" ng-show="artService.error">
+
+    There was a problem retrieving the art and artist Info.
+
+    <br />
+
+    {{artService.error}}
+
+</div>
+
+<div class="gp-dropdown">
+    <!--suppress HtmlFormInputWithoutLabel -->
+    <select name="artSelect" id="artSelect" ng-model="artService.artModel"
+            ng-options="art.title for art in artService.artList | orderBy: 'title' track by art.id"
+            ng-change="selectArt()">
+        <option value="" disabled selected hidden>Create New Art ...</option>
+    </select>
+</div>
+
+<br/>
+
+<img alt="playmat image" class="playmat-image" ng-src="{{artService.previewUrl}}" on-error-src="assets/ComingSoon.jpg"/>
+
+<form ng-submit="artService.upsertArt()" class="form">
+
+    <div class="form-group">
+        <label for="inputArtURL" class="control-label">File Name:</label>
+        <input type="text" id="inputArtURL" class="form-control"
+               ng-model="artService.artModel.fileName"
+               ng-blur="artService.setPreview()" required>
+    </div>
+
+    <div class="form-group">
+        <label for="inputArtArtist" class="control-label">Artist:</label>
+        <select name="inputArtArtist" id="inputArtArtist" ng-model="artService.currentArtist"
+                ng-options="artist.name for artist in artService.artistsList"
+                class="form-control">
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="inputArtTitle" class="control-label">Title:</label>
+        <input type="text" id="inputArtTitle" class="form-control"
+               ng-model="artService.artModel.title" required>
+    </div>
+
+    <div class="form-group">
+        <label for="inputArtPurchase" class="control-label">Purchase Url:</label>
+        <input type="text" id="inputArtPurchase" class="form-control"
+               ng-model="artService.artModel.purchaseUrl" >
+    </div>
+
+    <div class="form-group">
+        <label>Is Commissioned: <input type="checkbox" ng-model="artService.artModel.isCommissioned"
+                                ng-true-value="true" ng-false-value="false" checked="checked">
+        </label>
+    </div>
+
+    <div class="text-center">
+        <button class="btn btn-primary" type="button" ng-click="artService.clearArt()">Clear</button>
+        <button class="btn btn-primary" type="submit" ng-show="artService.artModel.id">Edit</button>
+        <button class="btn btn-primary" type="submit" ng-hide="artService.artModel.id">Add</button>
+    </div>
+
+</form>
+
+<br />
+
+<h1>Artists:</h1>
+
+<div class="gp-dropdown">
+    <!--suppress HtmlFormInputWithoutLabel -->
+    <select name="artistSelect" id="artistSelect" ng-model="artService.artistModel"
+            ng-options="artist.name for artist in artService.artistsList | orderBy: 'name' track by artist.id">
+        <option value="" disabled selected hidden>Create New Artist ...</option>
+    </select>
+</div>
+
+<form ng-submit="artService.upsertArtist()" class="form">
+
+    <div class="form-group">
+        <label for="inputArtistName" class="control-label">Name:</label>
+        <input type="text" id="inputArtistName" class="form-control"
+               ng-model="artService.artistModel.name" required>
+    </div>
+
+    <div class="form-group">
+        <label for="inputArtistBlurb" class="control-label">Blurb:</label>
+        <textarea cols="40" rows="5" id="inputArtistBlurb" class="form-control"
+                  ng-model="artService.artistModel.blurb" required>
+                </textarea>
+    </div>
+
+    <div class="form-group">
+        <label for="inputArtistWebsite" class="control-label">Website:</label>
+        <input type="text" id="inputArtistWebsite" class="form-control"
+               ng-model="artService.artistModel.webSiteUrl" >
+    </div>
+
+    <div class="form-group">
+        <label for="inputArtistDeviant" class="control-label">Deviant Art:</label>
+        <input type="text" id="inputArtistDeviant" class="form-control"
+               ng-model="artService.artistModel.deviantArtUrl" >
+    </div>
+
+    <div class="form-group">
+        <label for="inputArtistFacebook" class="control-label">Facebook:</label>
+        <input type="text" id="inputArtistFacebook" class="form-control"
+               ng-model="artService.artistModel.facebookUrl" >
+    </div>
+
+    <div class="form-group">
+        <label for="inputArtistPatreon" class="control-label">Patreon:</label>
+        <input type="text" id="inputArtistPatreon" class="form-control"
+               ng-model="artService.artistModel.patreonUrl" >
+    </div>
+
+    <div class="text-center">
+        <button class="btn btn-primary" type="button" ng-click="artService.clearArtist()">Clear</button>
+        <button class="btn btn-primary" type="submit" ng-show="artService.artistModel.id">Edit</button>
+        <button class="btn btn-primary" type="submit" ng-hide="artService.artistModel.id">Add</button>
+    </div>
+
+</form>

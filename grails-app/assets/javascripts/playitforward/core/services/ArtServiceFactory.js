@@ -13,14 +13,20 @@ function artService($http) {
         error: '',
         baseUrl: null,
         currentArt: null,
+        currentDonatedArt: null,
+        currentCommissionedArt: null,
         artList: [],
         artHash: {},
-        currentArtist: {
+        currentDonorArtist: {
+            artSet: []
+        },
+        currentCommissionedArtist: {
             artSet: []
         },
         artistsList: [],
+        donorArtistList: [],
+        commissionedArtistList: [],
         artistHash: {},
-        currIndex: 0,
 
         artistModel: {},
         artModel: {},
@@ -73,12 +79,32 @@ function artService($http) {
                             target.url = service.baseUrl + 'playmatArt/' + source.fileName;
                             target.purchaseUrl = source.purchaseUrl;
                             target.index = k;
+                            target.isCommissioned = source.isCommissioned;
                             target.active = 0;
+
+                            if (target.isCommissioned) {
+                                artist.hasCommissions = true;
+                            }
+                        }
+
+                        if (artist.hasCommissions) {
+                            service.commissionedArtistList.push(artist);
+                        }
+                        else {
+                            service.donorArtistList.push(artist);
                         }
                     }
                 }
 
-                service.selectArtist();
+                service.currentDonorArtist = service.donorArtistList[0];
+                service.currentCommissionedArtist = service.commissionedArtistList[0];
+
+                service.currentArtist = service.commissionedArtistList[0];
+                service.selectArtist(service.currentArtist.hasCommissions);
+
+                service.currentArtist = service.donorArtistList[0];
+                service.selectArtist(service.currentArtist.hasCommissions);
+
                 service.ready = true;
 
             }, function errorCallback(response) {
@@ -100,6 +126,7 @@ function artService($http) {
                 for ( var i = 0 ; i < service.artistsList.length ; ++i ) {
 
                     var artist = service.artistsList[i];
+                    artist.hasCommissions = false;
                     service.artistHash[artist.id] = artist;
                 }
 
@@ -140,57 +167,105 @@ function artService($http) {
     // Slideshow Code //
     // ////////////// //
 
-    service.selectArtist = function() {
+    service.selectArtist = function(isCommissioned) {
 
-        for ( var i = 0 ; i < service.currentArtist.artSet.length ; ++i ) {
-
-            service.currentArtist.artSet[i].active = (i === 0);
+        var artist = service.currentDonorArtist;
+        if (isCommissioned) {
+            artist = service.currentCommissionedArtist;
         }
 
-        service.currIndex = 0;
-        service.currentArt = service.artHash[service.currentArtist.artSet[0].id];
-    };
+        for ( var i = 0 ; i < artist.artSet.length ; ++i ) {
 
-    service.forwardImage = function() {
-
-        var slides = service.currentArtist.artSet;
-        slides[service.currIndex].active = false;
-        service.currIndex++;
-
-        if (service.currIndex >= slides.length) {
-            service.currIndex = 0;
+            artist.artSet[i].active = (i === 0);
         }
 
-        slides[service.currIndex].active = true;
-        service.currentArt = service.artHash[slides[service.currIndex].id];
+        service.currentArt = service.artHash[artist.artSet[0].id];
+
+        if (isCommissioned) {
+            service.currentCommissionedArt = service.currentArt;
+        }
+        else {
+            service.currentDonatedArt = service.currentArt;
+        }
     };
 
-    service.backImage = function() {
+    service.forwardImage = function(artist) {
 
-        var slides = service.currentArtist.artSet;
-        slides[service.currIndex].active = false;
-        service.currIndex--;
+        var slides = artist.artSet;
 
-        if (service.currIndex < 0) {
-            service.currIndex = slides.length - 1;
+        var newActiveIndex = 0;
+        for ( var i = 0 ; i < slides.length ; i++ ) {
+
+            if (slides[i].active) {
+
+                slides[i].active = false;
+                newActiveIndex = i + 1;
+                break;
+            }
         }
 
-        slides[service.currIndex].active = true;
-        service.currentArt = service.artHash[slides[service.currIndex].id];
+        if (newActiveIndex >= slides.length) {
+            newActiveIndex = 0;
+        }
+
+        slides[newActiveIndex].active = true;
+
+        if (artist.hasCommissions) {
+            service.currentCommissionedArt = service.artHash[slides[newActiveIndex].id];
+        } else {
+            service.currentDonatedArt = service.artHash[slides[newActiveIndex].id];
+        }
     };
 
-    service.goToSlide = function( index ) {
+    service.backImage = function(artist) {
 
-        var slides = service.currentArtist.artSet;
+        var slides = artist.artSet;
+
+        var newActiveIndex = 0;
+        for ( var i = 0 ; i < slides.length ; i++ ) {
+
+            if (slides[i].active) {
+
+                slides[i].active = false;
+                newActiveIndex = i - 1;
+                break;
+            }
+        }
+
+        if (newActiveIndex < 0) {
+            newActiveIndex = slides.length - 1;;
+        }
+
+        slides[newActiveIndex].active = true;
+
+        if (artist.hasCommissions) {
+            service.currentCommissionedArt = service.artHash[slides[newActiveIndex].id];
+        } else {
+            service.currentDonatedArt = service.artHash[slides[newActiveIndex].id];
+        }
+    };
+
+    service.goToSlide = function( index, artist ) {
+
+        var slides = artist.artSet;
+        for ( var i = 0 ; i < slides.length ; i++ ) {
+
+            if (slides[i].active) {
+
+                slides[i].active = false;
+            }
+        }
 
         if ( index >= slides.length ) {
             index = 0;
         }
 
-        slides[service.currIndex].active = false;
-        service.currIndex = index;
-        slides[service.currIndex].active = true;
-        service.currentArt = service.artHash[slides[service.currIndex].id];
+        slides[index].active = true;
+        if (artist.hasCommissions) {
+            service.currentCommissionedArt = service.artHash[slides[index].id];
+        } else {
+            service.currentDonatedArt = service.artHash[slides[index].id];
+        }
     };
 
     service.setPreview = function () {
@@ -216,6 +291,7 @@ function artService($http) {
             title: service.artModel.title,
             fileName: service.artModel.fileName,
             purchaseUrl: service.artModel.purchaseUrl,
+            isCommissioned: service.artModel.isCommissioned,
             artist: {
                 id: service.currentArtist.id
             }

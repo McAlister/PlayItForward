@@ -1,0 +1,131 @@
+
+<h1>Leading Ladies:</h1>
+
+<div class="alert alert-danger" ng-show="playerData.playerError">
+
+    There was a problem retrieving the player list.
+
+    <br />
+
+    {{playerData.playerError}}
+
+</div>
+
+<div class="gp-dropdown">
+    <!--suppress HtmlFormInputWithoutLabel -->
+    <select name="playerSelect" id="playerSelect" ng-model="playerData.currentPlayer"
+            ng-options="player.name for player in playerData.playerList | orderBy: 'name' track by player.id" >
+        <option value="" disabled selected hidden>Create New Player ...</option>
+    </select>
+</div>
+
+<form ng-submit="upsertPlayer()" class="form">
+
+    <div class="form-group">
+        <label for="inputPlayerName" class="control-label">Name in Standings:</label>
+        <input type="text" id="inputPlayerName" class="form-control" placeholder="Aiken, Simone [US]"
+               ng-model="playerData.currentPlayer.name" required>
+    </div>
+
+    <div class="form-group">
+        <label for="inputPlayerAlias" class="control-label">Alias:</label>
+        <input type="text" id="inputPlayerAlias" class="form-control" placeholder="Alias"
+               ng-model="playerData.currentPlayer.alias" required>
+    </div>
+
+    <div class="form-group">
+        <label for="inputPlayerImageName" class="control-label">Image Name:</label>
+        <input type="text" id="inputPlayerImageName" class="form-control" placeholder="Image Name"
+               ng-model="playerData.currentPlayer.imgUrl" required >
+    </div>
+
+    <div class="form-group">
+        <label>Is Woman: <input type="checkbox" ng-model="playerData.currentPlayer.isWoman"
+                                ng-true-value="true" ng-false-value="false" checked="checked">
+        </label>
+    </div>
+
+    <div class="text-center">
+        <button class="btn btn-primary" type="button" ng-click="addNewPlayerSetup()">Clear</button>
+        <button class="btn btn-primary" type="submit" ng-show="playerData.currentPlayer.id">Edit</button>
+        <button class="btn btn-primary" type="submit" ng-hide="playerData.currentPlayer.id">Add</button>
+    </div>
+
+</form>
+
+<br/>
+
+<form>
+    <div class="form-group">
+        <div class="input-group">
+            <div class="input-group-addon"><i class="fa fa-search"></i></div>
+            <input type="text" class="form-control" placeholder="Search Players"
+                   ng-change="filterPlayers()" ng-model="playerData.searchString">
+        </div>
+    </div>
+</form>
+
+<table class="table table-bordered table-striped">
+
+    <thead>
+    <tr>
+        <th>
+            <a href ng-click="sortPlayers('imgUrl')">
+                Image
+                <span ng-show="playerData.sortType == 'imgUrl' && !playerData.sortReverse" class="fa fa-caret-down"></span>
+                <span ng-show="playerData.sortType == 'imgUrl' && playerData.sortReverse" class="fa fa-caret-up"></span>
+            </a>
+        </th>
+        <th>
+            <a href ng-click="sortPlayers('name')">
+                Name
+                <span ng-show="playerData.sortType == 'name' && !playerData.sortReverse" class="fa fa-caret-down"></span>
+                <span ng-show="playerData.sortType == 'name' && playerData.sortReverse" class="fa fa-caret-up"></span>
+            </a>
+        </th>
+        <th>
+            <a href ng-click="sortPlayers('alias')">
+                Alias
+                <span ng-show="playerData.sortType == 'alias' && !playerData.sortReverse" class="fa fa-caret-down"></span>
+                <span ng-show="playerData.sortType == 'alias' && playerData.sortReverse" class="fa fa-caret-up"></span>
+            </a>
+        </th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <tr ng-repeat="player in playerData.pagedPlayers[playerData.currentPage]">
+        <td>{{ player.imgUrl }}</td>
+        <td>{{ player.name }}</td>
+        <td>{{ player.alias }}</td>
+    </tr>
+    </tbody>
+
+    <tfoot>
+
+
+    </tfoot>
+
+</table>
+
+<div class="tableControl pull-right">
+
+    <ul>
+
+        <li ng-class="{disabled: playerData.currentPage == 0}">
+            <a href ng-click="prevPlayerPage()">«</a>
+        </li>
+
+        <li ng-repeat="n in playerTableRange()"
+            ng-class="{active: n == playerData.currentPage}" ng-click="setPlayerPage(n)">
+
+            <a href ng-bind="n + 1">1</a>
+        </li>
+
+        <li ng-class="{disabled: (currentPage) == layerData.pagedPlayers.length - 1}">
+            <a href class="button" ng-click="nextPlayerPage()">»</a>
+        </li>
+
+    </ul>
+
+</div>

@@ -52,8 +52,8 @@
                         </a>
                     </li>
                     <li class="navigation-list-item">
-                        <a ui-sref="supporters" class="navigation-link">
-                            Artists
+                        <a ui-sref="art" class="navigation-link">
+                            Art
                         </a>
                     </li>
                     <li class="navigation-list-item">

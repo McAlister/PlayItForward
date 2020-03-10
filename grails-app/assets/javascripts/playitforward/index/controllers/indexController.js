@@ -13,7 +13,8 @@ function IndexController(userPersistenceService, contextPath, $scope, $http, art
     tabService.registerTabList( "Resources", "community", ["community", "strategy", "events"] );
     tabService.registerTabList( "About", "inspire", ["achieve", "inspire", "program", "faq"] );
     tabService.registerTabList( "Claim", "input", ["input", "sent"]);
-    
+    tabService.registerTabList( "Art", "commissioned", ["commissioned", "donated"]);
+
     $scope.artService = artService;
     artService.loadArt();
 

@@ -5,7 +5,8 @@ class Art {
     String title;
     Artist artist;
     String fileName;
-    String purchaseUrl
+    String purchaseUrl;
+    Boolean isCommissioned;
 
 
     static constraints = {
@@ -14,6 +15,7 @@ class Art {
         artist nullable: false;
         fileName nullable: false;
         purchaseUrl nullable: true;
+        isCommissioned nullable: true;
     }
 
     static mapping = {

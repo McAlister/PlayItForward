@@ -1,0 +1,65 @@
+
+<div class="alert alert-danger" ng-show="winnerData.winnerError">
+
+    There was a problem retrieving the winner list.
+
+    <br />
+
+    {{winnerData.winnerError}}
+
+</div>
+
+<div ng-show="winnerData.winnerError=='' && prizesLoaded && eventsLoaded">
+
+    <h1>Add/Edit:</h1>
+
+    <div class="gp-dropdown">
+        <!--suppress HtmlFormInputWithoutLabel -->
+        <select name="winnerSelect" id="winnerSelect" ng-model="eventService.currentEvent"
+                ng-options="event.name + ' - ' + event.eventFormat for event in (eventService.events | filter:eventService.currentYear) track by event.id"
+                ng-change="eventService.selectedEvent()">
+        </select>
+    </div>
+
+    <div class="gp-dropdown">
+        <!--suppress HtmlFormInputWithoutLabel -->
+        <select name="yearSelectWinner" id="yearSelectWinner" ng-model="eventService.currentYear"
+                ng-options="year for year in eventService.years"
+                ng-change="eventService.selectedYear()" title="yearSelectWinnerTitle">
+        </select>
+    </div>
+
+    <form ng-submit="upsertWinner()" class="form">
+
+        <div class="form-group">
+            <label for="inputWinnerName" class="control-label">Name:</label>
+            <input type="text" id="inputWinnerName" class="form-control" placeholder="Name" ng-model="getCurrentWinner().name" required>
+        </div>
+
+        <div class="form-group">
+            <label for="inputRank" class="control-label">Rank:</label>
+            <input type="text" id="inputRank" class="form-control" placeholder="Rank" ng-model="getCurrentWinner().ranking" required>
+        </div>
+
+        <div class="form-group">
+            <label for="inputRecord" class="control-label">Record:</label>
+            <input type="text" id="inputRecord" class="form-control" placeholder="Record" ng-model="getCurrentWinner().record" required >
+        </div>
+
+        <div class="form-group">
+            <label for="inputWinnerImage" class="control-label">Image:</label>
+            <input type="text" id="inputWinnerImage" class="form-control" placeholder="Image" ng-model="getCurrentWinner().imageName" required >
+        </div>
+
+        <div class="form-group">
+            <label for="inputBlurb" class="control-label">Blurb:</label>
+            <textarea cols="40" rows="5" id="inputBlurb" class="form-control"
+                      ng-model="getCurrentWinner().blurb" required>
+                </textarea>
+        </div>
+
+        <button class="btn btn-primary center-block" type="submit">Add/Edit</button>
+
+    </form>
+
+</div>
