@@ -41,14 +41,14 @@
             <div class="navigation">
 
                 <ul class="navigation-list">
+                    <li class="navigation-list-item">
+                        <a ui-sref="currentGP" class="navigation-link">
+                            Events
+                        </a>
+                    </li>
                     <li class="navigation-list-item" >
                         <a ui-sref="claim" class="navigation-link">
                             Claim Prize
-                        </a>
-                    </li>
-                    <li class="navigation-list-item">
-                        <a ui-sref="currentGP" class="navigation-link">
-                            GP Coverage
                         </a>
                     </li>
                     <li class="navigation-list-item">
@@ -58,7 +58,7 @@
                     </li>
                     <li class="navigation-list-item">
                         <a ui-sref="resources" class="navigation-link">
-                            Resources
+                            Links
                         </a>
                     </li>
                     <li class="navigation-list-item">

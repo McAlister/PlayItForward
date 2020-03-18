@@ -1,0 +1,7 @@
+import playitforward.EventLinks
+
+model {
+	EventLinks eventLinks
+}
+
+json g.render(eventLinks)

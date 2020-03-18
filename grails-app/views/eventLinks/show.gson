@@ -1,0 +1,7 @@
+import playitforward.EventLinks
+
+model {
+	EventLinks eventLinks
+}
+
+json tmpl.eventLinks(eventLinks)

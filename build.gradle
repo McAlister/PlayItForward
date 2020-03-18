@@ -42,6 +42,7 @@ dependencyManagement {
 }
 
 dependencies {
+    compile "org.jsoup:jsoup:1.7.1"
     assets "com.craigburke.angular:angular-template-asset-pipeline:2.3.0"
     assets "com.craigburke.angular:angular-annotate-asset-pipeline:2.4.0"
     assets "com.craigburke:js-closure-wrap-asset-pipeline:1.2.0"

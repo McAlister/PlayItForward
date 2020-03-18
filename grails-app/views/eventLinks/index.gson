@@ -1,0 +1,8 @@
+import playitforward.EventLinks
+
+model {
+	Iterable<EventLinks> eventLinksList
+}
+
+json tmpl.eventLinks(eventLinksList ?: [])
+

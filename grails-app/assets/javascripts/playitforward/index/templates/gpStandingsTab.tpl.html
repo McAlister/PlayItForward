@@ -1,0 +1,31 @@
+
+<h2 class="shoutout" style="margin-bottom: 5px;">
+    {{eventService.currentType.type}} {{eventService.currentEvent.name}}
+</h2>
+
+<span>
+    {{eventService.currentEvent.eventFormat}} : {{gpRangeString()}}
+</span>
+
+<br/><br/>
+
+<table class="resource-table ng-scope">
+
+    <tr>
+        <th style="text-align: center;">Pairings</th>
+        <th style="text-align: center;">Results</th>
+        <th style="text-align: center;">Standings</th>
+    </tr>
+
+    <tr ng-repeat="link in eventService.currentLinks">
+
+        <td style="text-align: center;"><a href="{{link.pairingsUrl}}" target="_blank">{{link.round}}</a></td>
+        <td style="text-align: center;"><a href="{{link.resultsUrl}}" target="_blank">{{link.round}}</a></td>
+        <td style="text-align: center;"><a href="{{link.standingsUrl}}" target="_blank">{{link.round}}</a></td>
+
+    </tr>
+
+</table>
+
+<br/>
+<br/>

@@ -10,14 +10,58 @@ function eventService($http, $location, $filter) {
 
         eventsLoaded: false,
         error: '',
-        currentEvent: null,
         events: [],
-        currentYear: null,
+        currentEvent: null,
+        eventToEdit: null,
+        activeEvents: [],
         years: [],
-        baseUrl: null
+        currentYear: 2017,
+        types: [],
+        currentType: null,
+        eventLinks: {},
+        currentLinks: []
     };
 
-    var populateCurrentEvent = function(event) {
+    var year = service.currentYear;
+    var thisYear = new Date().getFullYear();
+    while (year <= thisYear) {
+        service.years.push(year);
+        year++;
+    }
+
+    var populateCurrentLinks = function() {
+
+        var eventId = service.currentEvent.id;
+        service.currentLinks = [];
+
+        if (eventId in service.eventLinks && service.eventLinks[eventId].length > 0) {
+
+            service.currentLinks = service.eventLinks[eventId];
+
+        } else {
+
+            $http.get('/api/EventLinks/event/' + eventId).then(
+
+                function successCallback(response) {
+
+                    service.eventLinks[eventId] = response.data;
+                    service.currentLinks = service.eventLinks[eventId];
+
+                    if (service.currentLinks.length <= 0) {
+                        service.scrapeStandings();
+                    }
+
+                }, function errorCallback(response) {
+
+                    service.scrapeStandings();
+                }
+            );
+        }
+    };
+
+    var populateEventToEdit = function() {
+
+        var event = service.currentEvent;
 
         var data = {
 
@@ -29,8 +73,8 @@ function eventService($http, $location, $filter) {
             endDate: event.endDate,
             eventFormat: event.eventFormat,
             playmatFileName: event.playmatFileName,
-            matUrl: event.matUrl,
             cfbEventNum: event.cfbEventNum,
+            eventUrl: event.eventUrl,
 
             organizer: {
                 id: event.organizer.id
@@ -49,21 +93,26 @@ function eventService($http, $location, $filter) {
             };
         }
 
-        service.currentEvent = data;
+        service.eventToEdit = data;
     };
 
-    var getBaseUrl = function() {
+    var getTypes = function() {
 
-        $http.get('/api/Image/getImageBaseURL').then(
+        $http.get('/api/EventType').then(
 
             function successCallback(response) {
 
-                service.baseUrl = response.data.url;
+                service.types = response.data;
+                service.currentType = service.types[0];
                 service.reloadEvents();
 
             }, function errorCallback(response) {
 
-                service.error += 'Failed to get Art URL: ' + response.data;
+                service.types = [{"id":1,"description":"Grand Prix","type":"GP"},
+                    {"id":3,"description":"Star City Open","type":"SCO"}];
+                service.currentType = service.types[0];
+                console.log(response.message);
+                service.reloadEvents();
             }
         );
     };
@@ -72,11 +121,11 @@ function eventService($http, $location, $filter) {
 
         if ( service.events.length === 0 ) {
 
-            if ( service.baseUrl ) {
+            if ( service.types.length > 0 ) {
                 service.reloadEvents();
             }
             else {
-                getBaseUrl();
+                getTypes();
             }
         }
     };
@@ -84,33 +133,19 @@ function eventService($http, $location, $filter) {
     service.reloadEvents = function() {
 
         $http.get('/api/Event').then(
+
             function successCallback(response) {
 
                 service.events = response.data;
 
                 var date = new Date();
                 var localOffset = date.getTimezoneOffset() * 60000;
-                var lastYear =  null;
                 for ( var i = 0; i < service.events.length; ++i ) {
 
                     var event = service.events[i];
 
                     event.startDate = new Date(event.startDate.getTime() + localOffset);
                     event.endDate = new Date(event.endDate.getTime() + localOffset);
-
-                    var year = event.startDate.getFullYear();
-                    if ( year !== lastYear ) {
-                        service.years.push( year );
-                        lastYear = year;
-                    }
-
-                    if (event.playmatFileName && service.baseUrl) {
-
-                        event.matUrl = service.baseUrl + "playmats/" + event.playmatFileName;
-                    }
-                    else {
-                        event.matUrl = "assets/ComingSoon.jpg";
-                    }
                 }
 
                 var eventId = $location.search().event;
@@ -118,7 +153,7 @@ function eventService($http, $location, $filter) {
 
                     var eventList = $filter('filter')(service.events, {id: eventId});
                     if (eventList.length > 0) {
-                        populateCurrentEvent(eventList[0]);
+                        service.currentEvent = eventList[0];
                     }
                 }
 
@@ -128,7 +163,7 @@ function eventService($http, $location, $filter) {
 
                         if ( service.events[j].startDate > date ) {
 
-                            populateCurrentEvent( service.events[j-1] );
+                            service.currentEvent = service.events[j-1];
                             break;
                         }
                     }
@@ -136,7 +171,7 @@ function eventService($http, $location, $filter) {
 
                 if ( service.currentEvent === null ) {
 
-                    populateCurrentEvent( service.events[0] );
+                    service.currentEvent = service.events[0];
                 }
 
                 service.selectedEvent();
@@ -145,6 +180,7 @@ function eventService($http, $location, $filter) {
             }, function errorCallback(response) {
 
                 service.error = 'Error: Could not load events: ' + response.data.message;
+                service.eventsLoaded = false;
             }
         );
     };
@@ -158,20 +194,85 @@ function eventService($http, $location, $filter) {
         }
 
         service.currentYear = service.currentEvent.startDate.getFullYear();
+        for(var i = 0 ; i < service.types.length ; ++i) {
+
+            if (service.types[i].id === service.currentEvent.type.id) {
+                service.currentType = service.types[i];
+                break;
+            }
+        }
+
+        service.activeEvents = [];
+        for ( i = 0 ; i < service.events.length ; ++i ) {
+
+            var event = service.events[i];
+            if (event.startDate.getFullYear() === service.currentYear
+                && event.type.id === service.currentType.id ) {
+
+                service.activeEvents.push(event);
+            }
+        }
+
+        populateCurrentLinks();
+        populateEventToEdit();
     };
 
-    service.selectedYear = function() {
+    service.selectedYearType = function() {
+
+        service.currentEvent = null;
 
         for ( var i = 0 ; i < service.events.length ; ++i ) {
 
             var event = service.events[i];
-            if (event.startDate.getFullYear() === service.currentYear) {
+            if (event.startDate.getFullYear() === service.currentYear
+                && event.type.id === service.currentType.id ) {
 
-                populateCurrentEvent(event);
-                service.selectedEvent();
+                service.currentEvent = event;
                 break;
             }
         }
+
+        service.selectedEvent();
+    };
+
+    service.scrapeNewEvents = function() {
+
+        var data = {};
+        var config = {
+            headers : {
+                'Content-Type': 'application/json;charset=utf-8;'
+            }
+        };
+
+        $http.get('/api/RawStandings/year/' + service.currentYear + '/type/' + service.currentType.type, data, config).then(
+            function(){
+                service.reloadEvents();
+                window.alert('Scraped ' + service.currentType.description + ' web site for more events.');
+            },
+            function(response){
+                window.alert('Error: Failed to load events! ' + response.data.message);
+            }
+        );
+    };
+
+    service.scrapeStandings = function() {
+
+        var data = {};
+        var config = {
+            headers : {
+                'Content-Type': 'application/json;charset=utf-8;'
+            }
+        };
+
+        $http.get('/api/RawStandings/event/' + service.currentEvent.id + '/type/' + service.currentType.type, data, config).then(
+
+            function() {
+                populateCurrentLinks();
+            },
+            function(response){
+                window.alert('Error: Failed to load details! ' + response.data.message);
+            }
+        );
     };
 
     service.upsertEvent = function() {

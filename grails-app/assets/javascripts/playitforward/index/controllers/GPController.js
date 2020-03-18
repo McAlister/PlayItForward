@@ -13,10 +13,12 @@ function GPController(contextPath, $scope, $http, tabService, eventService, artS
     eventService.loadEvents();
 
     $scope.tabService = tabService;
-    tabService.registerTabList( "GPs", "playmat", ["winner", "playmat", "race", "org"] );
+    tabService.registerTabList( "GPs", "standings", ["standings", "config", "race"] );
 
     $scope.artService = artService;
     artService.loadArt();
+
+    $scope.monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
     // ///////////////// //
     // Data Loading Code //
@@ -73,104 +75,23 @@ function GPController(contextPath, $scope, $http, tabService, eventService, artS
         }
     };
 
-    // /////////////// //
-    // Winner Tab Code //
-    // /////////////// //
 
-    $scope.isFutureGP = function() {
-
-        var now = new Date();
-        return !eventService.currentEvent || eventService.currentEvent.startDate > now;
-    };
-
-    $scope.gpStartDateString = function() {
+    $scope.gpRangeString = function() {
 
         if (eventService.currentEvent) {
 
             var startDate = new Date(eventService.currentEvent.startDate.getTime());
-            var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            var endDate = new Date(eventService.currentEvent.endDate.getTime());
 
-            return startDate.toLocaleDateString("en-US", options);
+            var startDay = startDate.getUTCDate();
+            var startMonth = $scope.monthNames[startDate.getUTCMonth()];
+            var endDay = endDate.getUTCDate();
+            var endMonth = $scope.monthNames[endDate.getUTCMonth()];
+
+            return startMonth + " " + startDay + " - " + endMonth + " " + endDay;
         }
 
         return "[Error:  No Event Selected.]";
-    };
-
-    $scope.getCurrentWinner = function() {
-
-        if (eventService.currentEvent) {
-
-            return $scope.eventData.winners[eventService.currentEvent.id];
-        }
-    };
-
-    $scope.getWinnerImageName = function() {
-
-        var winner = $scope.getCurrentWinner();
-        if (winner && winner.imageName) {
-
-            return eventService.baseUrl + "winners/" + winner.imageName;
-        }
-
-        return "/assets/winners/Unknown.jpg";
-    };
-
-
-    // ////////// //
-    // Bounty Tab //
-    // ////////// //
-
-    $scope.bountyArray = {
-
-        bountyHash: {},
-        error: '',
-        sortType: 'event',
-        sortReverse: false
-    };
-
-    $scope.populateBounties = function() {
-
-        $http.get('/api/EventBounty').then(
-
-            function successCallback(response) {
-
-                for(var i = 0 ; i < response.data.length ; ++i) {
-
-                    var prize = response.data[i];
-                    if ( ! (prize.eventId in $scope.bountyArray.bountyHash)) {
-                        $scope.bountyArray.bountyHash[prize.eventId] = [];
-                    }
-
-                    $scope.bountyArray.bountyHash[prize.eventId].push(prize);
-                }
-
-            }, function errorCallback(response) {
-
-                $scope.bountyArray.error = 'ERROR: ' + response.data.message;
-            }
-        );
-    };
-
-    $scope.populateBounties();
-
-    $scope.getPrizeList = function() {
-
-        if ( eventService.currentEvent ) {
-
-            return $scope.bountyArray.bountyHash[eventService.currentEvent.id];
-        }
-
-        return [];
-    };
-
-    $scope.bountiesExist = function() {
-
-        if ( eventService.currentEvent ) {
-            var currentBounties = $scope.getPrizeList();
-            return currentBounties && currentBounties.length > 0;
-        }
-
-        return false;
     };
 
 

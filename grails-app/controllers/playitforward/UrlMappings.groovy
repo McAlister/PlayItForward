@@ -21,8 +21,20 @@ class UrlMappings {
                 controller: 'pushNotification', action: 'ping'
         );
 
+        get "/api/EventLinks/event/$eventId" (
+                controller: 'eventLinks', action: 'getLinks'
+        );
+
         get "/api/EventStanding/event/$eventId/round/$roundNum" (
                 controller: 'eventStanding', action: 'index'
+        );
+
+        get "/api/RawStandings/year/$year/type/$type" (
+                controller: 'rawStandings', action: 'scrapeEvents'
+        );
+
+        get "/api/RawStandings/event/$eventId/type/$type" (
+                controller: 'rawStandings', action: 'loadEvent'
         );
 
         get "/api/EventStanding/event/$eventId" (
