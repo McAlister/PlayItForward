@@ -53,7 +53,7 @@
                     </li>
                     <li class="navigation-list-item">
                         <a ui-sref="art" class="navigation-link">
-                            Art
+                            Playmat Art
                         </a>
                     </li>
                     <li class="navigation-list-item">
