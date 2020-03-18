@@ -46,13 +46,13 @@
 
     <div id="gp-loading" ng-if="!eventService.eventsLoaded">
 
-        <p>Loading Event Data ...</p>
+        <h2 class="shoutout">Loading Event Data ...</h2>
 
     </div>
 
     <!--winner-->
 
-    <div id="gp-standings" ng-show="tabService.isActiveTab('GPs', 'standings')">
+    <div id="gp-standings" ng-show="tabService.isActiveTab('GPs', 'standings')" ng-if="eventService.eventsLoaded" >
 
         <ng-include src="'/playitforward/index/gpStandingsTab.html'"></ng-include>
 
@@ -60,7 +60,7 @@
 
     <!--prizes-->
 
-    <div id="gp-config" ng-show="tabService.isActiveTab('GPs', 'config')">
+    <div id="gp-config" ng-show="tabService.isActiveTab('GPs', 'config')" ng-if="eventService.eventsLoaded" >
 
         <ng-include src="'/playitforward/index/gpConfigTab.html'"></ng-include>
 
@@ -68,7 +68,7 @@
 
     <!--horse race-->
 
-    <div id="gp-race" ng-if="tabService.isActiveTab('GPs', 'race')">
+    <div id="gp-race" ng-if="tabService.isActiveTab('GPs', 'race')" ng-if="eventService.eventsLoaded" >
 
         <ng-include src="'/playitforward/index/gpRaceTab.html'"></ng-include>
 

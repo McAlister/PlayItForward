@@ -4,3 +4,9 @@
     margin: 30px 0;
     text-transform: uppercase;
 }
+
+.shoutout a, .shoutout a:hover, .shoutout a:visited {
+    text-decoration: none;
+    color: #ffffff;
+}
+
