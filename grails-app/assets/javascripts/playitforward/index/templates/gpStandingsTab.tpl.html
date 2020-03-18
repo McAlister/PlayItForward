@@ -21,9 +21,9 @@
 
     <tr ng-repeat="link in eventService.currentLinks">
 
-        <td style="text-align: center;"><a href="{{link.pairingsUrl}}" target="_blank">{{link.round}}</a></td>
-        <td style="text-align: center;"><a href="{{link.resultsUrl}}" target="_blank">{{link.round}}</a></td>
-        <td style="text-align: center;"><a href="{{link.standingsUrl}}" target="_blank">{{link.round}}</a></td>
+        <td style="text-align: center;"><a href="{{link.pairingsUrl}}" ng-if="link.pairingsUrl" target="_blank">{{link.round}}</a></td>
+        <td style="text-align: center;"><a href="{{link.resultsUrl}}" ng-if="link.resultsUrl" target="_blank">{{link.round}}</a></td>
+        <td style="text-align: center;"><a href="{{link.standingsUrl}}" ng-if="link.standingsUrl" target="_blank">{{link.round}}</a></td>
 
     </tr>
 

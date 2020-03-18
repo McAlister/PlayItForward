@@ -29,7 +29,7 @@ function eventService($http, $location, $filter) {
         year++;
     }
 
-    var populateCurrentLinks = function() {
+    var populateCurrentLinks = function(scrapeOnFail) {
 
         var eventId = service.currentEvent.id;
         service.currentLinks = [];
@@ -47,7 +47,7 @@ function eventService($http, $location, $filter) {
                     service.eventLinks[eventId] = response.data;
                     service.currentLinks = service.eventLinks[eventId];
 
-                    if (service.currentLinks.length <= 0) {
+                    if (service.currentLinks.length < 15 && scrapeOnFail) {
                         service.scrapeStandings();
                     }
 
@@ -213,7 +213,7 @@ function eventService($http, $location, $filter) {
             }
         }
 
-        populateCurrentLinks();
+        populateCurrentLinks(true);
         populateEventToEdit();
     };
 
@@ -267,7 +267,7 @@ function eventService($http, $location, $filter) {
         $http.get('/api/RawStandings/event/' + service.currentEvent.id + '/type/' + service.currentType.type, data, config).then(
 
             function() {
-                populateCurrentLinks();
+                populateCurrentLinks(false);
             },
             function(response){
                 window.alert('Error: Failed to load details! ' + response.data.message);
