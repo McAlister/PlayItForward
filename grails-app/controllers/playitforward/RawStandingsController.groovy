@@ -1,11 +1,13 @@
 package playitforward
 
 import grails.transaction.Transactional;
-import org.jsoup.Jsoup;
+import org.jsoup.Jsoup
+import org.jsoup.nodes.TextNode;
 import org.jsoup.select.Elements;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import java.sql.Date
+import java.time.Month
 
 @Transactional(readOnly = true)
 class RawStandingsController {
@@ -14,6 +16,8 @@ class RawStandingsController {
     static allowedMethods = [];
 
     static scoCoverageUrl = 'http://old.starcitygames.com/content/archive';
+    static gpCoverageUrl = 'https://magic.wizards.com/en/events/coverage';
+    static cfbCoverageUrl = 'https://coverage.channelfireball.com/';
 
     def index(Integer max) {
         respond RawStandings.list(), model:[rawStandingsCount: RawStandings.count()];
@@ -108,7 +112,11 @@ class RawStandingsController {
             }
             else
             {
-                scrapeCFB(year);
+                if (year < 2020) {
+                    scrapeCFB(year, type);
+                } else {
+                    scrapeNewCFB(year, type);
+                }
             }
 
         } catch (Exception ex) {
@@ -140,7 +148,7 @@ class RawStandingsController {
         Element parent = doc.select(id).first();
         Elements elements = parent.select("div.os-event");
 
-        elements.each { Element element ->
+        for (Element element : elements) {
 
             String location = element.select("div.event-city").text();
             if (location.isEmpty()) {
@@ -154,6 +162,10 @@ class RawStandingsController {
 
             format = format.replace(" Open)", "");
             format = format.replace("(", "");
+
+            if (format.toUpperCase().contains("TEAM")) {
+                continue;
+            }
 
             Date start = Date.valueOf(startDate);
             Date end = start + 1;
@@ -176,8 +188,201 @@ class RawStandingsController {
         }
     }
 
-    void scrapeCFB(int year) {
+    void scrapeNewCFB(int year, String type) {
 
+        EventType eventType = EventType.findByType(type);
+        EventOrganizer organizer = EventOrganizer.findByName("Channel Fireball");
+        Date firstOfYear = new Date(year - 1900, 0, 1);
+        Date lastOfYear = new Date(year - 1900, 11, 31);
+
+        List<Event> eventList = Event.findAllByStartDateBetweenAndType(firstOfYear, lastOfYear, eventType);
+        Map<String, Event> eventMap = new HashMap<>();
+        for(Event event: eventList) {
+            eventMap.put(event.getCfbEventNum(), event);
+        }
+
+        Document doc = Jsoup.connect(cfbCoverageUrl).userAgent("Mozilla")
+                .cookie("auth", "token")
+                .timeout(5000).get();
+
+        Elements elements = doc.select("main div.text-center");
+        for (Element element : elements) {
+
+            Element link = element.select("h5 a").first();
+            Element info = element.select("div.small").first();
+            if (link == null || info == null) {
+                continue;
+            }
+
+            String format = info.textNodes()[1].text().trim();
+            String name = link.text().replace("MagicFest", "").trim();
+            String startDate = info.textNodes()[0].text().trim();
+            String url = link.attr("href");
+            Integer eventKey = Integer.valueOf(url.substring(url.lastIndexOf("/") + 1).trim());
+
+            if (format.toUpperCase().contains("TEAM")) {
+                continue;
+            }
+
+            if (format.toUpperCase().contains("LIMITED")) {
+                format = 'Limited';
+            }
+
+            Integer startYear = Integer.valueOf(startDate.substring(startDate.indexOf(",") + 1).trim());
+            startDate = startDate.substring(0, startDate.indexOf("-"));
+            String month = startDate.substring(0, startDate.indexOf(" ")).trim();
+            String day = startDate.substring(startDate.indexOf(" ") + 1).trim();
+
+            Date start = new Date(startYear - 1900, Month.valueOf(month.toUpperCase()).value - 1, Integer.valueOf(day));
+            if (start.year + 1900 != year) {
+                continue;
+            }
+
+            Date end = start + 1;
+
+            Event event = new Event();
+            if (eventMap.containsKey(eventKey))
+            {
+                event = eventMap.get(eventKey);
+            }
+
+            event.setName(name);
+            event.setCfbEventNum(eventKey);
+            event.setType(eventType);
+            event.setStartDate(start);
+            event.setEndDate(end);
+            event.setEventUrl(url);
+            event.setOrganizer(organizer);
+            event.setEventFormat(format);
+
+            event.save();
+        }
     }
 
+    void scrapeCFB(int year, String type) {
+
+        EventType eventType = EventType.findByType(type);
+        EventOrganizer organizer = EventOrganizer.findByName("Channel Fireball");
+        Date firstOfYear = new Date(year - 1900, 0, 1);
+        Date lastOfYear = new Date(year - 1900, 11, 31);
+
+        List<Event> eventList = Event.findAllByStartDateBetweenAndType(firstOfYear, lastOfYear, eventType);
+        Map<String, Event> eventMap = new HashMap<>();
+        for(Event event: eventList) {
+            eventMap.put(buildGPKey(event), event);
+        }
+
+        int lastYear = year - 1;
+        int nextYear = year + 1;
+        String id1 = "${lastYear}-${year}-season";
+        String id2 = "${year}-${nextYear}-season";
+
+        Document doc = Jsoup.connect(gpCoverageUrl).userAgent("Mozilla")
+                .cookie("auth", "token")
+                .timeout(5000).get();
+
+        Elements elements = new Elements();
+        elements.add(doc.select("#${id1} p").last());
+        elements.add(doc.select("#${id2} p").last());
+
+        List<String> formatList = new ArrayList<>();
+        List<String> nameList = new ArrayList<>();
+        List<String> startList = new ArrayList<>();
+        List<String> urlList = new ArrayList<>();
+
+        for (Element element : elements) {
+
+            if (element == null) {
+                continue;
+            }
+
+            for (TextNode node : element.textNodes()) {
+
+                String text = node.text();
+                if (text.contains("|")) {
+                    continue;
+                }
+
+                if (text.contains("(")) {
+
+                    String date = text.substring(text.indexOf("(")+1, text.indexOf(")")).trim();
+                    startList.add(date);
+
+                    text = text.substring(text.indexOf(")") + 2).trim().replace("-", "");
+                    if (! text.trim().isEmpty()) {
+                        formatList.add(text.trim());
+                    }
+                }
+                else {
+                    if (! text.trim().isEmpty()) {
+                        formatList.add(text.trim());
+                    }
+                }
+            }
+
+            for (Element child : element.children()) {
+
+                if (child.tag().name.equalsIgnoreCase("a") && child.classNames().contains("more")) {
+
+                    nameList.add(child.text().trim());
+
+                    String url = child.attr("href");
+                    if (url.startsWith("/")) {
+                        url = "https://magic.wizards.com/en" + url;
+                    }
+                    urlList.add(url.trim());
+                }
+            }
+        }
+
+        for (int i = 0 ; i < nameList.size() ; i++) {
+
+            if (formatList.get(i).toUpperCase().contains("TEAM")) {
+                continue;
+            }
+
+            String startString = startList.get(i).trim();
+            Integer startYear = Integer.valueOf(startString.substring(startString.length() - 4));
+            String month = startString.substring(0, startString.indexOf(" ")).trim();
+            String day = startString.substring(startString.indexOf(" ") + 1, startString.indexOf("-")).trim();
+
+            Date start = new Date(startYear - 1900, Month.valueOf(month.toUpperCase()).value - 1, Integer.valueOf(day));
+            if (start.year + 1900 != year) {
+                continue;
+            }
+
+            Date end = start + 1;
+
+            Event event = new Event();
+            event.setName(nameList.get(i));
+            event.setStartDate(start);
+
+            if (eventMap.containsKey(buildGPKey(event)))
+            {
+                event = eventMap.get(buildGPKey(event));
+            }
+
+            event.setName(nameList.get(i));
+            event.setType(eventType);
+            event.setStartDate(start);
+            event.setEndDate(end);
+            event.setEventUrl(urlList.get(i));
+            if (event.organizer == null) {
+                event.setOrganizer(organizer);
+            }
+            if (event.getEventUrl().toLowerCase().contains("coverage.channelfireball.com")) {
+                String url = event.getEventUrl();
+                event.setCfbEventNum(Integer.valueOf(url.substring(url.lastIndexOf("/") + 1).trim()));
+            }
+
+            event.setEventFormat(formatList.get(i).replace("Block", "").trim());
+
+            event.save();
+        }
+    }
+
+    String buildGPKey(Event event) {
+
+        return event.name + "-" + event.startDate.toString();
+    }
 }

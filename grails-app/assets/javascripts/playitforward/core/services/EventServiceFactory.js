@@ -51,7 +51,7 @@ function eventService($http, $location, $filter) {
                         service.scrapeStandings();
                     }
 
-                }, function errorCallback(response) {
+                }, function errorCallback() {
 
                     service.scrapeStandings();
                 }
@@ -188,7 +188,7 @@ function eventService($http, $location, $filter) {
     service.selectedEvent = function () {
 
         var id = service.currentEvent.id;
-        if (id && $location.search().id !== id) {
+        if (id && $location.search().event !== id) {
 
             $location.search("event", id);
         }
