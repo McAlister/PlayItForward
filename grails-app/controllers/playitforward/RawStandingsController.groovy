@@ -1,5 +1,6 @@
 package playitforward
 
+import com.sun.org.apache.xpath.internal.operations.Bool
 import grails.transaction.Transactional;
 import org.jsoup.Jsoup
 import org.jsoup.nodes.TextNode;
@@ -39,6 +40,11 @@ class RawStandingsController {
             linkMap.put(eventLinks.round, eventLinks);
         }
 
+        if (linkMap.size() == 15 && linkMap.get(15).standingsUrl != null) {
+            respond([message: message]);
+            return;
+        }
+
         try {
 
             if (type.equalsIgnoreCase("SCO"))
@@ -47,7 +53,14 @@ class RawStandingsController {
             }
             else
             {
-                loadCFB(event, linkMap);
+                if (event.eventUrl != null) {
+
+                    if (event.eventUrl.toLowerCase().contains("magic.wizards.com")) {
+                        loadCFB(event, linkMap);
+                    } else {
+                        loadCFBNew(event, linkMap);
+                    }
+                }
             }
 
         } catch (Exception ex) {
@@ -96,6 +109,89 @@ class RawStandingsController {
 
     void loadCFB(Event event, Map<Integer, EventLinks> linkMap) {
 
+        String url = event.eventUrl + "/tournament-results";
+        if (invalidUrl(url)) {
+            url = event.eventUrl + "/tournament-results-and-decklists";
+            if (invalidUrl(url)) {
+                url = event.eventUrl;
+            }
+        }
+
+        Document doc = Jsoup.connect(url).userAgent("Mozilla")
+                .cookie("auth", "token")
+                .timeout(5000).get();
+
+        Element parent = doc.select("#pairings-results-and-standings").first();
+        Elements elements = parent.select("div.by-day a");
+
+        List<String> pairingList = new ArrayList<>();
+        List<String> resultsList = new ArrayList<>();
+        List<String> standingsList = new ArrayList<>();
+        for (int i = 0 ; i < elements.size() ; i++) {
+
+            String link = elements[i].attr("href").toLowerCase();
+            if (link.contains("pairings")){
+                pairingList.push(link);
+            } else if (link.contains("results")) {
+                resultsList.push(link);
+            } else if (link.contains("standings")) {
+                standingsList.push(link);
+            }
+        }
+
+        for (int i = 0 ; i < standingsList.size() ; i++) {
+
+            EventLinks eventLinks = new EventLinks();
+
+            if (linkMap.containsKey(i)) {
+                eventLinks = linkMap.get(roundInt);
+            }
+
+            eventLinks.setEvent(event);
+            eventLinks.setRound(i + 1);
+            eventLinks.setPairingsUrl(pairingList.get(i));
+            eventLinks.setStandingsUrl(standingsList.get(i));
+            eventLinks.setResultsUrl(resultsList.get(i));
+
+            eventLinks.save();
+        }
+    }
+
+    void loadCFBNew(Event event, Map<Integer, EventLinks> linkMap) {
+
+        Document doc = Jsoup.connect(event.eventUrl).userAgent("Mozilla")
+                .cookie("auth", "token")
+                .timeout(5000).get();
+
+        Element parent = doc.select("table.table-sm").first();
+        Elements elements = parent.select("tr");
+
+        for (int i = 1 ; i < elements.size() ; i++) {
+
+            // Pairings, Results, Standings
+            Element element = elements[i];
+            Elements links = element.select("a");
+
+            String round = links[0].text();
+            Integer roundInt = Integer.valueOf(round);
+            String pairingsUrl = links[0].attr("href");
+            String resultsUrl = links[1].attr("href");
+            String standingsUrl = links[2].attr("href");
+
+            EventLinks eventLinks = new EventLinks();
+
+            if (linkMap.containsKey(roundInt)) {
+                eventLinks = linkMap.get(roundInt);
+            }
+
+            eventLinks.setEvent(event);
+            eventLinks.setRound(roundInt);
+            eventLinks.setPairingsUrl(pairingsUrl);
+            eventLinks.setStandingsUrl(standingsUrl);
+            eventLinks.setResultsUrl(resultsUrl);
+
+            eventLinks.save();
+        }
     }
 
     @Transactional
@@ -341,6 +437,13 @@ class RawStandingsController {
                 continue;
             }
 
+            String testUrl = urlList.get(i);
+            String longTest = testUrl + "/tournament-results";
+            String longestUrl = testUrl + "/tournament-results-and-decklists";
+            if (invalidUrl(testUrl) && invalidUrl(longTest) && invalidUrl(longestUrl)) {
+                continue;
+            }
+
             String startString = startList.get(i).trim();
             Integer startYear = Integer.valueOf(startString.substring(startString.length() - 4));
             String month = startString.substring(0, startString.indexOf(" ")).trim();
@@ -384,5 +487,13 @@ class RawStandingsController {
     String buildGPKey(Event event) {
 
         return event.name + "-" + event.startDate.toString();
+    }
+
+    Boolean invalidUrl(String url) {
+
+        URL test = new URL(url);
+        HttpURLConnection huc = (HttpURLConnection) test.openConnection();
+        int responseCode = huc.getResponseCode();
+        return (responseCode == HttpURLConnection.HTTP_NOT_FOUND);
     }
 }

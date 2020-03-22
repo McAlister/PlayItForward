@@ -22,8 +22,7 @@ class EventLinksController {
 
         Event event = Event.findById(eventId);
         def linkList = EventLinks.where {event.id == eventId};
-        linkList.sort("round");
 
-        respond linkList, model:[eventLinksCount: EventLinks.count()];
+        respond linkList.sort("round", "desc"), model:[eventLinksCount: EventLinks.count()];
     }
 }
