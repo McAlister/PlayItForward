@@ -4,11 +4,11 @@ class RawStandings {
 
     Event event;
     String name;
-    int round;
-    int rank;
-    int points;
-    double opponentMatchWin;
-    boolean isWoman;
+    Integer round;
+    Integer rank;
+    Integer points;
+    Double opponentMatchWin;
+    Boolean isWoman;
 
     static constraints = {
         event nullable: false;

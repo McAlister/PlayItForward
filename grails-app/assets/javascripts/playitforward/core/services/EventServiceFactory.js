@@ -4,11 +4,12 @@ angular
     .module("playitforward.core")
     .factory("eventService", eventService);
 
-function eventService($http, $location, $filter) {
+function eventService($http, $location, $filter, eventPersistenceService) {
 
     var service = {
 
         eventsLoaded: false,
+        eventData: eventPersistenceService.eventData,
         error: '',
         events: [],
         currentEvent: null,
@@ -213,6 +214,7 @@ function eventService($http, $location, $filter) {
             }
         }
 
+        eventPersistenceService.loadLatestRoundForEvent(id);
         populateCurrentLinks(true);
         populateEventToEdit();
     };

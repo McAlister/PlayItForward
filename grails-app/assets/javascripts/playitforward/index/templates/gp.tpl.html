@@ -36,8 +36,8 @@
 
     <div class="bounty-tabs">
         <ul>
-            <li ng-class="tabService.tabClass('GPs', 'standings')" ng-click="tabService.activateTab('GPs', 'standings')">Raw Standings</li>
-            <li ng-class="tabService.tabClass('GPs', 'config')" ng-click="tabService.activateTab('GPs', 'config')" >Config</li>
+            <li ng-class="tabService.tabClass('GPs', 'standings')" ng-click="tabService.activateTab('GPs', 'standings')">Standings</li>
+            <li ng-class="tabService.tabClass('GPs', 'config')" ng-click="tabService.activateTab('GPs', 'config')" >Watchlist</li>
             <li ng-class="tabService.tabClass('GPs', 'race')" ng-click="tabService.activateTab('GPs', 'race')" >Race</li>
         </ul>
     </div>
@@ -47,6 +47,8 @@
     <div id="gp-loading" ng-if="!eventService.eventsLoaded">
 
         <h2 class="shoutout">Loading Event Data ...</h2>
+
+        <ng-include src="'/playitforward/index/spinner.html'"></ng-include>
 
     </div>
 

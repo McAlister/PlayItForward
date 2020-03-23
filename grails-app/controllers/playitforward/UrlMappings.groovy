@@ -41,6 +41,10 @@ class UrlMappings {
                 controller: 'eventStanding', action: 'latestRound'
         );
 
+        get "/api/EventStanding/loadEvent/$eventId/round/$round" (
+                controller: 'eventStanding', action: 'loadEvent'
+        )
+
         post "/api/User/$username/sendResetEmail" (
                 controller: 'user', action: 'sendResetEmail'
         );

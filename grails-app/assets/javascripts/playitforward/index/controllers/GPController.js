@@ -13,7 +13,7 @@ function GPController(contextPath, $scope, $http, tabService, eventService, artS
     eventService.loadEvents();
 
     $scope.tabService = tabService;
-    tabService.registerTabList( "GPs", "standings", ["standings", "config", "race"] );
+    tabService.registerTabList( "GPs", "config", ["standings", "config", "race"] );
 
     $scope.artService = artService;
     artService.loadArt();

@@ -1,2 +1,19 @@
 
-Config
+<div id="event-loading" ng-if="eventService.eventData[eventService.currentEvent.id].loading">
+
+    <h2 class="shoutout">Loading Round {{eventService.eventData[eventService.currentEvent.id].lastRound + 1}}</h2>
+
+    <ng-include src="'/playitforward/index/spinner.html'"></ng-include>
+
+</div>
+
+<div ng-if="!eventService.eventData[eventService.currentEvent.id].loading">
+
+    <h2 class="shoutout" style="margin-bottom: 5px;">
+        Choose Your Champions
+    </h2>
+
+    <span>Build a list of players for this event whose progress you want to track.</span>
+
+</div>
+

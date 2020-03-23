@@ -1,6 +1,5 @@
 package playitforward
 
-import com.sun.org.apache.xpath.internal.operations.Bool
 import grails.transaction.Transactional;
 import org.jsoup.Jsoup
 import org.jsoup.nodes.TextNode;
