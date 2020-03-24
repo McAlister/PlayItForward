@@ -33,6 +33,10 @@ class UrlMappings {
                 controller: 'rawStandings', action: 'scrapeEvents'
         );
 
+        get "/api/RawStandings/getPlayers/event/$eventId" (
+                controller: 'rawStandings', action: 'getPlayers'
+        );
+
         get "/api/RawStandings/event/$eventId/type/$type" (
                 controller: 'rawStandings', action: 'loadEvent'
         );

@@ -1,11 +1,14 @@
 package playitforward
 
+import grails.plugin.springsecurity.annotation.Secured
 import grails.transaction.Transactional;
 import org.jsoup.Jsoup
 import org.jsoup.nodes.TextNode;
 import org.jsoup.select.Elements;
 import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
+import org.jsoup.nodes.Element
+import org.springframework.security.access.prepost.PreAuthorize;
+
 import java.sql.Date
 import java.time.Month
 
@@ -15,16 +18,24 @@ class RawStandingsController {
     static responseFormats = ['json', 'xml'];
     static allowedMethods = [];
 
+    def sessionFactory;
+
     static scoCoverageUrl = 'http://old.starcitygames.com/content/archive';
     static gpCoverageUrl = 'https://magic.wizards.com/en/events/coverage';
     static cfbCoverageUrl = 'https://coverage.channelfireball.com/';
 
-    def index(Integer max) {
-        respond RawStandings.list(), model:[rawStandingsCount: RawStandings.count()];
-    }
-
     def show(RawStandings rawStandings) {
         respond rawStandings;
+    }
+
+    def getPlayers(Integer eventId) {
+
+        final session = sessionFactory.currentSession;
+        String sql = " Select name from raw_standings where event_id = ${eventId} and round = 1 order by name";
+        def query = session.createSQLQuery(sql);
+        List<Object[]> rows = query.list();
+
+        respond(['players': rows], view:'players');
     }
 
     @Transactional

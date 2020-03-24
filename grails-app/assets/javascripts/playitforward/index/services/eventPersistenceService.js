@@ -10,7 +10,11 @@ function eventPersistenceService($cookies, $http) {
 
     var eventData = $cookies.getObject("eventDataObj");
     if (eventData == null) {
-        eventData = {};
+        eventData = {
+
+            currentPlayerName: null,
+            currentImage: null
+        };
     }
 
     var loadNextRound = function(eventId, round) {
@@ -72,6 +76,11 @@ function eventPersistenceService($cookies, $http) {
 
         eventData: eventData,
 
+        artList: ["Arlinn", "Avacyn", "Braids", "Chandra", "Elspeth", "Kaya",
+            "Kemba", "Kiora", "Liliana", "Mirri", "Nahiri",
+            "Narset", "Nissa", "Olivia", "Oona", "Pia", "Saheeli",
+            "SliverQueen", "Tamiyo", "Vraska", "Wort"],
+
         loadLatestRoundForEvent: function(eventId) {
 
             var lastRound = 0;
@@ -80,13 +89,53 @@ function eventPersistenceService($cookies, $http) {
             } else {
                 eventData[eventId] = {
                     lastRound: 0,
-                    loading: false
+                    loading: false,
+                    watchList: []
                 }
             }
 
             if (lastRound < 15) {
                 getLatestRoundForEvent(eventId);
             }
+        },
+
+        addPlayerToEventList: function(eventId) {
+
+            var playerHash = {
+                name: eventData.currentPlayerName,
+                art: eventData.currentImage + '.png'
+            };
+
+            if (! eventData.hasOwnProperty(eventId)) {
+                eventData[eventId] = {
+                    watchList: [],
+                    lastRound: 0,
+                    loading: false
+                }
+            }
+
+            if (! eventData[eventId].hasOwnProperty("watchList")) {
+                eventData[eventId].watchList = [];
+            }
+
+            eventData[eventId].watchList.push(playerHash);
+            $cookies.putObject("eventDataObj", eventData);
+        },
+
+        removePlayerFromEventList: function(eventId, name) {
+
+            var eventInfo = eventData[eventId];
+            if (eventInfo != null && eventInfo.hasOwnProperty("watchList")) {
+
+                for (var i = eventInfo.watchList.length - 1 ; i >= 0 ; i--) {
+                    if (eventInfo.watchList[i].name === name) {
+                        eventInfo.watchList.splice(i, 1);
+                    }
+                }
+            }
+
+            $cookies.putObject("eventDataObj", eventData);
         }
+
     };
 }

@@ -1,0 +1,14 @@
+
+.flexContainer {
+
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+.flexContainer div {
+
+    text-align: center;
+    padding-top: 20px;
+}

@@ -11,8 +11,9 @@
 *= require base
 *= require components/body-wrapper
 *= require components/bounty-tabs
-*= require components/spinner.css
+*= require components/spinner
 *= require components/centered-form
+*= require components/flex
 *= require components/gp-dropdown
 *= require components/header
 *= require components/page

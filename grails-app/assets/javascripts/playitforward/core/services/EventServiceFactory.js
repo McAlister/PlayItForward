@@ -10,6 +10,7 @@ function eventService($http, $location, $filter, eventPersistenceService) {
 
         eventsLoaded: false,
         eventData: eventPersistenceService.eventData,
+        artList: eventPersistenceService.artList,
         error: '',
         events: [],
         currentEvent: null,
@@ -20,7 +21,9 @@ function eventService($http, $location, $filter, eventPersistenceService) {
         types: [],
         currentType: null,
         eventLinks: {},
-        currentLinks: []
+        currentLinks: [],
+        playerHash: {},          // EventId -> [player names]
+        playerList: []
     };
 
     var year = service.currentYear;
@@ -118,6 +121,36 @@ function eventService($http, $location, $filter, eventPersistenceService) {
         );
     };
 
+    service.getPlayersForEvent = function(eventId) {
+
+        $http.get('/api/RawStandings/getPlayers/event/' + eventId).then(
+
+            function successCallback(response) {
+
+                if (response.data.hasOwnProperty("players")) {
+                    service.playerHash[eventId] = response.data.players;
+                    service.playerList = response.data.players;
+                } else {
+                    service.playerList = [];
+                }
+
+            }, function errorCallback() {
+
+                service.playerList = [];
+            }
+        );
+    };
+
+    service.addPlayerToEvent = function() {
+
+        eventPersistenceService.addPlayerToEventList(service.currentEvent.id);
+    };
+
+    service.delPlayerFromEvent = function(name) {
+
+        eventPersistenceService.removePlayerFromEventList(service.currentEvent.id, name);
+    };
+
     service.loadEvents = function() {
 
         if ( service.events.length === 0 ) {
@@ -212,6 +245,12 @@ function eventService($http, $location, $filter, eventPersistenceService) {
 
                 service.activeEvents.push(event);
             }
+        }
+
+        if (service.playerHash.hasOwnProperty(id)) {
+            service.playerList = service.playerHash[id];
+        } else {
+            service.playerList = [];
         }
 
         eventPersistenceService.loadLatestRoundForEvent(id);

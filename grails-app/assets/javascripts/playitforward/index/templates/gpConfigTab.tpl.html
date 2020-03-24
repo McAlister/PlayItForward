@@ -13,7 +13,66 @@
         Choose Your Champions
     </h2>
 
-    <span>Build a list of players for this event whose progress you want to track.</span>
+    <span>
+        Build a list of players for this event whose progress you want to track.
+        This page uses cookies to store your tracking list on your client.
+    </span>
+
+    <div ng-if="eventService.playerList.length > 0">
+
+        <form ng-submit="eventService.addPlayerToEvent()" class="form"
+            style="margin: 15px 0;">
+
+            <div class="form-group">
+                <label for="playerSelect" class="control-label">Player:</label>
+                <select name="playerSelect" id="playerSelect" ng-model="eventService.eventData.currentPlayerName"
+                        ng-options="name for name in eventService.playerList" class="form-control"
+                        title="playerSelect">
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="artSelect" class="control-label">Avatar:</label>
+                <select name="artSelect" id="artSelect" ng-model="eventService.eventData.currentImage"
+                        ng-options="art for art in eventService.artList" class="form-control"
+                        title="artSelect">
+                </select>
+            </div>
+
+            <div class="text-right">
+                <button type="submit" class="btn btn-primary right">Track</button>
+            </div>
+
+        </form>
+
+    </div>
+
+    <form ng-submit="eventService.getPlayersForEvent(eventService.currentEvent.id)"
+        ng-if="eventService.playerList.length == 0" style="margin:20px;">
+
+        <button type="submit" class="btn btn-primary center-block">Get Players</button>
+
+    </form>
+
+    <div class="flexContainer">
+
+        <div ng-repeat="watch in eventService.eventData[eventService.currentEvent.id].watchList">
+
+                <img alt="Image of {{watch.art}}" src="/assets/race/oval/{{watch.art}}">
+                <p>{{watch.name}}</p>
+                <button type="button" class="btn btn-primary" ng-click="eventService.delPlayerFromEvent(watch.name)">Remove</button>
+
+        </div>
+
+    </div>
+
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
 
 </div>
 
