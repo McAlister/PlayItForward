@@ -112,19 +112,24 @@ function GPController(contextPath, $scope, $http, $interval,
 
     var positionToolTip = function(horse) {
 
-        var left = parseInt(horse.style.left.slice(0, -2));
         var top = parseInt(horse.parentElement.style.top.slice(0, -2)) - 20;
-
-        if ( left < 200 ) {
-            $scope.stats.left = left + horse.width + 15;
-        } else {
-            $scope.stats.left = 15;
-        }
-
         if (top > 490) {
             $scope.stats.top = 490;
         } else {
             $scope.stats.top = top;
+        }
+
+        var left = parseInt(horse.style.left.slice(0, -2));
+        var halfHorse = Math.round(eventService.currentRace.avatarHeight/2);
+        var horseMiddle = left + halfHorse;
+        var viewPort = document.getElementById("horseRace");
+        var rangeLeft = viewPort.scrollLeft;
+        var rangeMiddle = rangeLeft + Math.round(viewPort.clientWidth/2);
+
+        if ( horseMiddle < rangeMiddle ) {
+            $scope.stats.left = horseMiddle - rangeLeft + halfHorse + 15;
+        } else {
+            $scope.stats.left = 15;
         }
     };
 
