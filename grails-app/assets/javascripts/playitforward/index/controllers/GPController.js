@@ -247,11 +247,12 @@ function GPController(contextPath, $scope, $http, $interval,
                left: newLeft,
                behavior: "smooth"
             });
-            // viewPort.scrollLeft = newLeft;
         }
     };
 
     var updateToRound = function(round, scroll) {
+
+        clearAnimationClass();
 
         var raceData = eventService.currentRace;
         var standingsList = raceData.standingsHash[round];
@@ -267,8 +268,10 @@ function GPController(contextPath, $scope, $http, $interval,
             track.rank = standing.rank;
             track.left = Math.round(startLeft + (30 * track.points));
             track.stickLeft = Math.round(34 + (30 * track.points));
-        }
 
+            var horse = document.getElementById(track.id);
+            horse.classList.add("sliding");
+        }
         eventService.currentRace.currentRound = round;
         if (scroll) {
             scrollToWinner();
@@ -297,6 +300,16 @@ function GPController(contextPath, $scope, $http, $interval,
     $scope.pause = function() {
 
         eventService.currentRace.playing = false;
+    };
+
+    var clearAnimationClass = function() {
+
+        var horses = document.getElementsByClassName("horse");
+        for (var i = 0 ; i < horses.length ; i++) {
+            horses[i].classList.remove("sliding");
+        }
+
+        void horses[0].offsetWidth;
     };
 
     var playRace = function() {
