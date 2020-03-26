@@ -14,7 +14,7 @@ function GPController(contextPath, $scope, $http, $interval,
     eventService.loadEvents();
 
     $scope.tabService = tabService;
-    tabService.registerTabList( "GPs", "config", ["standings", "config", "race", "watch"] );
+    tabService.registerTabList( "GPs", "config", ["standings", "config", "watch"] );
 
     $scope.artService = artService;
     artService.loadArt();
@@ -313,17 +313,5 @@ function GPController(contextPath, $scope, $http, $interval,
     };
 
     $interval(playRace, 1000);
-
-    $scope.getHorseRaceSrc = function() {
-
-        if (eventService.currentEvent) {
-
-            return '/assets/horserace/index.html?race=' + eventService.currentEvent.id;
-        }
-        else {
-
-            return '/assets/horserace/notfound.html';
-        }
-    };
 
 }

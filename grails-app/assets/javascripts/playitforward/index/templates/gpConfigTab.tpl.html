@@ -14,7 +14,7 @@
     </h2>
 
     <span>
-        Build a list of players for this event whose progress you want to track.
+        Build a list of players for this event whose progress you want to track on the Race tab.
         This page uses cookies to store your tracking list on your client.
     </span>
 
@@ -50,7 +50,7 @@
     <form ng-submit="eventService.getPlayersForEvent(eventService.currentEvent.id)"
         ng-if="eventService.playerList.length == 0" style="margin:20px;">
 
-        <button type="submit" class="btn btn-primary center-block">Get Players</button>
+        <button type="submit" class="btn btn-primary center-block">Add Players</button>
 
     </form>
 
