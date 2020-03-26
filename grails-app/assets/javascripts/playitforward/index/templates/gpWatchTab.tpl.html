@@ -1,0 +1,73 @@
+
+<div id="raceFrame" ng-click="unselectHorse()">
+
+    <div class="roundLabel" >
+        Round {{eventService.currentRace.currentRound}}
+    </div>
+
+    <div class="controls unselectable">
+        <span id="back"  ng-click="goBack()">⏪</span>
+        <span id="play"  ng-click="play()" ng-if="!eventService.currentRace.playing">▶️</span>
+        <span id="pause" ng-click="pause()" ng-if="eventService.currentRace.playing">⏸️</span>
+        <span id="next"  ng-click="goForward()">⏩️</span>
+    </div>
+
+    <div id="raceMask" ng-if="showMask()">
+        <button name="play" type="button" ng-click="startRace(eventService.currentEvent.id)"></button>
+    </div>
+
+    <div class="profile" ng-if="stats.show" style="top: {{stats.top}}px; left: {{stats.left}}px;">
+
+        <img ng-src="/assets/race/{{stats.art}}" alt="Detailed image" />
+
+        <div class="data" >
+            {{stats.name}}
+            <br />
+            Rank: {{stats.rank}}
+            <br />
+            Points: {{stats.points}}
+        </div>
+    </div>
+
+    <div id="horseRace">
+
+        <div id="topScoreMarkers">
+
+            <div ng-repeat="x in [].constructor(55) track by $index" >
+
+                <div class="scoreMark" style="left: {{35 + $index * 30}}px;" ng-if="$index % 3 == 0">
+                    {{$index}}
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="raceRow" ng-repeat="jockey in eventService.currentRace.tracks" >
+
+            <div class="wave"
+                 style="z-index: {{jockey.index * 200}};
+                        top: {{jockey.top}}px;
+                        background-position: {{jockey.offset}}px center;">
+
+                <img id="{{jockey.id}}" class="horse" alt="jockey.name"
+                     ng-src="/assets/race/oval/{{jockey.img}}" ng-click="selectHorse(jockey.id, jockey.name)"
+                     style="height: {{eventService.currentRace.avatarHeight}}px; left: {{jockey.left}}px;" />
+
+                <img class="stick" alt="horse stick" src="/assets/race/stick.png"
+                    style="left: {{jockey.stickLeft}}px;"
+                />
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<p style="font-style: italic; font-size: smaller; line-height: 1.05em; margin-top: 5px;">
+    For PiF prizes a match point earned from an intentional draw is not counted.
+    Round 15 draws are presumed intentional unless all impacted parties declare
+    otherwise. Next breaker is OMW as normal.
+</p>

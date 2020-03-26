@@ -38,6 +38,7 @@
         <ul>
             <li ng-class="tabService.tabClass('GPs', 'standings')" ng-click="tabService.activateTab('GPs', 'standings')">Standings</li>
             <li ng-class="tabService.tabClass('GPs', 'config')" ng-click="tabService.activateTab('GPs', 'config')" >Watchlist</li>
+            <li ng-class="tabService.tabClass('GPs', 'watch')" ng-click="tabService.activateTab('GPs', 'watch')" >Watch</li>
             <li ng-class="tabService.tabClass('GPs', 'race')" ng-click="tabService.activateTab('GPs', 'race')" >Race</li>
         </ul>
     </div>
@@ -52,7 +53,7 @@
 
     </div>
 
-    <!--winner-->
+    <!--raw standings-->
 
     <div id="gp-standings" ng-show="tabService.isActiveTab('GPs', 'standings')" ng-if="eventService.eventsLoaded" >
 
@@ -60,11 +61,19 @@
 
     </div>
 
-    <!--prizes-->
+    <!--config watchlist-->
 
     <div id="gp-config" ng-show="tabService.isActiveTab('GPs', 'config')" ng-if="eventService.eventsLoaded" >
 
         <ng-include src="'/playitforward/index/gpConfigTab.html'"></ng-include>
+
+    </div>
+
+    <!--watch-->
+
+    <div id="gp-watch" ng-show="tabService.isActiveTab('GPs', 'watch')" ng-if="eventService.eventsLoaded" >
+
+        <ng-include src="'/playitforward/index/gpWatchTab.html'"></ng-include>
 
     </div>
 

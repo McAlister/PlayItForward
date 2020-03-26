@@ -1,0 +1,252 @@
+
+#raceFrame {
+    width: 100%;
+    height: 600px;
+    border: solid #ffffff 1px;
+    overflow-x: scroll;
+    font-family: none;
+    position: relative;
+}
+
+#horseRace {
+    background-color: #034;
+    user-select: none;
+    position: relative;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    min-width: 100%;
+    height: 100%;
+}
+
+
+/* ****************** *
+ * Upper Left Buttons *
+ * ****************** */
+
+.unselectable {
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+#raceFrame .roundLabel {
+    position: absolute;
+    top: 0.45em;
+    left: 25px;
+    color: white;
+    font-family: sans-serif;
+    margin: 5px;
+    font-size: 1.2em;
+    z-index: 10000;
+}
+
+#raceFrame .controls {
+    position: absolute;
+    top: 1em;
+    right: 1em;
+    z-index: 10000;
+}
+
+#raceFrame .controls span {
+    cursor: pointer;
+    color: white;
+    font-size: 1.5em;
+    user-select: none;
+}
+
+
+/* ******************************** *
+ * Background Waves & Score Markers *
+ * ******************************** */
+
+#horseRace .wave {
+    transition: top 0.3s ease-in-out;
+    width: 1725px;
+    height: 300px;
+    position: absolute;
+    background: url(../race/sine.png) repeat-x;
+    background-size: 100px 300px;
+}
+
+#horseRace .scoreMark {
+    z-index: 10000;
+    position: absolute;
+    border-radius: 3em;
+    background-color: #333;
+    transition: left 0.3s ease-in-out;
+    margin-left: -.6em;
+    font-family: sans-serif;
+    color: #eee;
+    font-size: 1.2em;
+    width: 1.4em;
+    text-align: center;
+    box-shadow: 0 0 3px rgba(0,0,0,.5);
+    cursor: default;
+    top: 50px;
+}
+
+
+/* ************************************ *
+ * Overlay for race that hasn't started *
+ * ************************************ */
+
+#raceMask {
+    position: absolute;
+    z-index: 10000;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(7,3,44,0.50);
+    display: -ms-flex;
+    display: -webkit-flex;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#raceMask button {
+    width: 100px;
+    height: 100px;
+    background: black;
+    border: none;
+    border-radius: 100%;
+    cursor: pointer;
+}
+
+#raceMask button:focus {
+    outline: 0;
+    border: 1px solid hsl(210, 58%, 69%);
+    box-shadow: 0 0 0 3px hsla(210, 76%, 57%, 0.5);
+}
+
+#raceMask button::after {
+    content: '';
+    display: inline-block;
+    position: relative;
+    top: 2px;
+    left: 6px;
+    border-style: solid;
+    border-width: 20px 0 20px 40px;
+    border-color: transparent transparent transparent grey;
+}
+
+
+/* ********** *
+ * The Horses *
+ * ********** */
+
+#horseRace .horse {
+    cursor: pointer;
+    position: absolute;
+    top: 0;
+    z-index: 1;
+}
+
+#horseRace .stick {
+    position: absolute;
+    top: 40px;
+    width: 3px;
+    height: 500px;
+}
+
+
+/* ********************* *
+ * Animation Transitions *
+ * ********************* */
+
+#horseRace .horse{
+    transition: all 0.15s ease-in;
+}
+
+#horseRace .stick {
+    transition: all 0.15s ease-in;
+}
+
+
+/* ***************************************************** *
+ * Zoom in to a horse on selection and animate a wobble. *
+ * ***************************************************** */
+
+@keyframes gallop {
+    0%, 100% { transform: rotate(0deg); }
+    5%, 15%, 25%, 35%, 45%, 55%, 65%, 75%, 85%, 95% { transform: rotate(-8deg) scale(1.5) translateY(-10px); }
+    10%, 20%, 30%, 40%, 50%, 60%, 70%, 80%, 90% { transform: rotate( 8deg) scale(1.5) translateY(-10px); }
+}
+
+#horseRace .wave .selected {
+    animation: gallop 7s infinite;
+}
+
+
+/* ************************** *
+ * Box with details of player *
+ * ************************** */
+
+#raceFrame .profile {
+    position: absolute;
+    background-color: #222;
+    border: 2px solid #aaa;
+    z-index: 10001;
+}
+
+#raceFrame .profile img {
+    height: 100px;
+    width: 100px;
+    display: block;
+    float: left;
+}
+
+#raceFrame .profile .data {
+    padding: 0.4em;
+    line-height: 1.4em;
+    min-width: 80px;
+    margin-left: 100px;
+}
+
+
+
+
+
+
+
+
+
+/* Old CSS high tide */
+
+#horserace .wave:not(.clicked) .leader::after {
+    position: inherit;
+    z-index: 2;
+    top: -0.2em;
+    left: 0.5em;
+    content: "✨";
+    font-size: 1.5em;
+}
+
+#horserace .wave .tooltip {
+    position: absolute;
+    top: -1.5em;
+    z-index: 3;
+    background-color: #222;
+    border: 2px solid #aaa;
+    font-family: sans-serif;
+    font-size: 1em;
+    color: #ddd;
+    border-radius: 5px;
+    cursor: default;
+    box-shadow: 0 0 3px rgba(0,0,0,.5);
+    visibility: hidden;
+    user-select: text;
+}
+
+#horserace .wave.clicked .tooltip {
+    transition: all 0.4s ease-in;
+    visibility: visible;
+}
+
+#horserace .tooltip .profile {
+    float: left;
+}
+
+

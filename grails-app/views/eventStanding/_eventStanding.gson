@@ -8,7 +8,6 @@ json {
 
     id eventStanding.id;
     eventId eventStanding.event.id;
-    eventName eventStanding.event.name;
     round eventStanding.round;
     rank eventStanding.rank;
     score eventStanding.points;

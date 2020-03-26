@@ -58,7 +58,7 @@
 
         <div ng-repeat="watch in eventService.eventData[eventService.currentEvent.id].watchList">
 
-                <img alt="Image of {{watch.art}}" src="/assets/race/oval/{{watch.art}}">
+                <img alt="Image of {{watch.art}}" ng-src="/assets/race/oval/{{watch.art}}">
                 <p>{{watch.name}}</p>
                 <button type="button" class="btn btn-primary" ng-click="eventService.delPlayerFromEvent(watch.name)">Remove</button>
 

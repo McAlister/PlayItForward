@@ -23,7 +23,9 @@ function eventService($http, $location, $filter, eventPersistenceService) {
         eventLinks: {},
         currentLinks: [],
         playerHash: {},          // EventId -> [player names]
-        playerList: []
+        playerList: [],
+        currentRace: {},
+        raceHash: {}             // EventId -> {raceData}
     };
 
     var year = service.currentYear;
@@ -32,6 +34,80 @@ function eventService($http, $location, $filter, eventPersistenceService) {
         service.years.push(year);
         year++;
     }
+
+    service.mapIndexToTrack = function(i) {
+
+        if (i === 0) {
+            return 2;
+        }
+
+        if (i===2) {
+            return 3;
+        }
+
+        if (i===3) {
+            return 0;
+        }
+
+        return i;
+    };
+
+    var populateCurrentRace = function (eventId) {
+
+        if (service.raceHash.hasOwnProperty(eventId)) {
+            service.currentRace = service.raceHash[eventId];
+        } else if (eventPersistenceService.eventData.hasOwnProperty(eventId)
+            && eventPersistenceService.eventData[eventId].watchList.length > 0) {
+
+            var watchList = eventPersistenceService.eventData[eventId].watchList;
+            var raceData = {
+                maxRound: eventPersistenceService.eventData[eventId].lastRound,
+                currentRound: 0,
+                loaded: false,
+                playing: false,
+                tracks: [{},{},{},{},{}],   // This drives the horserace animation.
+                standingsHash: {},          // round -> [standings] for populating tracks
+                step: 104,                  // spacing between tracks.
+                avatarHeight: 93,           // how high the ovals are.
+                playerTrackHash: {}         // player name -> tracks array index.
+            };
+
+            if (watchList.length > 5) {
+                raceData.step = Math.round(520 / watchList.length);
+                raceData.avatarHeight = Math.round(raceData.step * 1.2);
+            }
+
+            var startLeft = Math.round(35 - (raceData.avatarHeight / 2));
+
+            for (var i = 0 ; i < watchList.length ; i++) {
+
+                if (i > 4) {
+                    raceData.tracks.push({});
+                }
+
+                var trackIndex = service.mapIndexToTrack(i);
+                raceData.playerTrackHash[watchList[i].name] = trackIndex;
+                var standing = raceData.tracks[trackIndex];
+
+                standing.id = 'horse_' + trackIndex;
+                standing.eventId = eventId;
+                standing.name = watchList[i].name;
+                standing.img = watchList[i].art;
+                standing.points = 0;
+                standing.rank = -1;
+                standing.left = startLeft;
+                standing.stickLeft = 34;
+                standing.top = (trackIndex * raceData.step) + 80;
+                standing.offset = -40 * trackIndex;
+            }
+
+            service.raceHash[eventId] = raceData;
+            service.currentRace = service.raceHash[eventId];
+
+        } else {
+            // Ask server for women in event.
+        }
+    };
 
     var populateCurrentLinks = function(scrapeOnFail) {
 
@@ -256,6 +332,7 @@ function eventService($http, $location, $filter, eventPersistenceService) {
         eventPersistenceService.loadLatestRoundForEvent(id);
         populateCurrentLinks(true);
         populateEventToEdit();
+        populateCurrentRace(id);
     };
 
     service.selectedYearType = function() {

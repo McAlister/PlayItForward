@@ -2,6 +2,8 @@ package playitforward
 
 import grails.transaction.Transactional
 import groovy.transform.Synchronized
+import org.grails.web.json.JSONArray
+import org.grails.web.json.JSONObject
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import org.jsoup.select.Elements;
@@ -22,6 +24,43 @@ class EventStandingController {
                                      "Narset", "Nissa", "Olivia", "Oona", "Pia", "Saheeli",
                                      "SliverQueen", "Tamiyo", "Vraska", "Wort"
     ];
+
+    @Transactional
+    def startRace(Integer eventId) {
+
+        Event event = Event.findById(eventId);
+        JSONArray nameList = new JSONArray(request.getParameter("nameList"));
+        JSONArray artList = new JSONArray(request.getParameter("artList"));
+        Map<String, String> artHash = new HashMap<>();
+        Map<String, Integer> indexHash = new HashMap<>();
+        for (int i = 0 ; i < artList.length() ; i++) {
+            artHash.put(nameList.get(i), artList.get(i));
+            indexHash.put(nameList.get(i), i);
+        }
+
+        List<RawStandings> rawList = RawStandings.findAllByEventAndNameInList(event, nameList);
+        List<EventStanding> standingsList = new ArrayList<>();
+        Integer standingId = 1;
+        for(RawStandings raw: rawList) {
+
+            EventStanding standing = new EventStanding();
+            standing.setId(standingId);
+            standing.setEvent(event);
+            standing.setPoints(raw.getPoints());
+            standing.setRank(raw.getRank());
+            standing.setRound(raw.getRound());
+
+            standing.setPlayer(new Player());
+            standing.player.setId(indexHash.get(raw.getName()));
+            standing.player.alias = raw.getName();
+            standing.player.imgUrl = artHash.get(raw.getName());
+
+            standingsList.add(standing)
+            standingId++;
+        }
+
+        respond standingsList, model:[eventStandingCount: standingsList.size()];
+    }
 
     @Transactional
     def latestRound(Integer eventId) {

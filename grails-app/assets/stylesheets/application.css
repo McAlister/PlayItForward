@@ -21,6 +21,7 @@
 *= require components/shoutout
 *= require components/sidebar
 *= require components/table
+*= require components/horse-race.css
 *= require_self
 */
 

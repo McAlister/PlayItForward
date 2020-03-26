@@ -13,7 +13,7 @@ function GPController(contextPath, $scope, $http, tabService, eventService, artS
     eventService.loadEvents();
 
     $scope.tabService = tabService;
-    tabService.registerTabList( "GPs", "config", ["standings", "config", "race"] );
+    tabService.registerTabList( "GPs", "config", ["standings", "config", "race", "watch"] );
 
     $scope.artService = artService;
     artService.loadArt();
@@ -98,6 +98,167 @@ function GPController(contextPath, $scope, $http, tabService, eventService, artS
     // ////////////// //
     // Horse race Tab //
     // ////////////// //
+
+    $scope.stats = {
+        show: false,
+        name: "",
+        points: "",
+        rank: "",
+        art: "",
+        top: 50,
+        left: 50
+    };
+
+    var positionToolTip = function(horse) {
+
+        var left = parseInt(horse.style.left.slice(0, -2));
+        var top = parseInt(horse.parentElement.style.top.slice(0, -2)) - 20;
+
+        if ( left < 200 ) {
+            $scope.stats.left = left + horse.width + 15;
+        } else {
+            $scope.stats.left = 15;
+        }
+
+        if (top > 490) {
+            $scope.stats.top = 490;
+        } else {
+            $scope.stats.top = top;
+        }
+    };
+
+    $scope.unselectHorse = function () {
+
+        $scope.stats.show = false;
+        var horseList = document.getElementsByClassName("horse");
+        for (var i = 0 ; i < horseList.length ; i++) {
+            horseList[i].classList.remove("selected");
+        }
+    };
+
+    $scope.selectHorse = function(id, name) {
+
+        $scope.unselectHorse();
+        var horse = document.getElementById(id);
+        horse.classList.add("selected");
+        positionToolTip(horse);
+
+        var trackIndex = eventService.currentRace.playerTrackHash[name];
+        var track = eventService.currentRace.tracks[trackIndex];
+
+        $scope.stats.name = track.name;
+        $scope.stats.points = track.points;
+        $scope.stats.rank = track.rank;
+        $scope.stats.art = track.img;
+
+        $scope.stats.show = true;
+        event.stopPropagation();
+    };
+
+    $scope.showMask = function() {
+
+        return ! eventService.currentRace.loaded;
+    };
+
+    $scope.startRace = function(eventId) {
+
+        var config = {
+            transformRequest: angular.identity,
+            headers : {
+                'Content-Type': undefined
+            }
+        };
+
+        var nameList = [];
+        var artList = [];
+        for (var i = 0 ; i < eventService.eventData[eventId].watchList.length ; i++ ) {
+
+            var watch = eventService.eventData[eventId].watchList[i];
+            nameList.push(watch.name);
+            artList.push(watch.art);
+        }
+
+        var formData = new FormData();
+        formData.append("nameList", JSON.stringify(nameList));
+        formData.append("artList", JSON.stringify(artList));
+
+        $http.post('/api/EventStanding/startRace/' + eventId, formData, config).then(
+
+            function successCallback(response) {
+
+                var raceData = eventService.raceHash[eventId];
+                var $result = response.data;
+
+                for (var i = 0 ; i < $result.length ; i++) {
+
+                    var data = $result[i];
+                    var round = data.round;
+                    var index = raceData.playerTrackHash[data.name];
+
+                    if (!raceData.standingsHash.hasOwnProperty(round)) {
+                        raceData.standingsHash[round] = [];
+                        while (raceData.standingsHash[round].length < raceData.tracks.length) {
+                            raceData.standingsHash[round].push({});
+                        }
+                    }
+
+                    raceData.standingsHash[round][index] = data;
+                }
+
+                raceData.loaded = true;
+                raceData.playing = true;
+
+            }, function errorCallback(response) {
+
+                alert('Unable to load rounds: ' + response.data.message);
+            }
+        );
+    };
+
+    var updateToRound = function(round) {
+
+        var raceData = eventService.currentRace;
+        var standingsList = raceData.standingsHash[round];
+        for ( var i = 0 ; i < standingsList.length ; i++ ) {
+
+            var standing = standingsList[i];
+            var index = raceData.playerTrackHash[standing.name];
+            var track = raceData.tracks[index];
+            var startLeft = Math.round(35 - (raceData.avatarHeight / 2));
+
+            // 35 px to 0 then 90 to the rest so each point is 30!
+            track.points = standing.score;
+            track.rank = standing.rank;
+            track.left = Math.round(startLeft + (30 * track.points));
+            track.stickLeft = Math.round(34 + (30 * track.points));
+        }
+
+        eventService.currentRace.currentRound = round;
+    };
+
+    $scope.goBack = function() {
+
+        if (eventService.currentRace.currentRound > 1) {
+            updateToRound( eventService.currentRace.currentRound - 1);
+        }
+    };
+
+    $scope.goForward = function() {
+
+        if (eventService.currentRace.currentRound < eventService.currentRace.maxRound) {
+            updateToRound( eventService.currentRace.currentRound + 1);
+        }
+    };
+
+    $scope.play = function() {
+
+        eventService.currentRace.playing = true;
+    };
+
+    $scope.pause = function() {
+
+        eventService.currentRace.playing = false;
+    };
 
     $scope.getHorseRaceSrc = function() {
 
