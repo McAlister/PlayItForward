@@ -215,6 +215,42 @@ function GPController(contextPath, $scope, $http, tabService, eventService, artS
         );
     };
 
+    var scrollToWinner = function() {
+
+        var winner = null;
+        var race = eventService.currentRace;
+        for (var i = 0 ; i < race.tracks.length ; i++) {
+
+            var track = race.tracks[i];
+            if (winner == null || winner.rank > track.rank) {
+                winner = track;
+            }
+        }
+
+        if (winner == null) {
+            return;
+        }
+
+        var viewPort = document.getElementById("horseRace");
+        var horse = document.getElementById(winner.id);
+        var left = parseInt(winner.left + (race.avatarHeight/2));
+        var rangeStart = viewPort.scrollLeft;
+        var rangeEnd = rangeStart + viewPort.clientWidth;
+
+        if (left < rangeStart || left > rangeEnd) {
+            var newLeft = left - (viewPort.clientWidth / 2);
+            if (newLeft < 0) {
+                newLeft = 0;
+            }
+
+            viewPort.scroll({
+               left: newLeft,
+               behavior: "smooth"
+            });
+            // viewPort.scrollLeft = newLeft;
+        }
+    };
+
     var updateToRound = function(round) {
 
         var raceData = eventService.currentRace;
@@ -234,6 +270,7 @@ function GPController(contextPath, $scope, $http, tabService, eventService, artS
         }
 
         eventService.currentRace.currentRound = round;
+        scrollToWinner();
     };
 
     $scope.goBack = function() {
