@@ -4,7 +4,8 @@ angular
     .module("playitforward.index")
     .controller("GPController", GPController);
 
-function GPController(contextPath, $scope, $http, tabService, eventService, artService) {
+function GPController(contextPath, $scope, $http, $interval,
+                      tabService, eventService, artService) {
 
     var vm = this;
     vm.contextPath = contextPath;
@@ -232,7 +233,6 @@ function GPController(contextPath, $scope, $http, tabService, eventService, artS
         }
 
         var viewPort = document.getElementById("horseRace");
-        var horse = document.getElementById(winner.id);
         var left = parseInt(winner.left + (race.avatarHeight/2));
         var rangeStart = viewPort.scrollLeft;
         var rangeEnd = rangeStart + viewPort.clientWidth;
@@ -251,7 +251,7 @@ function GPController(contextPath, $scope, $http, tabService, eventService, artS
         }
     };
 
-    var updateToRound = function(round) {
+    var updateToRound = function(round, scroll) {
 
         var raceData = eventService.currentRace;
         var standingsList = raceData.standingsHash[round];
@@ -270,20 +270,22 @@ function GPController(contextPath, $scope, $http, tabService, eventService, artS
         }
 
         eventService.currentRace.currentRound = round;
-        scrollToWinner();
-    };
-
-    $scope.goBack = function() {
-
-        if (eventService.currentRace.currentRound > 1) {
-            updateToRound( eventService.currentRace.currentRound - 1);
+        if (scroll) {
+            scrollToWinner();
         }
     };
 
-    $scope.goForward = function() {
+    $scope.goBack = function(scroll) {
+
+        if (eventService.currentRace.currentRound > 1) {
+            updateToRound( eventService.currentRace.currentRound - 1, scroll);
+        }
+    };
+
+    $scope.goForward = function(scroll) {
 
         if (eventService.currentRace.currentRound < eventService.currentRace.maxRound) {
-            updateToRound( eventService.currentRace.currentRound + 1);
+            updateToRound( eventService.currentRace.currentRound + 1, scroll);
         }
     };
 
@@ -296,6 +298,21 @@ function GPController(contextPath, $scope, $http, tabService, eventService, artS
 
         eventService.currentRace.playing = false;
     };
+
+    var playRace = function() {
+
+        var race = eventService.currentRace;
+        if (race.playing) {
+
+            if (race.currentRound < race.maxRound) {
+                $scope.goForward(true);
+            } else {
+                $scope.pause();
+            }
+        }
+    };
+
+    $interval(playRace, 1000);
 
     $scope.getHorseRaceSrc = function() {
 

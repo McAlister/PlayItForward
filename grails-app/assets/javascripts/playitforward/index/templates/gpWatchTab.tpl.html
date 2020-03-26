@@ -6,10 +6,10 @@
     </div>
 
     <div class="controls unselectable">
-        <span id="back"  ng-click="goBack()">⏪</span>
+        <span id="back"  ng-click="goBack(false)">⏪</span>
         <span id="play"  ng-click="play()" ng-if="!eventService.currentRace.playing">▶️</span>
         <span id="pause" ng-click="pause()" ng-if="eventService.currentRace.playing">⏸️</span>
-        <span id="next"  ng-click="goForward()">⏩️</span>
+        <span id="next"  ng-click="goForward(false)">⏩️</span>
     </div>
 
     <div id="raceMask" ng-if="showMask()">
