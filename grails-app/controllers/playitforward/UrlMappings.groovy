@@ -41,9 +41,13 @@ class UrlMappings {
                 controller: 'rawStandings', action: 'loadEvent'
         );
 
+        get "/api/EventStanding/loadDefaultStandings/$eventId" (
+                controller: 'eventStanding', action: 'loadDefaultStandings'
+        );
+
         post "/api/EventStanding/startRace/$eventId" (
                 controller: 'eventStanding', action: 'startRace'
-        )
+        );
 
         get "/api/EventStanding/event/$eventId" (
                 controller: 'eventStanding', action: 'latestRound'

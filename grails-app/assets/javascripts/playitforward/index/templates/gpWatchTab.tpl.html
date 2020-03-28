@@ -1,31 +1,46 @@
 
-<div id="raceFrame" ng-click="unselectHorse()">
+<div id="event-loading" ng-if="eventService.eventData[eventService.currentEvent.id].loading">
+
+    <h2 class="shoutout">Loading Round {{eventService.eventData[eventService.currentEvent.id].lastRound + 1}}</h2>
+
+    <ng-include src="'/playitforward/index/spinner.html'"></ng-include>
+
+</div>
+
+<div id="raceFrame" ng-click="raceService.unselectHorse()"
+     ng-if="!eventService.eventData[eventService.currentEvent.id].loading">
 
     <div class="roundLabel" >
-        Round {{eventService.currentRace.currentRound}}
+        Round {{raceService.raceData.active.round}}
     </div>
 
     <div class="controls unselectable">
-        <span id="back"  ng-click="goBack(false)">⏪</span>
-        <span id="play"  ng-click="play()" ng-if="!eventService.currentRace.playing">▶️</span>
-        <span id="pause" ng-click="pause()" ng-if="eventService.currentRace.playing">⏸️</span>
-        <span id="next"  ng-click="goForward(false)">⏩️</span>
+        <span id="back"  ng-click="raceService.goBack(false)">⏪</span>
+        <span id="play"  ng-click="raceService.play()" ng-if="!raceService.raceData.active.playing">▶️</span>
+        <span id="pause" ng-click="raceService.pause()" ng-if="raceService.raceData.active.playing">⏸️</span>
+        <span id="next"  ng-click="raceService.goForward(false)">⏩️</span>
     </div>
 
-    <div id="raceMask" ng-if="showMask()">
+    <div id="raceMask" ng-if="!raceService.raceData.active.loaded">
         <button name="play" type="button" ng-click="startRace(eventService.currentEvent.id)"></button>
     </div>
 
-    <div class="profile" ng-if="stats.show" style="top: {{stats.top}}px; left: {{stats.left}}px;">
+    <div class="noneFound" ng-if="raceService.raceData.active.loaded && raceService.raceData.active.empty">
+        <p>No Players Found.</p>
+        <p><a ng-click="tabService.activateTab('GPs', 'config')">Create a Watch List?</a></p>
+    </div>
 
-        <img ng-src="/assets/race/{{stats.art}}" alt="Detailed image" />
+    <div class="profile" ng-if="raceService.toolTip.show"
+         style="{{raceService.toolTip.style}}">
+
+        <img ng-src="{{raceService.raceData.squareUrlBase + raceService.toolTip.img}}" alt="Detailed image" />
 
         <div class="data" >
-            {{stats.name}}
+            {{raceService.toolTip.name}}
             <br />
-            Rank: {{stats.rank}}
+            Rank: {{raceService.toolTip.rank}}
             <br />
-            Points: {{stats.points}}
+            Points: {{raceService.toolTip.points}}
         </div>
     </div>
 
@@ -35,7 +50,7 @@
 
             <div ng-repeat="x in [].constructor(55) track by $index" >
 
-                <div class="scoreMark" style="left: {{35 + $index * 30}}px;" ng-if="$index % 3 == 0">
+                <div class="scoreMark" style="{{'left: ' + (35 + ($index * 30)) + 'px;'}}" ng-if="$index % 3 == 0">
                     {{$index}}
                 </div>
 
@@ -43,19 +58,20 @@
 
         </div>
 
-        <div class="raceRow" ng-repeat="jockey in eventService.currentRace.tracks" >
+        <div class="raceRow" ng-repeat="jockey in raceService.raceData.active.tracks track by $index" >
 
             <div class="wave"
-                 style="z-index: {{jockey.index * 200}};
-                        top: {{jockey.top}}px;
-                        background-position: {{jockey.offset}}px center;">
+                 style="z-index: {{($index + 1) * 200}};
+                        top: {{jockey.top}};
+                        background-position: {{jockey.offset}};">
 
-                <img id="{{jockey.id}}" class="horse" alt="jockey.name"
-                     ng-src="/assets/race/oval/{{jockey.img}}" ng-click="selectHorse(jockey.id, jockey.name)"
-                     style="height: {{eventService.currentRace.avatarHeight}}px; left: {{jockey.left}}px;" />
+                <img id="{{jockey.id}}" class="horse" alt="{{jockey.name}}"
+                     ng-src="{{raceService.raceData.ovalUrlBase + jockey.img}}"
+                     ng-click="raceService.selectHorse(jockey.id, jockey.name)"
+                     style="height: {{raceService.raceData.active.avatarHeight}}px; left: {{jockey.left}}px;" />
 
                 <img class="stick" alt="horse stick" src="/assets/race/stick.png"
-                    style="left: {{jockey.stickLeft}}px;"
+                    style="left: {{jockey.stickLeft}};"
                 />
 
             </div>
@@ -66,7 +82,8 @@
 
 </div>
 
-<p style="font-style: italic; font-size: smaller; line-height: 1.05em; margin-top: 5px;">
+<p style="font-style: italic; font-size: smaller; line-height: 1.05em; margin-top: 5px;"
+   ng-if="!eventService.eventData[eventService.currentEvent.id].loading">
     For PiF prizes match points earned from an intentional draw are not counted.
     Round 15 draws are presumed intentional unless all impacted parties declare
     otherwise. Next breaker is OMW as normal.

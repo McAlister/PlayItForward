@@ -3,7 +3,6 @@ package playitforward
 import grails.transaction.Transactional
 import groovy.transform.Synchronized
 import org.grails.web.json.JSONArray
-import org.grails.web.json.JSONObject
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import org.jsoup.select.Elements;
@@ -24,6 +23,82 @@ class EventStandingController {
                                      "Narset", "Nissa", "Olivia", "Oona", "Pia", "Saheeli",
                                      "SliverQueen", "Tamiyo", "Vraska", "Wort"
     ];
+
+    @Transactional
+    def loadDefaultStandings(Integer eventId) {
+
+        Event event = Event.findById(eventId);
+        if (event == null) {
+            throw new Exception("Can not find event: " + eventId);
+        }
+
+        final session = sessionFactory.currentSession;
+        final String sql = "Select name, max(points) \n" +
+                "From raw_standings\n" +
+                "Where event_id = :eventId \n" +
+                "    And name in (Select name from player where is_woman = 't') \n" +
+                "Group By name order by max(points) desc"
+
+        def query = session.createSQLQuery(sql);
+        query.setInteger("eventId", eventId);
+        //query.addEntity(String.class);  //<--- for binding to a domain class.
+
+        List<Object[]> names = query.list();
+        List<EventStanding> standingsList = new ArrayList<>();
+
+        if (names.size() > 0)
+        {
+            List<String> nameList = new ArrayList<>();
+            for (int i = 0; i < names.size(); i++)
+            {
+
+                String name = names.get(i)[0];
+                Integer points = names.get(i)[1];
+
+                if (i < 8 || (i < 12 && points >= 18))
+                {
+                    nameList.add(name);
+                }
+            }
+
+            List<Player> playerList = Player.findAllByNameInList(nameList);
+            Map<String, Player> playerMap = new HashMap<>();
+            for (Player player : playerList)
+            {
+                playerMap.put(player.name, player);
+            }
+
+            List<RawStandings> rawList = RawStandings.findAllByEventAndNameInList(event, nameList);
+            Integer standingId = 0;
+            for (RawStandings raw : rawList)
+            {
+
+                standingId++;
+
+                EventStanding standing = new EventStanding();
+                standing.setId(standingId);
+                standing.setEvent(event);
+                standing.setPoints(raw.getPoints());
+                standing.setRank(raw.getRank());
+                standing.setRound(raw.getRound());
+                standing.setPlayer(playerMap.get(raw.name));
+
+                standingsList.add(standing)
+            }
+
+            Collections.sort(standingsList, new Comparator<EventStanding>() {
+                @Override
+                int compare(EventStanding o1, EventStanding o2)
+                {
+                    return o1.getRound().compareTo(o2.getRound());
+                }
+            })
+
+            respond standingsList, model: [eventStandingCount: standingsList.size()];
+        } else {
+            respond standingsList, model: [eventStandingCount: standingsList.size()];
+        }
+    }
 
     @Transactional
     def startRace(Integer eventId) {
@@ -53,6 +128,7 @@ class EventStandingController {
             standing.setPlayer(new Player());
             standing.player.setId(indexHash.get(raw.getName()));
             standing.player.alias = raw.getName();
+            standing.player.name = raw.getName();
             standing.player.imgUrl = artHash.get(raw.getName());
 
             standingsList.add(standing)

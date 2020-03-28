@@ -12,6 +12,6 @@ json {
     rank eventStanding.rank;
     score eventStanding.points;
     key eventStanding.player.id;
-    name eventStanding.player.alias;
+    name eventStanding.player.name;
     img eventStanding.player.imgUrl;
 }

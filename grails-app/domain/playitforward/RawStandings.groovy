@@ -24,14 +24,15 @@ class RawStandings {
 
         table 'raw_standings';
         id generator: 'native', params: [sequence: 'raw_standings_seq'];
-        event index: 'raw_standings_event_idx', fetch: 'join', lazy: false;
+        name index: 'raw_standings_name_idx';
+        event index: 'raw_standings_event_idx,raw_standings_name_idx', fetch: 'join', lazy: false;
         round index: 'raw_standings_event_idx';
         rank index: 'raw_standings_event_idx';
         isWoman index: 'raw_standings_event_idx';
         event unique: ['round', 'name', 'rank'];
     }
 
-    public boolean canMakeDayTwo()
+    boolean canMakeDayTwo()
     {
         if (round >= 8) {
             return (points >= 18);
