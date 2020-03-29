@@ -141,14 +141,16 @@ function eventService($http, $location, $filter, eventPersistenceService, raceSe
         );
     };
 
-    service.addPlayerToEvent = function() {
+    service.addPlayerToEvent = function(eventId) {
 
-        eventPersistenceService.addPlayerToEventList(service.currentEvent.id);
+        eventPersistenceService.addPlayerToEventList(eventId);
+        raceService.resetRace(eventId);
     };
 
-    service.delPlayerFromEvent = function(name) {
+    service.delPlayerFromEvent = function(eventId, name) {
 
-        eventPersistenceService.removePlayerFromEventList(service.currentEvent.id, name);
+        eventPersistenceService.removePlayerFromEventList(eventId, name);
+        raceService.resetRace(eventId);
     };
 
     service.loadEvents = function() {

@@ -118,7 +118,7 @@ function eventPersistenceService($cookies, $http) {
                 eventData[eventId].watchList = [];
             }
 
-            eventData[eventId].watchList.push(playerHash);
+            eventData[eventId].watchList.unshift(playerHash);
             $cookies.putObject("eventDataObj", eventData);
         },
 

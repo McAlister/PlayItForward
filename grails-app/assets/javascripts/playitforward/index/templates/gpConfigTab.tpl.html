@@ -20,7 +20,7 @@
 
     <div ng-if="eventService.playerList.length > 0">
 
-        <form ng-submit="eventService.addPlayerToEvent()" class="form"
+        <form ng-submit="eventService.addPlayerToEvent(eventService.currentEvent.id)" class="form"
             style="margin: 15px 0;">
 
             <div class="form-group">
@@ -60,7 +60,8 @@
 
                 <img alt="Image of {{watch.art}}" ng-src="/assets/race/oval/{{watch.art}}">
                 <p>{{watch.name}}</p>
-                <button type="button" class="btn btn-primary" ng-click="eventService.delPlayerFromEvent(watch.name)">Remove</button>
+                <button type="button" class="btn btn-primary"
+                        ng-click="eventService.delPlayerFromEvent(eventService.currentEvent.id, watch.name)">Remove</button>
 
         </div>
 

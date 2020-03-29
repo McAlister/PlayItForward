@@ -43,7 +43,7 @@ function raceService($http, $interval) {
             playerTrackHash: {},        // player name -> tracks array index.
             standingsHash: {},          // round -> [standings] for populating tracks
             step: 104,                  // spacing between tracks.
-            avatarHeight: 93            // how high the ovals are.
+            avatarHeight: 121           // how high the ovals are.
         };
 
         // We are positioning each horse out of bounds to the left
@@ -450,6 +450,12 @@ function raceService($http, $interval) {
         event.stopPropagation();
     };
 
+    var resetRace = function(eventId) {
+
+        delete data.raceHash[eventId];
+        updateCurrentRace(eventId);
+    };
+
     //noinspection JSUnusedGlobalSymbols
     return {
 
@@ -463,6 +469,7 @@ function raceService($http, $interval) {
         goForward: goForward,
         goBack: goBack,
         unselectHorse: unselectHorse,
-        selectHorse: selectHorse
+        selectHorse: selectHorse,
+        resetRace: resetRace
     };
 }
