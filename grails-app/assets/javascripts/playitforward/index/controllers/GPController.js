@@ -52,7 +52,7 @@ function GPController(contextPath, $scope, $http, tabService,
     $scope.startRace = function(eventId) {
 
         var watchList = null;
-        var eventData = eventService.eventData[eventId];
+        var eventData = eventService.eventData.watchHash[eventId];
         if (eventData && eventData.watchList.length > 0) {
             watchList = eventData.watchList;
         }

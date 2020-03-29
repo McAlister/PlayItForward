@@ -1,13 +1,13 @@
 
-<div id="event-loading" ng-if="eventService.eventData[eventService.currentEvent.id].loading">
+<div id="config-loading" ng-if="eventService.eventData.watchHash[eventService.currentEvent.id].loading">
 
-    <h2 class="shoutout">Loading Round {{eventService.eventData[eventService.currentEvent.id].lastRound + 1}}</h2>
+    <h2 class="shoutout">Loading Round {{eventService.eventData.watchHash[eventService.currentEvent.id].lastRound + 1}}</h2>
 
     <ng-include src="'/playitforward/index/spinner.html'"></ng-include>
 
 </div>
 
-<div ng-if="!eventService.eventData[eventService.currentEvent.id].loading">
+<div ng-if="!eventService.eventData.watchHash[eventService.currentEvent.id].loading">
 
     <h2 class="shoutout" style="margin-bottom: 5px;">
         Choose Your Champions
@@ -56,7 +56,7 @@
 
     <div class="flexContainer">
 
-        <div ng-repeat="watch in eventService.eventData[eventService.currentEvent.id].watchList">
+        <div ng-repeat="watch in eventService.eventData.watchHash[eventService.currentEvent.id].watchList">
 
                 <img alt="Image of {{watch.art}}" ng-src="/assets/race/oval/{{watch.art}}">
                 <p>{{watch.name}}</p>

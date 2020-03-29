@@ -6,22 +6,51 @@ angular
 
 // This service stores event related data in local storage
 // to minimize scraping of URLs.
-function eventPersistenceService($cookies, $http) {
+function eventPersistenceService($http) {
 
-    var eventData = $cookies.getObject("eventDataObj");
-    if (eventData == null) {
-        eventData = {
+    var eventData = null;
 
-            currentPlayerName: null,
-            currentImage: null
-        };
-    }
+
+    /* ***************** *
+     * Persistence Layer *
+     * ***************** */
+
+    var persistEventData = function () {
+
+        localStorage.setItem('eventDataObj', JSON.stringify(eventData));
+    };
+
+    var loadEventData = function() {
+
+        var jsonString = localStorage.getItem('eventDataObj');
+        try {
+            eventData = JSON.parse(jsonString);
+        } catch (ex) {
+            eventData = null;
+            console.log("Failure to load eventData from local storage");
+        }
+
+        if (eventData == null) {
+            eventData = {
+
+                currentPlayerName: null,
+                currentImage: null,
+                watchHash: {}               // EventId -> [players to watch]
+            };
+        }
+    };
+
+    loadEventData();
+
+    /* ******************************** *
+     * Event Standing Scraper Functions *
+     * ******************************** */
 
     var loadNextRound = function(eventId, round) {
 
         if (round > 15) {
-            eventData[eventId].loading = false;
-            $cookies.putObject("eventDataObj", eventData);
+            eventData.watchHash[eventId].loading = false;
+            persistEventData();
             return;
         }
 
@@ -32,18 +61,18 @@ function eventPersistenceService($cookies, $http) {
                 var loaded = response.data.loaded;
                 if (loaded) {
 
-                    eventData[eventId].lastRound = round;
+                    eventData.watchHash[eventId].lastRound = round;
                     loadNextRound(eventId, round + 1);
 
                 } else {
-                    eventData[eventId].loading = false;
-                    $cookies.putObject("eventDataObj", eventData);
+                    eventData.watchHash[eventId].loading = false;
+                    persistEventData();
                 }
 
             }, function errorCallback(response) {
 
                 alert('Unable to load rounds: ' + response.message);
-                eventData[eventId].loading = false;
+                eventData.watchHash[eventId].loading = false;
             }
         );
     };
@@ -55,13 +84,15 @@ function eventPersistenceService($cookies, $http) {
             function successCallback(response) {
 
                 var lastRound = response.data.lastRound;
-                eventData[eventId].lastRound = lastRound;
-                $cookies.putObject("eventDataObj", eventData);
+                eventData.watchHash[eventId].lastRound = lastRound;
+                persistEventData();
 
                 if (lastRound < 15) {
 
-                    eventData[eventId].loading = true;
+                    eventData.watchHash[eventId].loading = true;
                     loadNextRound(eventId, lastRound + 1);
+                } else {
+                    eventData.watchHash[eventId].loading = false;
                 }
 
             }, function errorCallback(response) {
@@ -69,6 +100,64 @@ function eventPersistenceService($cookies, $http) {
                 alert('Unable to load rounds: ' + response.message);
             }
         );
+    };
+
+
+    /* ***************** *
+     * Exposed Functions *
+     * ***************** */
+
+    var loadLatestRoundForEvent = function(eventId) {
+
+        var lastRound = 0;
+        if (eventData.watchHash.hasOwnProperty(eventId)) {
+            lastRound = eventData.watchHash[eventId].lastRound;
+        } else {
+            eventData.watchHash[eventId] = {
+                lastRound: 0,
+                loading: false,
+                watchList: []
+            }
+        }
+
+        if (lastRound < 15) {
+            getLatestRoundForEvent(eventId);
+        }
+    };
+
+    var addPlayerToEventList = function(eventId) {
+
+        var playerHash = {
+            name: eventData.currentPlayerName,
+            art: eventData.currentImage + '.png'
+        };
+
+        if (! eventData.watchHash.hasOwnProperty(eventId)) {
+
+            eventData.watchHash[eventId] = {
+                watchList: [],
+                lastRound: 0,
+                loading: false
+            }
+        }
+
+        eventData.watchHash[eventId].watchList.unshift(playerHash);
+        persistEventData();
+    };
+
+    var removePlayerFromEventList = function(eventId, name) {
+
+        var eventInfo = eventData.watchHash[eventId];
+        if (eventInfo != null && eventInfo.hasOwnProperty("watchList")) {
+
+            for (var i = eventInfo.watchList.length - 1 ; i >= 0 ; i--) {
+                if (eventInfo.watchList[i].name === name) {
+                    eventInfo.watchList.splice(i, 1);
+                }
+            }
+
+            persistEventData();
+        }
     };
 
     //noinspection JSUnusedGlobalSymbols
@@ -81,61 +170,8 @@ function eventPersistenceService($cookies, $http) {
             "Narset", "Nissa", "Olivia", "Oona", "Pia", "Saheeli",
             "SliverQueen", "Tamiyo", "Vraska", "Wort"],
 
-        loadLatestRoundForEvent: function(eventId) {
-
-            var lastRound = 0;
-            if (eventData.hasOwnProperty(eventId)) {
-                lastRound = eventData[eventId].lastRound;
-            } else {
-                eventData[eventId] = {
-                    lastRound: 0,
-                    loading: false,
-                    watchList: []
-                }
-            }
-
-            if (lastRound < 15) {
-                getLatestRoundForEvent(eventId);
-            }
-        },
-
-        addPlayerToEventList: function(eventId) {
-
-            var playerHash = {
-                name: eventData.currentPlayerName,
-                art: eventData.currentImage + '.png'
-            };
-
-            if (! eventData.hasOwnProperty(eventId)) {
-                eventData[eventId] = {
-                    watchList: [],
-                    lastRound: 0,
-                    loading: false
-                }
-            }
-
-            if (! eventData[eventId].hasOwnProperty("watchList")) {
-                eventData[eventId].watchList = [];
-            }
-
-            eventData[eventId].watchList.unshift(playerHash);
-            $cookies.putObject("eventDataObj", eventData);
-        },
-
-        removePlayerFromEventList: function(eventId, name) {
-
-            var eventInfo = eventData[eventId];
-            if (eventInfo != null && eventInfo.hasOwnProperty("watchList")) {
-
-                for (var i = eventInfo.watchList.length - 1 ; i >= 0 ; i--) {
-                    if (eventInfo.watchList[i].name === name) {
-                        eventInfo.watchList.splice(i, 1);
-                    }
-                }
-            }
-
-            $cookies.putObject("eventDataObj", eventData);
-        }
-
+        loadLatestRoundForEvent: loadLatestRoundForEvent,
+        addPlayerToEventList: addPlayerToEventList,
+        removePlayerFromEventList: removePlayerFromEventList
     };
 }

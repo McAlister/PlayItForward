@@ -1,14 +1,14 @@
 
-<div id="event-loading" ng-if="eventService.eventData[eventService.currentEvent.id].loading">
+<div id="watch-loading" ng-if="eventService.eventData.watchHash[eventService.currentEvent.id].loading">
 
-    <h2 class="shoutout">Loading Round {{eventService.eventData[eventService.currentEvent.id].lastRound + 1}}</h2>
+    <h2 class="shoutout">Loading Round {{eventService.eventData.watchHash[eventService.currentEvent.id].lastRound + 1}}</h2>
 
     <ng-include src="'/playitforward/index/spinner.html'"></ng-include>
 
 </div>
 
 <div id="raceFrame" ng-click="raceService.unselectHorse()"
-     ng-if="!eventService.eventData[eventService.currentEvent.id].loading">
+     ng-if="!eventService.eventData.watchHash[eventService.currentEvent.id].loading">
 
     <div class="roundLabel" >
         Round {{raceService.raceData.active.round}}
@@ -83,7 +83,7 @@
 </div>
 
 <p style="font-style: italic; font-size: smaller; line-height: 1.05em; margin-top: 5px;"
-   ng-if="!eventService.eventData[eventService.currentEvent.id].loading">
+   ng-if="!eventService.eventData.watchHash[eventService.currentEvent.id].loading">
     For PiF prizes match points earned from an intentional draw are not counted.
     Round 15 draws are presumed intentional unless all impacted parties declare
     otherwise. Next breaker is OMW as normal.
