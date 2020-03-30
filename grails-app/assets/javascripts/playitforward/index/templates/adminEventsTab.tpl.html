@@ -1,93 +1,82 @@
-<h1>Manage Events:</h1>
+<h2 class="shoutout">Events</h2>
+
+<div id="event-loading" ng-if="!eventService.eventsLoaded">
+
+    <ng-include src="'/playitforward/index/spinner.html'"></ng-include>
+
+</div>
+
+<div ng-if="eventService.eventsLoaded">
 
 <div class="gp-dropdown">
-    <!--suppress HtmlFormInputWithoutLabel -->
     <select name="eventSelect" id="eventSelect" ng-model="eventService.currentEvent"
-            ng-options="event.name + ' - ' + event.eventFormat for event in (eventService.events | filter:eventService.currentYear) track by event.id"
-            ng-change="eventService.selectedEvent()">
+            ng-options="event.name for event in eventService.activeEvents track by event.id"
+            ng-change="eventService.selectedEvent()" title="eventSelectTitle">
     </select>
 </div>
 
 <div class="gp-dropdown">
-    <!--suppress HtmlFormInputWithoutLabel -->
-    <select name="yearSelectEvent" id="yearSelect" ng-model="eventService.currentYear"
-            ng-options="year for year in eventService.years"
-            ng-change="eventService.selectedYear()" title="yearSelectEventTitle">
+    <select name="eventTypeSelect" id="eventTypeSelect" ng-model="eventService.currentType"
+            ng-options="type.type for type in (eventService.types | filter:'a' ) track by type.id"
+            ng-change="eventService.selectedYearType()" title="eventTypeSelectTitle">
     </select>
 </div>
+
+<div class="gp-dropdown">
+    <select name="yearSelect" id="yearSelect" ng-model="eventService.currentYear"
+            ng-options="year for year in eventService.years"
+            ng-change="eventService.selectedYearType()" title="yearSelectTitle">
+    </select>
+</div>
+
+<br/>
 
 <form ng-submit="eventService.upsertEvent()" class="form">
 
     <div class="form-group">
         <label for="inputEventName" class="control-label">Name:</label>
         <input type="text" id="inputEventName" class="form-control"
-               ng-model="eventService.currentEvent.name" required>
+               ng-model="eventService.eventToEdit.name" required>
     </div>
 
     <div class="form-group">
         <label for="inputEvenFormat" class="control-label">Format:</label>
         <input type="text" id="inputEvenFormat" class="form-control"
-               ng-model="eventService.currentEvent.eventFormat" required>
-    </div>
-
-    <div class="form-group">
-        <label for="inputEvenCode" class="control-label">Event Code:</label>
-        <input type="text" id="inputEvenCode" class="form-control"
-               ng-model="eventService.currentEvent.eventCode" >
-    </div>
-
-    <div class="form-group">
-        <label for="inputCFBNum" class="control-label">CFB Event Number:</label>
-        <input type="text" id="inputCFBNum" class="form-control"
-               ng-model="eventService.currentEvent.cfbEventNum" >
-    </div>
-
-    <div class="form-group">
-        <label for="inputEvenCoordinator" class="control-label">Coordinator:</label>
-        <input type="text" id="inputEvenCoordinator" class="form-control"
-               ng-model="eventService.currentEvent.coordinator" >
+               ng-model="eventService.eventToEdit.eventFormat" required>
     </div>
 
     <div class="form-group">
         <label for="inputEvenStart" class="control-label">Start Date:</label>
         <input type="date" id="inputEvenStart" class="form-control"
-               ng-model="eventService.currentEvent.startDate" required>
+               ng-model="eventService.eventToEdit.startDate" required>
     </div>
 
     <div class="form-group">
         <label for="inputEventEnd" class="control-label">End Date:</label>
         <input type="date" id="inputEventEnd" class="form-control"
-               ng-model="eventService.currentEvent.endDate" required>
+               ng-model="eventService.eventToEdit.endDate" required>
     </div>
 
     <div class="form-group">
         <label for="inputEventType" class="control-label">Type:</label>
-        <select name="inputEventType" id="inputEventType" ng-model="eventService.currentEvent.type"
-                ng-options="type.description for type in eventData.types track by type.id"
+        <select name="inputEventType" id="inputEventType" ng-model="eventService.eventToEdit.type"
+                ng-options="type.description for type in eventService.types track by type.id"
                 class="form-control">
         </select>
     </div>
 
     <div class="form-group">
         <label for="inputEventOrganizer" class="control-label">Organizer:</label>
-        <select name="inputEventType" id="inputEventOrganizer" ng-model="eventService.currentEvent.organizer"
-                ng-options="org.name for org in eventData.organizers track by org.id"
+        <select name="inputEventType" id="inputEventOrganizer" ng-model="eventService.eventToEdit.organizer"
+                ng-options="org.name for org in eventService.organizers track by org.id"
                 class="form-control">
         </select>
     </div>
 
     <div class="form-group">
-        <label for="inputEventArt" class="control-label">Art:</label>
-        <select name="inputEventArt" id="inputEventArt" ng-model="eventService.currentEvent.art"
-                ng-options="art.title for art in artService.artList track by art.id"
-                class="form-control">
-        </select>
-    </div>
-
-    <div class="form-group">
-        <label for="inputEventFile" class="control-label">Playmat File Name:</label>
-        <input type="text" id="inputEventFile" class="form-control"
-               ng-model="eventService.currentEvent.playmatFileName" >
+        <label for="inputEventUrl" class="control-label">URL:</label>
+        <input type="text" id="inputEventUrl" class="form-control"
+               ng-model="eventService.eventToEdit.eventUrl" required>
     </div>
 
     <div class="text-center">
@@ -98,6 +87,4 @@
 
 </form>
 
-<br/>
-
-<img class="playmat-image" ng-src="{{getEventPreview()}}" alt="Preview of playmat image." on-error-src="assets/ComingSoon.jpg"/>
+</div>

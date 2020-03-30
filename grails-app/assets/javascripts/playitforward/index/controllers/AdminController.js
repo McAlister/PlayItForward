@@ -24,14 +24,6 @@ function AdminController(contextPath, userPersistenceService, $scope, $http, $fi
     $scope.accessToken = $scope.sessionData.accessToken;
     $scope.role = $scope.sessionData.role;
     
-    $scope.eventData = {
-
-        eventDataError: '',
-        currentOrganizer: null,
-        organizers: [],
-        currentType: null,
-        types: []
-    };
 
     // ///////// //
     // Prize Tab //
@@ -397,6 +389,7 @@ function AdminController(contextPath, userPersistenceService, $scope, $http, $fi
 
     };
 
+
     // /////////////// //
     // Upload File Tab //
     // /////////////// //
@@ -454,10 +447,10 @@ function AdminController(contextPath, userPersistenceService, $scope, $http, $fi
             });
     };
 
+
     // /////// //
     // Art Tab //
     // /////// //
-
 
     $scope.selectArt = function() {
 
@@ -473,51 +466,14 @@ function AdminController(contextPath, userPersistenceService, $scope, $http, $fi
         }
     };
 
+
     // ///////// //
     // Event Tab //
     // ///////// //
 
-    $scope.getEventPreview = function() {
-
-        if ( eventService.currentEvent ) {
-            return eventService.baseUrl + 'playmats/' + eventService.currentEvent.playmatFileName;
-        }
-    };
-
-    $scope.populateEventProperties = function() {
-
-        $http.get('/api/EventOrganizer').then(
-
-
-            function successCallback(response) {
-
-                $scope.eventData.organizers = response.data;
-
-            }, function errorCallback(response) {
-
-                $scope.eventData.eventDataError = response.data;
-            }
-        );
-
-        $http.get('/api/EventType').then(
-
-
-            function successCallback(response) {
-
-                $scope.eventData.types = response.data;
-
-            }, function errorCallback(response) {
-
-                $scope.eventData.eventDataError = response.data;
-            }
-        );
-    };
-
-    $scope.populateEventProperties();
-
     $scope.addNewEventSetup = function() {
 
-        eventService.currentEvent = {};
+        eventService.eventToEdit = {};
     };
 
 }
