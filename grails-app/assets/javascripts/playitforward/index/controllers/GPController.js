@@ -5,7 +5,7 @@ angular
     .controller("GPController", GPController);
 
 function GPController(contextPath, $scope, $http, tabService,
-                      eventService, raceService) {
+                      eventService, raceService, userPersistenceService) {
 
     var vm = this;
     vm.contextPath = contextPath;
@@ -18,6 +18,14 @@ function GPController(contextPath, $scope, $http, tabService,
 
     $scope.raceService = raceService;
 
+
+    // /////////////////// //
+    // User Authentication //
+    // /////////////////// //
+
+    $scope.isAuthenticated = function() {
+        return userPersistenceService.isAuthenticated();
+    };
 
     // ///////// //
     // Links tab //

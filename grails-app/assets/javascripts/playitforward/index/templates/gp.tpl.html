@@ -5,7 +5,7 @@
 
     <form ng-submit="eventService.scrapeNewEvents()" class="form">
 
-        <button class="btn btn-primary gp-dropdown" style="padding: 2px 5px;" type="submit" >Update</button>
+        <button class="btn btn-primary gp-dropdown" style="padding: 2px 5px;" type="submit" ng-show="isAuthenticated()" >Update</button>
 
         <!--<tr ng-repeat="user in users | filter:{name: search.name, phone: search.phone}">-->
 
