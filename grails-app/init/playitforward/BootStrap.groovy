@@ -4,8 +4,8 @@ package playitforward
 class BootStrap
 {
     def springSecurityService;
-    String swVersionString = "4.0.0";
-    String dbVersionString = "6.0.0";
+    String swVersionString = "5.0.0";
+    String dbVersionString = "7.0.0";
 
     def init = { servletContext ->
 
