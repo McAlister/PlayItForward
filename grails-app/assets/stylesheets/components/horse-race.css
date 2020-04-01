@@ -197,6 +197,7 @@
     background-color: #222;
     border: 2px solid #aaa;
     z-index: 10001;
+    width: 275px;
 }
 
 #raceFrame .profile img {

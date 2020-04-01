@@ -180,17 +180,18 @@ function raceService($http, $interval) {
             top = 490;
         }
 
-        var left = parseInt(horse.style.left.slice(0, -2));
-        var halfHorse = Math.round(data.active.avatarHeight/2);
-        var horseMiddle = left + halfHorse;
         var viewPort = document.getElementById("horseRace");
-        var rangeLeft = viewPort.scrollLeft;
-        var rangeMiddle = rangeLeft + Math.round(viewPort.clientWidth/2);
 
-        if ( horseMiddle < rangeMiddle ) {
-            left = horseMiddle - rangeLeft + halfHorse + 15;
+        var left = parseInt(horse.style.left.slice(0, -2));
+        var rangeLeft = viewPort.scrollLeft;
+        var absoluteLeft = left - rangeLeft;
+
+        if (absoluteLeft > 290) {
+            left = absoluteLeft - 275;
+        } else if (viewPort.clientWidth - absoluteLeft > 275 + data.active.avatarHeight ) {
+            left = absoluteLeft + data.active.avatarHeight;
         } else {
-            left = 15;
+            left = (viewPort.clientWidth / 2) - 138;
         }
 
         data.toolTip.style = "top: " + top + "px; left: " + left + "px;";
