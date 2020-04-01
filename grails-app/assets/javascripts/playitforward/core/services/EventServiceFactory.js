@@ -64,6 +64,12 @@ function eventService($http, $location, $filter, eventPersistenceService, raceSe
                 var events = response.data;
                 service.currentEvent = events[0];
 
+                for (var yearKey in data.eventsByYearAndType) {
+                    for (var typeKey in data.eventsByYearAndType[yearKey]) {
+                        data.eventsByYearAndType[yearKey][typeKey] = [];
+                    }
+                }
+
                 for ( var i = 0; i < events.length; ++i ) {
 
                     var event = events[i];
