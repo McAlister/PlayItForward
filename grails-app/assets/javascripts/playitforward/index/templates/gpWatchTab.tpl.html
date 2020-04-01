@@ -46,18 +46,6 @@
 
     <div id="horseRace">
 
-        <div id="topScoreMarkers">
-
-            <div ng-repeat="x in [].constructor(55) track by $index" >
-
-                <div class="scoreMark" style="{{'left: ' + (35 + ($index * 30)) + 'px;'}}" ng-if="$index % 3 == 0">
-                    {{$index}}
-                </div>
-
-            </div>
-
-        </div>
-
         <div class="raceRow" ng-repeat="jockey in raceService.raceData.active.tracks track by $index" >
 
             <div class="wave"
@@ -73,6 +61,19 @@
                 <img class="stick" alt="horse stick" src="/assets/race/stick.png"
                     style="left: {{jockey.stickLeft}};"
                 />
+
+
+                <div ng-if="$index % 3 == 0">
+
+                    <div ng-repeat="x in [].constructor(55) track by $index" >
+
+                        <div class="scoreMark" style="{{'left: ' + (35 + ($index * 30)) + 'px;'}}" ng-if="$index % 3 == 0">
+                            {{$index}}
+                        </div>
+
+                    </div>
+
+                </div>
 
             </div>
 
