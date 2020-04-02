@@ -11,7 +11,13 @@
 
 <br/><br/>
 
-<table class="resource-table ng-scope">
+<div id="standings-loading" ng-if="eventService.scraping">
+
+    <ng-include src="'/playitforward/index/spinner.html'"></ng-include>
+
+</div>
+
+<table class="resource-table ng-scope" ng-if="!eventService.scraping">
 
     <tr>
         <th style="text-align: center;">Pairings</th>

@@ -18,6 +18,7 @@ function eventService($http, $location, $filter, eventPersistenceService, raceSe
         error: '',
         eventsLoaded: false,
         loading: false,
+        scraping: false,
 
         eventData: eventPersistenceService.eventData,
         artList: eventPersistenceService.artList,
@@ -227,6 +228,8 @@ function eventService($http, $location, $filter, eventPersistenceService, raceSe
 
     var scrapeStandings = function() {
 
+        service.scraping = true;
+
         var data = {};
         var config = {
             headers : {
@@ -237,9 +240,11 @@ function eventService($http, $location, $filter, eventPersistenceService, raceSe
         $http.get('/api/RawStandings/event/' + service.currentEvent.id + '/type/' + service.currentType.type, data, config).then(
 
             function() {
+                service.scraping = false;
                 populateCurrentLinks(false);
             },
             function(response){
+                service.scraping = false;
                 window.alert('Error: Failed to load details! ' + response.data.message);
             }
         );
