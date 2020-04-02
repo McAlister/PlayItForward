@@ -104,6 +104,7 @@ class EventStandingController {
     def startRace(Integer eventId) {
 
         Event event = Event.findById(eventId);
+
         JSONArray nameList = new JSONArray(request.getParameter("nameList"));
         JSONArray artList = new JSONArray(request.getParameter("artList"));
         Map<String, String> artHash = new HashMap<>();
@@ -111,6 +112,19 @@ class EventStandingController {
         for (int i = 0 ; i < artList.length() ; i++) {
             artHash.put(nameList.get(i), artList.get(i));
             indexHash.put(nameList.get(i), i);
+        }
+
+        List<Player> playerList = Player.findAllByNameInListAndIsWoman(nameList, true);
+        Map<String, Player> playerHash = new HashMap<>();
+        for (Player player : playerList) {
+
+            String img = player.imgUrl;
+
+            if (img != null && !img.isEmpty() && img.length() > 5) {
+                if (!defaultNames.contains(img.substring(0, img.length() - 4))) {
+                    playerHash.put(player.name, player);
+                }
+            }
         }
 
         List<RawStandings> rawList = RawStandings.findAllByEventAndNameInList(event, nameList);
@@ -125,11 +139,20 @@ class EventStandingController {
             standing.setRank(raw.getRank());
             standing.setRound(raw.getRound());
 
-            standing.setPlayer(new Player());
-            standing.player.setId(indexHash.get(raw.getName()));
-            standing.player.alias = raw.getName();
-            standing.player.name = raw.getName();
-            standing.player.imgUrl = artHash.get(raw.getName());
+            Player player = new Player();
+            if (playerHash.containsKey(raw.name)) {
+
+                player = playerHash.get(raw.name);
+                player.alias = raw.name;
+            } else {
+
+                player.setId(indexHash.get(raw.name));
+                player.alias = raw.name;
+                player.name = raw.name;
+                player.imgUrl = artHash[raw.name];
+            }
+
+            standing.setPlayer(player);
 
             standingsList.add(standing)
             standingId++;

@@ -265,6 +265,7 @@ function raceService($http, $interval) {
                 track.rank = standing.rank;
                 track.left = Math.round(startLeft + (30 * track.points));
                 track.stickLeft = Math.round(34 + (30 * track.points)) + "px";
+                track.img = standing.img;
 
                 var horse = document.getElementById(track.id);
                 horse.classList.add("sliding");
