@@ -1,13 +1,11 @@
 package playitforward
 
-import grails.plugin.springsecurity.annotation.Secured
 import grails.transaction.Transactional;
 import org.jsoup.Jsoup
 import org.jsoup.nodes.TextNode;
 import org.jsoup.select.Elements;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element
-import org.springframework.security.access.prepost.PreAuthorize;
 
 import java.sql.Date
 import java.time.Month
@@ -304,7 +302,9 @@ class RawStandingsController {
         List<Event> eventList = Event.findAllByStartDateBetweenAndType(firstOfYear, lastOfYear, eventType);
         Map<String, Event> eventMap = new HashMap<>();
         for(Event event: eventList) {
-            eventMap.put(event.getCfbEventNum(), event);
+            if (!event.eventUrl.isEmpty()) {
+                eventMap.put(event.eventUrl, event);
+            }
         }
 
         Document doc = Jsoup.connect(cfbCoverageUrl).userAgent("Mozilla")
@@ -323,8 +323,7 @@ class RawStandingsController {
             String format = info.textNodes()[1].text().trim();
             String name = link.text().replace("MagicFest", "").trim();
             String startDate = info.textNodes()[0].text().trim();
-            String url = link.attr("href");
-            Integer eventKey = Integer.valueOf(url.substring(url.lastIndexOf("/") + 1).trim());
+            String url = link.attr("href").trim();
 
             if (format.toUpperCase().contains("TEAM")) {
                 continue;
@@ -340,20 +339,18 @@ class RawStandingsController {
             String day = startDate.substring(startDate.indexOf(" ") + 1).trim();
 
             Date start = new Date(startYear - 1900, Month.valueOf(month.toUpperCase()).value - 1, Integer.valueOf(day));
-            if (start.year + 1900 != year) {
+            Date end = start + 1;
+            if (invalidDate(start, year)) {
                 continue;
             }
 
-            Date end = start + 1;
-
             Event event = new Event();
-            if (eventMap.containsKey(eventKey))
+            if (eventMap.containsKey(url))
             {
-                event = eventMap.get(eventKey);
+                event = eventMap.get(url);
             }
 
             event.setName(name);
-            event.setCfbEventNum(eventKey);
             event.setType(eventType);
             event.setStartDate(start);
             event.setEndDate(end);
@@ -375,7 +372,8 @@ class RawStandingsController {
         List<Event> eventList = Event.findAllByStartDateBetweenAndType(firstOfYear, lastOfYear, eventType);
         Map<String, Event> eventMap = new HashMap<>();
         for(Event event: eventList) {
-            eventMap.put(buildGPKey(event), event);
+            if (! event.eventUrl.isEmpty())
+            eventMap.put(event.eventUrl, event);
         }
 
         int lastYear = year - 1;
@@ -447,63 +445,67 @@ class RawStandingsController {
                 continue;
             }
 
-            String testUrl = urlList.get(i);
-            String longTest = testUrl + "/tournament-results";
-            String longestUrl = testUrl + "/tournament-results-and-decklists";
-            if (invalidUrl(testUrl) && invalidUrl(longTest) && invalidUrl(longestUrl)) {
-                continue;
-            }
-
             String startString = startList.get(i).trim();
             Integer startYear = Integer.valueOf(startString.substring(startString.length() - 4));
             String month = startString.substring(0, startString.indexOf(" ")).trim();
             String day = startString.substring(startString.indexOf(" ") + 1, startString.indexOf("-")).trim();
 
             Date start = new Date(startYear - 1900, Month.valueOf(month.toUpperCase()).value - 1, Integer.valueOf(day));
-            if (start.year + 1900 != year) {
+            Date end = start + 1;
+            if (invalidDate(start, year)) {
                 continue;
             }
 
-            Date end = start + 1;
+            String testUrl = urlList.get(i);
+            if (invalidUrl(testUrl)) {
+                String longTest = testUrl + "/tournament-results";
+                if (invalidUrl(longTest)) {
+                    String longestUrl = testUrl + "/tournament-results-and-decklists";
+                    if (invalidUrl(longestUrl)) {
+                        continue;
+                    }
+                    else {
+                        testUrl = longestUrl;
+                    }
+                }
+                else {
+                    testUrl = longTest;
+                }
+            }
 
             Event event = new Event();
-            event.setName(nameList.get(i));
-            event.setStartDate(start);
-
-            if (eventMap.containsKey(buildGPKey(event)))
-            {
-                event = eventMap.get(buildGPKey(event));
+            if (eventMap.containsKey(testUrl)) {
+                event = eventMap.get(testUrl);
             }
 
             event.setName(nameList.get(i));
             event.setType(eventType);
             event.setStartDate(start);
             event.setEndDate(end);
-            event.setEventUrl(urlList.get(i));
+            event.setEventUrl(testUrl);
+            event.setEventFormat(formatList.get(i).replace("Block", "").trim());
+
             if (event.organizer == null) {
                 event.setOrganizer(organizer);
             }
-            if (event.getEventUrl().toLowerCase().contains("coverage.channelfireball.com")) {
-                String url = event.getEventUrl();
-                event.setCfbEventNum(Integer.valueOf(url.substring(url.lastIndexOf("/") + 1).trim()));
-            }
-
-            event.setEventFormat(formatList.get(i).replace("Block", "").trim());
 
             event.save();
         }
     }
 
-    String buildGPKey(Event event) {
+    Boolean invalidDate(Date start, int year) {
 
-        return event.name + "-" + event.startDate.toString();
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(start);
+
+        return cal.get(Calendar.YEAR) != year;
     }
 
     Boolean invalidUrl(String url) {
 
         URL test = new URL(url);
         HttpURLConnection huc = (HttpURLConnection) test.openConnection();
-        int responseCode = huc.getResponseCode();
-        return (responseCode == HttpURLConnection.HTTP_NOT_FOUND);
+        huc.setRequestMethod("HEAD");
+        return (huc.getResponseCode() != HttpURLConnection.HTTP_OK);
     }
 }
