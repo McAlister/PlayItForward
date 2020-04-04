@@ -66,16 +66,16 @@ grails:
         awssdk:
             region: us-west-2
             accessKey: AKIAIMAUBLGV36243E7Q
-            secretKEy: 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
+            secretKey: V7p/lu8JpeVaQvx+25TRq3j/VvkxtpkAXQwrCNs3
             ses:
                 # ses user
                 accessKey: AKIAIZIYVYRSL3LVCN7Q
-                secretKEy: AggC9juZNNE4tfMxE5YfXMTq3tvstwhsnvCGj9HJ2rip
+                secretKey: AggC9juZNNE4tfMxE5YfXMTq3tvstwhsnvCGj9HJ2rip
+                sender: playitforward@playitforward-magic.org
             s3:
                 # apiUser - only has s3 access currently
                 accessKey: AKIAJMNKTZEQN33HJJ7Q
                 secretKey: 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
-                sender: playitforward@playitforward-magic.org
 
 ---
 hibernate:
