@@ -65,6 +65,8 @@ grails:
     plugin:
         awssdk:
             region: us-west-2
+            accessKey: AKIAIMAUBLGV36243E7Q
+            secretKEy: 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
             ses:
                 # ses user
                 accessKey: AKIAIZIYVYRSL3LVCN7Q
@@ -73,6 +75,7 @@ grails:
                 # apiUser - only has s3 access currently
                 accessKey: AKIAJMNKTZEQN33HJJ7Q
                 secretKey: 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
+                sender: playitforward@playitforward-magic.org
 
 ---
 hibernate:
